@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../static/stylesheets/vdicalc.css" />
+  </head>
+  <body>
+    <form method="POST" action="/">
+      <input type="hidden" name="submitselect" value="" id="submitselect" />
+      <h1 style="color: #000000; text-align: center">VDI Calculator</h1>
+      <p></p>
+      <br></br>
+      <p style="text-align: center">
+        <strong>Created by:</strong> Andr&eacute; Leibovici (<a
+          href="mailto:ableibovici@gmail.com"
+          >ableibovici@gmail.com</a
+        >)
+      </p>
+      <br></br>
+      <p style="text-align: center"></p>
+      <p style="text-align: center">
+        <span style="color: #ff0000"
+          >The author does not guarantee the results of the calculations.</span
+        >
+      </p>
+      <p style="text-align: center">
+        <span style="color: #ff0000"
+          >Calculations are based on recommended practices and the author's own
+          field experience. Use it at your own risk.</span
+        >
+      </p>
+      <p style="text-align: center"></p>
+      <br></br>
+      <p style="text-align: center">
+        Andr&eacute; Leibovici (myvirtualcloud.net) 2014. All Rights Reserved.
+      </p>
+      <button class="blueButton"
+        id="back"
+        name="back"
+        onclick="document.getElementById('submitselect').value='back';this.form.submit()"
+      >
+        Back
+      </button>
+    </form>
+  </body>
+</html>

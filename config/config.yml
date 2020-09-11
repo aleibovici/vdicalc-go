@@ -1,0 +1,160 @@
+# Server Configuration
+server:
+  port: 8080
+
+# These are the VariableConfigurations struct values
+variable:
+  title: "VDI Calculator"
+  titlesub: "by André Leibovici"
+  update: "Calculate"
+  about: "About"
+  print: "Print"
+
+# These are the VMConfigurations struct values
+vm:
+  vmprofilelabel: "Profile"
+  vmprofile: { "Task": "1", "Office": "2", "Knowledge": "3", "Power": "4" }
+  vmprofileselected: 1
+  vmcountlabel: "Number of Desktops"
+  vmcount: 2000
+  vmcountselected: 2000
+  vcpucountlabel: "CPU Count:"
+  vcpucount: { "1": "1", "2": "2", "4": "4", "8": "8" }
+  vmvcpucountselected: "1"
+  vcpumhzlabel: "Average vCPU MHz"
+  vcpumhz: 500
+  vcpumhzselected: 500
+  vmpercorecountlabel: "VMs per Core"
+  vmpercorecount:
+    {
+      "1": "1",
+      "2": "2",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10",
+      "11": "11",
+      "12": "12",
+      "13": "13",
+      "14": "14",
+      "15": "15",
+      "16": "16",
+      "17": "17",
+      "18": "18",
+      "19": "19",
+      "20": "20",
+    }
+  vmpercorecountselected: "5"
+  displaycountlabel: "Display Count:"
+  displaycount: { "1": "1", "2": "2", "4": "4" }
+  displayresolutionlabel: "Display Resolution:"
+  displayresolution: { "1280x800": "1", "1920x1200": "2", "2560x1600": "3" }
+  displayresolutionselected: "2"
+  memorysizelabel: "Memory Size (MB)"
+  memorysize: 1536
+  memorysizeselected: 1536
+  videoram: { "Off": "0", "64": "64", "128": "128", "256": "256", "512": "512" }
+  videoramlabel: "3D Graphics (MB)"
+  videoramselected: "0"
+  disksizelabel: "Disk Size (GB)"
+  disksize: 100
+  disksizeselected: 100
+
+# This is the profile for Task user
+vmprofile01:
+  vcpucountselected: "1"
+  vcpumhz: 500
+  vmpercorecountselected: "5"
+  memorysize: 1536
+  displaycountselected: "1"
+  displayresolutionselected: "2"
+  videoramselected: "0"
+  disksizeselected: 100
+
+# This is the profile for Office user
+vmprofile02:
+  vcpucountselected: "1"
+  vcpumhz: 500
+  vmpercorecountselected: "5"
+  memorysize: 2048
+  displaycountselected: "1"
+  displayresolutionselected: "2"
+  videoramselected: "64"
+  disksizeselected: 100
+
+# This is the profile for Knowledge user
+vmprofile03:
+  vcpucountselected: "2"
+  vcpumhz: 315
+  vmpercorecountselected: "4"
+  memorysize: 2048
+  displaycountselected: "1"
+  displayresolutionselected: "2"
+  videoramselected: "64"
+  disksizeselected: 100
+
+# This is the profile for Power user
+vmprofile04:
+  vcpucountselected: "2"
+  vcpumhz: 625
+  vmpercorecountselected: "2"
+  memorysize: 4096
+  displaycountselected: "2"
+  displayresolutionselected: "3"
+  videoramselected: "128"
+  disksizeselected: 100
+
+# These are the HostConfigurations struct values
+host:
+  socketcountlabel: "Sockets per Host"
+  socketcount: { "1": "1", "2": "2", "4": "4", "6": "6", "8": "8", "10": "10" }
+  socketcountselected: 2
+  socketcorescountlabel: "Cores per Socket"
+  socketcorescount:
+    {
+      "2": "2",
+      "4": "4",
+      "6": "6",
+      "8": "8",
+      "10": "10",
+      "12": "12",
+      "14": "14",
+      "16": "16",
+      "18": "18",
+      "20": "20",
+      "24": "24",
+      "32": "32",
+      "64": "64",
+    }
+  socketcorescountselected: 12
+  memoryoverhead: 1
+  memoryoverheadselected: 1
+  memoryoverheadlabel: "Memory Overhead (GB)"
+  coresoverhead: 0
+  coresoverheadselected: 0
+  coresoverheadlabel: "Cores Overhead"
+
+# These are the StorageConfigurations struct values
+storage:
+  capacityoverhead: { "0": "0", "5": "5", "10": "10", "20": "20", "30": "30" }
+  capacityoverheadlabel: "Capacity Overhead (%)"
+  capacityoverheadselected:
+  datastorevmcount: "100"
+  datastorevmcountlabel: "VMs per Datastore"
+  datastorevmcountselected: "100"
+
+# These are the HostResultsConfiguration struct values
+hostresults:
+  countlabel: "Number of Hosts"
+  hostclockusedlabel: "Host CPU (MHz)"
+  hostmemorylabel: "Host Memory (GB)"
+  hostvmcountlabel: "VMs per Host"
+
+# These are the StorageResultsConfiguration struct values
+storageresults:
+  storagecapacitylabel: "Storage Capacity (TB)"
+  storagedatastorecountabel: "Number of Datastores"
+  storagedatastoresizelabel: "Datastore Size (TB)"

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DNDQC1YRBV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'G-DNDQC1YRBV');
+    </script>
+
+    <meta charset="utf-8" />
+    <title>{{ .title }}</title>
+    <link rel="stylesheet" href="../static/stylesheets/vdicalc.css" />
+  </head>
+
+  <body>
+    <div style="border-bottom:1px;">
+      <h1 style="text-align:center;">{{ .title }}</h1>
+      <h4 style="text-align:center;">{{ .titlesub }}</h4>
+    </div>
+
+    <div>
+      <form method="POST" action="/">
+        <input type="hidden" name="submitselect" value="" id="submitselect">
+        <table class="blueTable">
+          <thead></thead>
+          <div>
+            <tr>
+              <td>
+                <label>{{ .vmprofilelabel }}</label>
+                <select id="vmprofile" name="vmprofile"
+                  onchange="document.getElementById('submitselect').value='vmprofile';this.form.submit()">
+                  {{range $key, $value := .vmprofile}}
+                  <option value="{{ $value }}" {{ if (eq $value $.vmprofileselected) }}selected{{ end }}>{{ $key }}
+                  </option>
+                  {{end}}
+                </select>
+                <br></br>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>{{ .vmcountlabel }}</label>
+              </td>
+              <td>
+                <input id="vmcount" name="vmcount" size="5" maxlength="5" value="{{ .vmcountselected }}" />
+              </td>
+              <td>
+                <label>{{ .vmvcpucountlabel }}</label>
+              </td>
+              <td style="text-align:left">
+                <select id="vmvcpucount" name="vmvcpucount">
+                  {{range $key, $value := .vmvcpucount}}
+                  <option value="{{ $value }}" {{ if (eq $value $.vmvcpucountselected) }}selected{{ end }}>
+                    {{ $key }}
+                  </option>
+                  {{end}}
+                </select>
+              </td>
+              <td>
+                <label>{{ .vmvcpumhzlabel }}</label>
+              </td>
+              <td>
+                <input id="vmvcpumhz" name="vmvcpumhz" size="5" maxlength="5" value="{{ .vmvcpumhzselected }}" />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>{{ .vmpercorecountlabel }}</label>
+              </td>
+              <td>
+                <select id="vmpercorecount" name="vmpercorecount">
+                  {{range $key, $value := .vmpercorecount}}
+                  <option value="{{ $value }}" {{ if (eq $value $.vmpercorecountselected) }}selected{{ end }}>{{ $key }}
+                  </option>
+                  {{end}}
+                </select>
+              </td>
+              <td>
+                <label>{{ .vmvideoramlabel }}</label>
+              </td>
+              <td>
+                <select id="vmvideoram" name="vmvideoram">
+                  {{range $key, $value := .vmvideoram}}
+                  <option value="{{ $value }}" {{ if (eq $value $.vmvideoramselected) }}selected{{ end }}>{{ $key }}
+                  </option>
+                  {{end}}
+                </select>
+              </td>
+              <td>
+                <label>{{ .vmdisksizelabel }}</label>
+              </td>
+              <td>
+                <input id="vmdisksize" name="vmdisksize" size="4" maxlength="4" value="{{ .vmdisksizeselected }}" />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>{{ .memorysizelabel }}</label>
+              </td>
+              <td>
+                <input id="memorysize" name="memorysize" type="text" size="5" maxlength="5"
+                  value="{{ .memorysizeselected }}" />
+              </td>
+              <td>
+                <label>{{ .vmdisplaycountlabel }}</label>
+              </td>
+              <td>
+                <select id="vmdisplaycount" name="vmdisplaycount">
+                  {{range $key, $value := .vmdisplaycount}}
+                  <option value="{{ $value }}" {{ if (eq $value $.vmdisplaycountselected) }}selected{{ end }}>{{ $key }}
+                  </option>
+                  {{end}}
+                </select>
+              </td>
+              <td>
+                <label>{{ .vmdisplayresolutionlabel }}</label>
+              </td>
+              <td>
+                <select id="vmdisplayresolution" name="vmdisplayresolution">
+                  {{range $key, $value := .vmdisplayresolution}}
+                  <option value="{{ $value }}" {{ if (eq $value $.vmdisplayresolutionselected) }}selected{{ end }}>
+                    {{ $key }}
+                  </option>
+                  {{end}}
+                </select>
+              </td>
+            </tr>
+          </div>
+          <tfoot></tfoot>
+        </table>
+
+        <table class="blueTable">
+          <thead>Host</thead>
+          <tr>
+            <td>
+              <label>{{ .socketcountlabel }}</label>
+            </td>
+            <td>
+              <select id="socketcount" name="socketcount">
+                {{range $key, $value := .socketcount}}
+                <option value="{{ $value }}" {{ if (eq $value $.socketcountselected) }}selected{{ end }}>{{ $key }}
+                </option>
+                {{end}}
+              </select>
+            </td>
+            <td>
+              <label>{{ .hostmemoryoverheadlabel }}</label>
+            </td>
+            <td>
+              <input id="hostmemoryoverhead" name="hostmemoryoverhead" type="text" size="3" maxlength="3"
+                value="{{ .hostmemoryoverheadselected }}" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>{{ .socketcorescountlabel }}</label>
+            </td>
+            <td>
+              <select id="socketcorescount" name="socketcorescount">
+                {{range $key, $value := .socketcorescount}}
+                <option value="{{ $value }}" {{ if (eq $value $.socketcorescountselected) }}selected{{ end }}>{{ $key }}
+                </option>
+                {{end}}
+              </select>
+            </td>
+            <td>
+              <label>{{ .hostcoresoverheadlabel }}</label>
+            </td>
+            <td>
+              <input id="hostcoresoverhead" name="hostcoresoverhead" type="text" size="2" maxlength="2"
+                value="{{ .hostcoresoverheadselected }}" />
+            </td>
+          </tr>
+          <tfoot></tfoot>
+        </table>
+
+        <table class="blueTable">
+          <thead>Storage</thead>
+          <div>
+            <tr>
+              <td>
+                <label>{{ .storagecapacityoverheadlabel }}</label>
+              </td>
+              <td>
+                <select id="storagecapacityoverhead" name="storagecapacityoverhead">
+                  {{range $key, $value := .storagecapacityoverhead}}
+                  <option value="{{ $value }}" {{ if (eq $value $.storagecapacityoverheadselected) }}selected{{ end }}>
+                    {{ $key }}
+                  </option>
+                  {{end}}
+                </select>
+              </td>
+              <td>
+                <label>{{ .storagedatastorevmcountlabel }}</label>
+              </td>
+              <td>
+                <input id="storagedatastorevmcount" name="storagedatastorevmcount" type="text" size="3" maxlength="3"
+                  value="{{ .storagedatastorevmcountselected }}" />
+              </td>
+            </tr>
+          </div>
+          <tfoot></tfoot>
+        </table>
+
+        <table class="greyTable">
+          <thead>Results</thead>
+          <div>
+            <tr>
+              <td>
+                <label>{{ .hostresultscountlabel }}</label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label>{{ .hostresultscount }}</label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <td></td>
+              <td>
+                <label>{{ .hostresultvmcountlabel }}</label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label>{{ .hostresultvmcount }}</label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            <tr>
+              <td>
+                <label>{{ .hostresultsclockusedlabel }}</label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label>{{ .hostresultsclockused }}</label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <td></td>
+              <td>
+                <label>{{ .hosresultstmemorylabel }}</label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label>{{ .hosresultstmemory }}</label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>{{ .storageresultdatastorecountlabel }}</label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label>{{ .storageresultdatastorecount }}</label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <td></td>
+              <td>
+                <label>{{ .storageresultcapacitylabel }}</label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label>{{ .storageresultcapacity }}</label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>{{ .storageresultdatastoresizelabel }}</label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label>{{ .storageresultdatastoresize }}</label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <td></td>
+              <td>
+                <label></label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label></label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </div>
+          <tfoot></tfoot>
+        </table>
+
+        <p></p>
+        <div>
+          <button class="blueButton" id="update" name="update"
+            onclick="document.getElementById('submitselect').value='update';this.form.submit()">{{ .update }}</button>
+          <button class="blueButton" id="print" name="print"
+            onclick="window.print();return false;">{{ .print }}</button>
+          <button class="blueButton" id="about" name="about"
+            onclick="document.getElementById('submitselect').value='about';this.form.submit()">{{ .about }}</button>
+        </div>
+      </form>
+    </div>
+  </body>
+
+</html>
