@@ -100,6 +100,9 @@ func DataLoad(class c.Configurations) map[string]interface{} {
 		"storagedatastorevmcount":         class.Storage.Datastorevmcount,
 		"storagedatastorevmcountlabel":    class.Storage.Datastorevmcountlabel,
 		"storagedatastorevmcountselected": class.Storage.Datastorevmcountselected,
+		"storagededuperatio":              class.Storage.Deduperatio,
+		"storagededuperatiolabel":         class.Storage.Deduperatiolabel,
+		"storagededuperatioselected":      class.Storage.Deduperatioselected,
 		/* hostresults are used to display resulting calculation for hosts */
 		"hostresultscount":          class.HostResults.Count,
 		"hostresultscountlabel":     class.HostResults.Countlabel,

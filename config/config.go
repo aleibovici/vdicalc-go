@@ -90,6 +90,9 @@ type StorageConfigurations struct {
 	Datastorevmcount         int
 	Datastorevmcountlabel    string
 	Datastorevmcountselected string
+	Deduperatio              int
+	Deduperatiolabel         string
+	Deduperatioselected      string
 }
 
 // HostResultsConfiguration exported

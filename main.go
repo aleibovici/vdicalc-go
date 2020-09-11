@@ -157,11 +157,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			/* This is the default template execution mode with results calculation */
 			fullData["hostresultscount"] = host.GetHostCount(r.FormValue("vmcount"), r.FormValue("socketcount"), r.FormValue("socketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"))
 			fullData["hostresultsclockused"] = host.GetHostClockUsed(r.FormValue("vmvcpucount"), r.FormValue("vmvcpumhz"), r.FormValue("vmcount"), r.FormValue("socketcount"), r.FormValue("socketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"))
-			fullData["hosresultstmemory"] = host.GetHostMemory(r.FormValue("vmcount"), r.FormValue("socketcount"), r.FormValue("socketcorescount"), r.FormValue("hostcoresoverhead") ,r.FormValue("vmpercorecount"), r.FormValue("memorysize"), r.FormValue("hostmemoryoverhead"), r.FormValue("vmdisplaycount"), r.FormValue("vmdisplayresolution"), r.FormValue("vmvcpucount"), r.FormValue("vmvideoram"))
+			fullData["hosresultstmemory"] = host.GetHostMemory(r.FormValue("vmcount"), r.FormValue("socketcount"), r.FormValue("socketcorescount"), r.FormValue("hostcoresoverhead"), r.FormValue("vmpercorecount"), r.FormValue("memorysize"), r.FormValue("hostmemoryoverhead"), r.FormValue("vmdisplaycount"), r.FormValue("vmdisplayresolution"), r.FormValue("vmvcpucount"), r.FormValue("vmvideoram"))
 			fullData["hostresultvmcount"] = host.GetHostVmCount(r.FormValue("vmcount"), r.FormValue("socketcount"), r.FormValue("socketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"))
-			fullData["storageresultcapacity"] = storage.GetStorageCapacity(r.FormValue("vmcount"), r.FormValue("vmdisksize"), r.FormValue("storagecapacityoverhead"))
+			fullData["storageresultcapacity"] = storage.GetStorageCapacity(r.FormValue("vmcount"), r.FormValue("vmdisksize"), r.FormValue("storagecapacityoverhead"), r.FormValue("storagededuperatio"))
 			fullData["storageresultdatastorecount"] = storage.GetStorageDatastoreCount(r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"))
-			fullData["storageresultdatastoresize"] = storage.GetStorageDatastoreSize(r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"), r.FormValue("vmdisksize"), r.FormValue("storagecapacityoverhead"))
+			fullData["storageresultdatastoresize"] = storage.GetStorageDatastoreSize(r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"), r.FormValue("vmdisksize"), r.FormValue("storagecapacityoverhead"), r.FormValue("storagededuperatio"))
 
 			/* This is the template execution for 'update' */
 			err := tlp.ExecuteTemplate(w, "index.html", fullData)

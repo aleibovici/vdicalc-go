@@ -145,6 +145,9 @@ storage:
   datastorevmcount: "100"
   datastorevmcountlabel: "VMs per Datastore"
   datastorevmcountselected: "100"
+  deduperatio: 0
+  deduperatiolabel: "Dedupe Ratio (%)"
+  deduperatioselected: 0
 
 # These are the HostResultsConfiguration struct values
 hostresults:
