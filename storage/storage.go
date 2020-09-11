@@ -18,7 +18,11 @@ It returns result in terabytes. */
 func GetStorageCapacity(vmcount string, vmdisksize string, storagecapacityoverhead string, storagededuperatio string) string {
 
 	r := (f.StrtoFloat64(vmcount) * f.StrtoFloat64(vmdisksize)) / 1000
-	r *= (1 + (f.StrtoFloat64(storagecapacityoverhead) / 100))
+
+	if storagecapacityoverhead != "0" {
+		r += (f.StrtoFloat64(storagecapacityoverhead) / 100) * r
+	}
+
 	if storagededuperatio != "0" {
 		r -= (f.StrtoFloat64(storagededuperatio) / 100) * r
 	}
