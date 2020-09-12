@@ -80,6 +80,13 @@ func DataLoad(class c.Configurations) map[string]interface{} {
 		"vmdisksizelabel":             class.VM.Disksizelabel,
 		"vmdisksize":                  class.VM.Disksize,
 		"vmdisksizeselected":          class.VM.Disksizeselected,
+		"vmiopscount":                 class.VM.Iopscount,
+		"vmiopscountlabel":            class.VM.Iopscountlabel,
+		"vmiopscountselected":         class.VM.Iopscountselected,
+		"vmiopsreadratio":             class.VM.Iopsreadratio,
+		"vmiopsreadratiolabel":        class.VM.Iopsreadratiolabel,
+		"vmiopsreadratioselected":     class.VM.Iopsreadratioselected,
+		"vmiopswriteratio":            class.VM.Iopswriteratio,
 		/* host are used to display form items for hosts */
 		"socketcountlabel":           class.Host.Socketcountlabel,
 		"socketcount":                class.Host.Socketcount,
@@ -103,6 +110,9 @@ func DataLoad(class c.Configurations) map[string]interface{} {
 		"storagededuperatio":              class.Storage.Deduperatio,
 		"storagededuperatiolabel":         class.Storage.Deduperatiolabel,
 		"storagededuperatioselected":      class.Storage.Deduperatioselected,
+		"storageraidtype": class.Storage.Raidtype,
+		"storageraidtypelabel": class.Storage.Raidtypelabel,
+		"storageraidtypeselected": class.Storage.Raidtypeselected,
 		/* hostresults are used to display resulting calculation for hosts */
 		"hostresultscount":          class.HostResults.Count,
 		"hostresultscountlabel":     class.HostResults.Countlabel,
@@ -119,6 +129,8 @@ func DataLoad(class c.Configurations) map[string]interface{} {
 		"storageresultdatastorecountlabel": class.StorageResults.Storagedatastorecountabel,
 		"storageresultdatastoresize:":      class.StorageResults.Storagedatastoresize,
 		"storageresultdatastoresizelabel":  class.StorageResults.Storagedatastoresizelabel,
+		"storagedatastorefroentendiopslabel": class.StorageResults.Storagedatastorefroentendiopslabel,
+		"storagedatastorebackendiopslabel": class.StorageResults.Storagedatastorebackendiopslabel,
 	}
 
 	return data

@@ -148,6 +148,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			fullData["vmdisplayresolutionselected"] = key.Displayresolutionselected
 			fullData["vmvideoramselected"] = key.Videoramselected
 			fullData["vmdisksizeselected"] = key.Disksizeselected
+			fullData["vmiopscountselected"] = key.Iopscountselected
 
 			/* Fallthrough ensures 'update' is always executed after 'vmprofile' */
 			fallthrough
@@ -162,6 +163,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			fullData["storageresultcapacity"] = storage.GetStorageCapacity(r.FormValue("vmcount"), r.FormValue("vmdisksize"), r.FormValue("storagecapacityoverhead"), r.FormValue("storagededuperatio"))
 			fullData["storageresultdatastorecount"] = storage.GetStorageDatastoreCount(r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"))
 			fullData["storageresultdatastoresize"] = storage.GetStorageDatastoreSize(r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"), r.FormValue("vmdisksize"), r.FormValue("storagecapacityoverhead"), r.FormValue("storagededuperatio"))
+			fullData["storagedatastorefroentendiops"],fullData["storagedatastorebackendiops"]  = storage.GetStorageDatastoreIops(r.FormValue("vmiopscount"),r.FormValue("vmiopsreadratio"),r.FormValue("storagedatastorevmcount"),r.FormValue("storageraidtype"))
 
 			/* This is the template execution for 'update' */
 			err := tlp.ExecuteTemplate(w, "index.html", fullData)

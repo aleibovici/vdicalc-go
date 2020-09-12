@@ -64,6 +64,13 @@ type VMConfigurations struct {
 	Disksizelabel             string
 	Disksize                  int
 	Disksizeselected          int
+	Iopscount                 int
+	Iopscountselected         string
+	Iopscountlabel            string
+	Iopsreadratio             int
+	Iopsreadratioselected     string
+	Iopsreadratiolabel        string
+	Iopswriteratio            int
 }
 
 // HostConfigurations exported
@@ -93,6 +100,9 @@ type StorageConfigurations struct {
 	Deduperatio              int
 	Deduperatiolabel         string
 	Deduperatioselected      string
+	Raidtype map[int]interface{}
+	Raidtypelabel string
+	Raidtypeselected string
 }
 
 // HostResultsConfiguration exported
@@ -115,4 +125,8 @@ type StorageResultsConfiguration struct {
 	Storagedatastorecount     string
 	Storagedatastoresize      string
 	Storagedatastoresizelabel string
+	Storagedatastorefroentendiops string
+	Storagedatastorefroentendiopslabel string
+	Storagedatastorebackendiops string
+	Storagedatastorebackendiopslabel string
 }

@@ -47,3 +47,23 @@ func GetStorageDatastoreSize(vmcount string, datastorevmcount string, vmdisksize
 
 	return f.Float64toStr(r)
 }
+
+// GetStorageDatastoreIops function
+/* This public function calculates the amount of frontend and backend IOPs per datastore, For write IOps the function calculate the storage write amplification based on raid type levels. */
+func GetStorageDatastoreIops(vmiopscount string, vmiopsreadratio string, storagedatastorevmcount string, storageraidtype string) (string, string) {
+
+	datastoreFrontendIops := f.StrtoInt(vmiopscount) * f.StrtoInt(storagedatastorevmcount)
+	datastoreBackendReadIops := int(((f.StrtoFloat64(vmiopsreadratio) / 100) * f.StrtoFloat64(vmiopscount)) * f.StrtoFloat64(storagedatastorevmcount))
+	datastoreBackendWriteIops := int(((1-(f.StrtoFloat64(vmiopsreadratio) / 100)) * f.StrtoFloat64(vmiopscount)) * f.StrtoFloat64(storagedatastorevmcount))
+
+	switch storageraidtype {
+	case "5":
+		datastoreBackendWriteIops *= 4
+	case "6","10":
+		datastoreBackendWriteIops *= 2
+	}
+
+	datastoreBackendIops := datastoreBackendReadIops + datastoreBackendWriteIops
+
+	return f.InttoStr(datastoreFrontendIops), f.InttoStr(datastoreBackendIops)
+}

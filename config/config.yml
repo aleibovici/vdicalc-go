@@ -62,6 +62,12 @@ vm:
   disksizelabel: "Disk Size (GB)"
   disksize: 100
   disksizeselected: 100
+  iopscount: 6
+  iopscountselected: 6
+  iopscountlabel: "IOps"
+  iopsreadratio: 20
+  iopsreadratioselected: 20
+  iopsreadratiolabel: "IOps Read Ratio (%)"
 
 # This is the profile for Task user
 vmprofile01:
@@ -73,6 +79,8 @@ vmprofile01:
   displayresolutionselected: "2"
   videoramselected: "0"
   disksizeselected: 100
+  iopscountselected: 6
+  iopsreadratioselected: 20
 
 # This is the profile for Office user
 vmprofile02:
@@ -84,6 +92,8 @@ vmprofile02:
   displayresolutionselected: "2"
   videoramselected: "64"
   disksizeselected: 100
+  iopscountselected: 8
+  iopsreadratioselected: 20
 
 # This is the profile for Knowledge user
 vmprofile03:
@@ -95,6 +105,8 @@ vmprofile03:
   displayresolutionselected: "2"
   videoramselected: "64"
   disksizeselected: 100
+  iopscountselected: 9
+  iopsreadratioselected: 20
 
 # This is the profile for Power user
 vmprofile04:
@@ -106,6 +118,8 @@ vmprofile04:
   displayresolutionselected: "3"
   videoramselected: "128"
   disksizeselected: 100
+  iopscountselected: 11
+  iopsreadratioselected: 20
 
 # These are the HostConfigurations struct values
 host:
@@ -148,6 +162,9 @@ storage:
   deduperatio: 0
   deduperatiolabel: "Dedupe Ratio (%)"
   deduperatioselected: 0
+  raidtype: { "5":"5", "6":"6", "10":"10"}
+  raidtypelabel: "Raid Type"
+  raidtypeselected: "6"
 
 # These are the HostResultsConfiguration struct values
 hostresults:
@@ -161,3 +178,5 @@ storageresults:
   storagecapacitylabel: "Storage Capacity (TB)"
   storagedatastorecountabel: "Number of Datastores"
   storagedatastoresizelabel: "Datastore Size (TB)"
+  storagedatastorefroentendiopslabel: "Datastore Frontend IOps"
+  storagedatastorebackendiopslabel: "Datastore Backend IOps"

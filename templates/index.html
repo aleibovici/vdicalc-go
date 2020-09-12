@@ -130,6 +130,22 @@
                 </select>
               </td>
             </tr>
+            <tr>
+              <td>
+                <label>{{ .vmiopscountlabel }}</label>
+              </td>
+              <td>
+                <input id="vmiopscount" name="vmiopscount" type="text" size="3" maxlength="3"
+                  value="{{ .vmiopscountselected }}" />
+              </td>
+              <td>
+                <label>{{ .vmiopsreadratiolabel }}</label>
+              </td>
+              <td>
+                <input id="vmiopsreadratio" name="vmiopsreadratio" type="text" size="3" maxlength="3" 
+                  value="{{ .vmiopsreadratioselected }}" />
+              </td>
+            </tr>
           </div>
           <tfoot></tfoot>
         </table>
@@ -210,6 +226,17 @@
               <td>
                 <input id="storagededuperatio" name="storagededuperatio" type="text" size="3" maxlength="2"
                   value="{{ .storagededuperatioselected }}" />
+              </td>
+              <td>
+                <label>{{ .storageraidtypelabel }}</label>
+              </td>
+              <td>
+                <select id="storageraidtype" name="storageraidtype">
+                  {{range $key, $value := .storageraidtype}}
+                  <option value="{{ $value }}" {{ if (eq $value $.storageraidtypeselected) }}selected{{ end }}>{{ $key }}
+                  </option>
+                  {{end}}
+                </select>
               </td>
             </tr>
           </div>
@@ -314,6 +341,20 @@
               </td>
               <td></td>
               <td>
+                <label>{{ .storagedatastorefroentendiopslabel }}</label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label>{{ .storagedatastorefroentendiops }}</label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
                 <label></label>
               </td>
               <td>
@@ -325,7 +366,19 @@
                   </tr>
                 </table>
               </td>
-            </tr>
+              <td></td>
+              <td>
+                <label>{{ .storagedatastorebackendiopslabel }}</label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label>{{ .storagedatastorebackendiops }}</label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
           </div>
           <tfoot></tfoot>
         </table>
