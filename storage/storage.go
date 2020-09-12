@@ -5,6 +5,7 @@ It must be imported using "vdicalc/host" */
 
 import (
 	"math"
+	vm "vdicalc/vm"
 	f "vdicalc/functions"
 )
 
@@ -15,9 +16,12 @@ func main() {
 // GetStorageCapacity function
 /* This public function calculates the storage capacity.
 It returns result in terabytes. */
-func GetStorageCapacity(vmcount string, vmdisksize string, storagecapacityoverhead string, storagededuperatio string) string {
+func GetStorageCapacity(vmcount string, vmdisksize string, storagecapacityoverhead string, storagededuperatio string, vmdisplaycount string, vmdisplayresolution string, vmvideoram string) string {
 
-	r := (f.StrtoFloat64(vmcount) * f.StrtoFloat64(vmdisksize)) / 1000
+	_, vmdisplaystorageoverhead := vm.GetVMDisplayOverhead(vmdisplaycount, vmdisplayresolution, vmvideoram)
+
+	/* vmdisplaystorageoverhead is converted from MB to GB to match vmdisksize*/
+	r := (f.StrtoFloat64(vmcount) * (f.StrtoFloat64(vmdisksize) + (f.StrtoFloat64(vmdisplaystorageoverhead) / 1000)))
 
 	if storagecapacityoverhead != "0" {
 		r += (f.StrtoFloat64(storagecapacityoverhead) / 100) * r
@@ -27,7 +31,8 @@ func GetStorageCapacity(vmcount string, vmdisksize string, storagecapacityoverhe
 		r -= (f.StrtoFloat64(storagededuperatio) / 100) * r
 	}
 
-	return f.InttoStr(int(r))
+	/* Results are converted from GB to TB */
+	return f.Float64toStr(r / 1000)
 }
 
 // GetStorageDatastoreCount function
@@ -41,9 +46,9 @@ func GetStorageDatastoreCount(vmcount string, datastorevmcount string) string {
 
 // GetStorageDatastoreSize function
 /* This public function calculates the size of the datastores based on total capacity required and the number of datastores determined */
-func GetStorageDatastoreSize(vmcount string, datastorevmcount string, vmdisksize string, storagecapacityoverhead string, storagededuperatio string) string {
+func GetStorageDatastoreSize(vmcount string, datastorevmcount string, vmdisksize string, storagecapacityoverhead string, storagededuperatio string, vmdisplaycount string, vmdisplayresolution string, vmvideoram string) string {
 
-	r := f.StrtoFloat64(GetStorageCapacity(vmcount, vmdisksize, storagecapacityoverhead, storagededuperatio)) / f.StrtoFloat64(GetStorageDatastoreCount(vmcount, datastorevmcount))
+	r := f.StrtoFloat64(GetStorageCapacity(vmcount, vmdisksize, storagecapacityoverhead, storagededuperatio, vmdisplaycount,vmdisplayresolution, vmvideoram)) / f.StrtoFloat64(GetStorageDatastoreCount(vmcount, datastorevmcount))
 
 	return f.Float64toStr(r)
 }

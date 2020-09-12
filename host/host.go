@@ -58,7 +58,7 @@ func GetHostClockUsed(vmvcpucount string, vmvcpumhz string, vmcount string, sock
 func GetHostMemory(vmcount string, socketcount string, socketcorescount string, hostcoresoverhead string, vmspercore string, vmmemorysize string, hostmemoryoverhead string, vmdisplaycount string, vmdisplayresolution string, vmvcpucount string, vmvideoram string) string {
 
 	hostvmcount := GetHostVmCount(vmcount, socketcount, socketcorescount, vmspercore, hostcoresoverhead)
-	vmdisplaymemoryoverhead := vm.GetVmDisplayMemoryOverhead(vmdisplaycount, vmdisplayresolution, vmvideoram)
+	vmdisplaymemoryoverhead, _ := vm.GetVMDisplayOverhead(vmdisplaycount, vmdisplayresolution, vmvideoram)
 	vmvcpumemoryoverhead := vm.GetVmVcpuMemoryOverhead(vmvcpucount, vmmemorysize)
 	r := ((f.StrtoInt(hostvmcount) * (f.StrtoInt(vmmemorysize) + f.StrtoInt(vmdisplaymemoryoverhead) + f.StrtoInt(vmvcpumemoryoverhead))) / 1024) + f.StrtoInt(hostmemoryoverhead)
 
