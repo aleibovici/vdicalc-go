@@ -66,7 +66,9 @@ func GetStorageDatastoreIops(vmiopscount string, vmiopsreadratio string, storage
 	switch storageraidtype {
 	case "5":
 		datastoreBackendWriteIops *= 4
-	case "6","10":
+	case "6":
+		datastoreBackendWriteIops *= 6
+	case "10":
 		datastoreBackendWriteIops *= 2
 	}
 
