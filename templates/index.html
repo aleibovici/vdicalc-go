@@ -100,11 +100,11 @@
             </tr>
             <tr>
               <td>
-                <label>{{ .memorysizelabel }}</label>
+                <label>{{ .vmmemorysizelabel }}</label>
               </td>
               <td>
-                <input id="memorysize" name="memorysize" type="text" size="5" maxlength="5"
-                  value="{{ .memorysizeselected }}" />
+                <input id="vmmemorysize" name="vmmemorysize" type="text" size="5" maxlength="5"
+                  value="{{ .vmmemorysizeselected }}" />
               </td>
               <td>
                 <label>{{ .vmdisplaycountlabel }}</label>
@@ -154,12 +154,12 @@
           <thead>Host</thead>
           <tr>
             <td>
-              <label>{{ .socketcountlabel }}</label>
+              <label>{{ .hostsocketcountlabel }}</label>
             </td>
             <td>
-              <select id="socketcount" name="socketcount">
-                {{range $key, $value := .socketcount}}
-                <option value="{{ $value }}" {{ if (eq $value $.socketcountselected) }}selected{{ end }}>{{ $key }}
+              <select id="hostsocketcount" name="hostsocketcount">
+                {{range $key, $value := .hostsocketcount}}
+                <option value="{{ $value }}" {{ if (eq $value $.hostsocketcountselected) }}selected{{ end }}>{{ $key }}
                 </option>
                 {{end}}
               </select>
@@ -174,12 +174,12 @@
           </tr>
           <tr>
             <td>
-              <label>{{ .socketcorescountlabel }}</label>
+              <label>{{ .hostsocketcorescountlabel }}</label>
             </td>
             <td>
-              <select id="socketcorescount" name="socketcorescount">
-                {{range $key, $value := .socketcorescount}}
-                <option value="{{ $value }}" {{ if (eq $value $.socketcorescountselected) }}selected{{ end }}>{{ $key }}
+              <select id="hostsocketcorescount" name="hostsocketcorescount">
+                {{range $key, $value := .hostsocketcorescount}}
+                <option value="{{ $value }}" {{ if (eq $value $.hostsocketcorescountselected) }}selected{{ end }}>{{ $key }}
                 </option>
                 {{end}}
               </select>
@@ -261,13 +261,13 @@
               </td>
               <td></td>
               <td>
-                <label>{{ .hostresultvmcountlabel }}</label>
+                <label>{{ .hostresultsvmcountlabel }}</label>
               </td>
               <td>
                 <table class="darkGreyTable">
                   <tr>
                     <td>
-                      <label>{{ .hostresultvmcount }}</label>
+                      <label>{{ .hostresultsvmcount }}</label>
                     </td>
                   </tr>
                 </table>
@@ -287,13 +287,13 @@
               </td>
               <td></td>
               <td>
-                <label>{{ .hosresultstmemorylabel }}</label>
+                <label>{{ .hostresultsmemorylabel }}</label>
               </td>
               <td>
                 <table class="darkGreyTable">
                   <tr>
                     <td>
-                      <label>{{ .hosresultstmemory }}</label>
+                      <label>{{ .hostresultsmemory }}</label>
                     </td>
                   </tr>
                 </table>
@@ -301,26 +301,26 @@
             </tr>
             <tr>
               <td>
-                <label>{{ .storageresultdatastorecountlabel }}</label>
+                <label>{{ .storageresultsdatastorecountlabel }}</label>
               </td>
               <td>
                 <table class="darkGreyTable">
                   <tr>
                     <td>
-                      <label>{{ .storageresultdatastorecount }}</label>
+                      <label>{{ .storageresultsdatastorecount }}</label>
                     </td>
                   </tr>
                 </table>
               </td>
               <td></td>
               <td>
-                <label>{{ .storageresultcapacitylabel }}</label>
+                <label>{{ .storageresultscapacitylabel }}</label>
               </td>
               <td>
                 <table class="darkGreyTable">
                   <tr>
                     <td>
-                      <label>{{ .storageresultcapacity }}</label>
+                      <label>{{ .storageresultscapacity }}</label>
                     </td>
                   </tr>
                 </table>
@@ -328,20 +328,20 @@
             </tr>
             <tr>
               <td>
-                <label>{{ .storageresultdatastoresizelabel }}</label>
+                <label>{{ .storageresultsdatastoresizelabel }}</label>
               </td>
               <td>
                 <table class="darkGreyTable">
                   <tr>
                     <td>
-                      <label>{{ .storageresultdatastoresize }}</label>
+                      <label>{{ .storageresultsdatastoresize }}</label>
                     </td>
                   </tr>
                 </table>
               </td>
               <td></td>
               <td>
-                <label>{{ .storagedatastorefroentendiopslabel }}</label>
+                <label>{{ .storageresultsdatastorefroentendiopslabel }}</label>
               </td>
               <td>
                 <table class="darkGreyTable">
@@ -368,7 +368,7 @@
               </td>
               <td></td>
               <td>
-                <label>{{ .storagedatastorebackendiopslabel }}</label>
+                <label>{{ .storageresultsdatastorebackendiopslabel }}</label>
               </td>
               <td>
                 <table class="darkGreyTable">

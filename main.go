@@ -143,7 +143,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			fullData["vmvcpucountselected"] = key.Vcpucountselected
 			fullData["vmvcpumhzselected"] = key.Vcpumhz
 			fullData["vmpercorecountselected"] = key.Vmpercorecountselected
-			fullData["memorysizeselected"] = key.Memorysize
+			fullData["vmmemorysizeselected"] = key.Memorysize
 			fullData["vmdisplaycountselected"] = key.Displaycountselected
 			fullData["vmdisplayresolutionselected"] = key.Displayresolutionselected
 			fullData["vmvideoramselected"] = key.Videoramselected
@@ -156,13 +156,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		case "update":
 
 			/* This is the default template execution mode with results calculation */
-			fullData["hostresultscount"] = host.GetHostCount(r.FormValue("vmcount"), r.FormValue("socketcount"), r.FormValue("socketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"))
-			fullData["hostresultsclockused"] = host.GetHostClockUsed(r.FormValue("vmvcpucount"), r.FormValue("vmvcpumhz"), r.FormValue("vmcount"), r.FormValue("socketcount"), r.FormValue("socketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"))
-			fullData["hosresultstmemory"] = host.GetHostMemory(r.FormValue("vmcount"), r.FormValue("socketcount"), r.FormValue("socketcorescount"), r.FormValue("hostcoresoverhead"), r.FormValue("vmpercorecount"), r.FormValue("memorysize"), r.FormValue("hostmemoryoverhead"), r.FormValue("vmdisplaycount"), r.FormValue("vmdisplayresolution"), r.FormValue("vmvcpucount"), r.FormValue("vmvideoram"))
-			fullData["hostresultvmcount"] = host.GetHostVmCount(r.FormValue("vmcount"), r.FormValue("socketcount"), r.FormValue("socketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"))
-			fullData["storageresultcapacity"] = storage.GetStorageCapacity(r.FormValue("vmcount"), r.FormValue("vmdisksize"), r.FormValue("storagecapacityoverhead"), r.FormValue("storagededuperatio"), r.FormValue("vmdisplaycount"), r.FormValue("vmdisplayresolution"), r.FormValue("vmvideoram"), r.FormValue("memorysize"))
-			fullData["storageresultdatastorecount"] = storage.GetStorageDatastoreCount(r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"))
-			fullData["storageresultdatastoresize"] = storage.GetStorageDatastoreSize(r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"), r.FormValue("vmdisksize"), r.FormValue("storagecapacityoverhead"), r.FormValue("storagededuperatio"), r.FormValue("vmdisplaycount"), r.FormValue("vmdisplayresolution"), r.FormValue("vmvideoram"), r.FormValue("memorysize"))
+			fullData["hostresultscount"] = host.GetHostCount(r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"))
+			fullData["hostresultsclockused"] = host.GetHostClockUsed(r.FormValue("vmvcpucount"), r.FormValue("vmvcpumhz"), r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"))
+			fullData["hostresultsmemory"] = host.GetHostMemory(r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("hostcoresoverhead"), r.FormValue("vmpercorecount"), r.FormValue("memorysize"), r.FormValue("hostmemoryoverhead"), r.FormValue("vmdisplaycount"), r.FormValue("vmdisplayresolution"), r.FormValue("vmvcpucount"), r.FormValue("vmvideoram"))
+			fullData["hostresultsvmcount"] = host.GetHostVMCount(r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"))
+			fullData["storageresultscapacity"] = storage.GetStorageCapacity(r.FormValue("vmcount"), r.FormValue("vmdisksize"), r.FormValue("storagecapacityoverhead"), r.FormValue("storagededuperatio"), r.FormValue("vmdisplaycount"), r.FormValue("vmdisplayresolution"), r.FormValue("vmvideoram"), r.FormValue("memorysize"))
+			fullData["storageresultsdatastorecount"] = storage.GetStorageDatastoreCount(r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"))
+			fullData["storageresultsdatastoresize"] = storage.GetStorageDatastoreSize(r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"), r.FormValue("vmdisksize"), r.FormValue("storagecapacityoverhead"), r.FormValue("storagededuperatio"), r.FormValue("vmdisplaycount"), r.FormValue("vmdisplayresolution"), r.FormValue("vmvideoram"), r.FormValue("memorysize"))
 			fullData["storagedatastorefroentendiops"], fullData["storagedatastorebackendiops"] = storage.GetStorageDatastoreIops(r.FormValue("vmiopscount"), r.FormValue("vmiopsreadratio"), r.FormValue("storagedatastorevmcount"), r.FormValue("storageraidtype"))
 
 			/* This is the template execution for 'update' */

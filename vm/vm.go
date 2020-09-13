@@ -103,9 +103,9 @@ func GetVMDisplayOverhead(vmdisplaycount string, vmdisplayresolution string, vmv
 	return f.InttoStr(m), f.InttoStr(s)
 }
 
-// GetVmVcpuMemoryOverhead function
+// GetVMVcpuMemoryOverhead function
 /* This public function calculates the vm vcpu memory overhead */
-func GetVmVcpuMemoryOverhead(vmvcpucount string, vmmemorysize string) string {
+func GetVMVcpuMemoryOverhead(vmvcpucount string, vmmemorysize string) string {
 	/* This function is reponsible for establishing the memory overhead based on the number of vcpu each vm is using.
 	   The values have been obtained from VMware Docs and have been rounded up. The values are in megabytes (MB) per vm.
 	   https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.resmgmt.doc/GUID-B42C72C1-F8D5-40DC-93D1-FB31849B1114.html */
