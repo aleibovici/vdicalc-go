@@ -142,7 +142,7 @@
                 <label>{{ .vmiopsreadratiolabel }}</label>
               </td>
               <td>
-                <input id="vmiopsreadratio" name="vmiopsreadratio" type="text" size="3" maxlength="3" 
+                <input id="vmiopsreadratio" name="vmiopsreadratio" type="text" size="3" maxlength="3"
                   value="{{ .vmiopsreadratioselected }}" />
               </td>
             </tr>
@@ -179,7 +179,8 @@
             <td>
               <select id="hostsocketcorescount" name="hostsocketcorescount">
                 {{range $key, $value := .hostsocketcorescount}}
-                <option value="{{ $value }}" {{ if (eq $value $.hostsocketcorescountselected) }}selected{{ end }}>{{ $key }}
+                <option value="{{ $value }}" {{ if (eq $value $.hostsocketcorescountselected) }}selected{{ end }}>
+                  {{ $key }}
                 </option>
                 {{end}}
               </select>
@@ -233,7 +234,8 @@
               <td>
                 <select id="storageraidtype" name="storageraidtype">
                   {{range $key, $value := .storageraidtype}}
-                  <option value="{{ $value }}" {{ if (eq $value $.storageraidtypeselected) }}selected{{ end }}>{{ $key }}
+                  <option value="{{ $value }}" {{ if (eq $value $.storageraidtypeselected) }}selected{{ end }}>
+                    {{ $key }}
                   </option>
                   {{end}}
                 </select>
@@ -379,6 +381,61 @@
                   </tr>
                 </table>
               </td>
+            </tr>
+            <tr>
+              <td>
+                <label></label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label></label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <td></td>
+              <td>
+                <label>{{ .storageresultsfrontendiopslabel }}</label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label>{{ .storageresultsfrontendiops }}</label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label></label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label></label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <td></td>
+              <td>
+                <label>{{ .storageresultsbackendiopslabel }}</label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label>{{ .storageresultsbackendiops }}</label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
           </div>
           <tfoot></tfoot>
         </table>

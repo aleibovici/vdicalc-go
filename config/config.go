@@ -129,4 +129,8 @@ type StorageResultsConfiguration struct {
 	Storagedatastorefroentendiopslabel string
 	Storagedatastorebackendiops        string
 	Storagedatastorebackendiopslabel   string
+	Storagefrontendiops                string
+	Storagefrontendiopslabel           string
+	Storagebackendiops                 string
+	Storagebackendiopslabel            string
 }

@@ -180,3 +180,5 @@ storageresults:
   storagedatastoresizelabel: "Datastore Size (TB)"
   storagedatastorefroentendiopslabel: "Datastore Frontend IOps"
   storagedatastorebackendiopslabel: "Datastore Backend IOps"
+  storagefrontendiopslabel: "Storage Frontend IOps"
+  storagebackendiopslabel: "Storage Backend IOps"

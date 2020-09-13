@@ -131,6 +131,10 @@ func DataLoad(class c.Configurations) map[string]interface{} {
 		"storageresultsdatastoresizelabel":          class.StorageResults.Storagedatastoresizelabel,
 		"storageresultsdatastorefroentendiopslabel": class.StorageResults.Storagedatastorefroentendiopslabel,
 		"storageresultsdatastorebackendiopslabel":   class.StorageResults.Storagedatastorebackendiopslabel,
+		"storageresultsfrontendiops":                class.StorageResults.Storagefrontendiops,
+		"storageresultsfrontendiopslabel":           class.StorageResults.Storagefrontendiopslabel,
+		"storageresultsbackendiops":                 class.StorageResults.Storagebackendiops,
+		"storageresultsbackendiopslabel":            class.StorageResults.Storagebackendiopslabel,
 	}
 
 	return data
