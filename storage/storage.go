@@ -5,8 +5,8 @@ It must be imported using "vdicalc/host" */
 
 import (
 	"math"
-	vm "vdicalc/vm"
 	f "vdicalc/functions"
+	vm "vdicalc/vm"
 )
 
 func main() {
@@ -23,7 +23,7 @@ func GetStorageCapacity(vmcount string, vmdisksize string, storagecapacityoverhe
 	/* vmmemorysize is used for VM swap calculation
 	vmdisplaystorageoverhead is converted from MB to GB to match vmdisksize
 	vmmemorysize is converted from MB to GB to match vmdisksize */
-	r := (f.StrtoFloat64(vmcount) * (f.StrtoFloat64(vmdisksize) + (f.StrtoFloat64(vmmemorysize) / 1000 ) + (f.StrtoFloat64(vmdisplaystorageoverhead) / 1000)))
+	r := (f.StrtoFloat64(vmcount) * (f.StrtoFloat64(vmdisksize) + (f.StrtoFloat64(vmmemorysize) / 1000) + (f.StrtoFloat64(vmdisplaystorageoverhead) / 1000)))
 
 	if storagecapacityoverhead != "0" {
 		r += (f.StrtoFloat64(storagecapacityoverhead) / 100) * r
@@ -50,7 +50,7 @@ func GetStorageDatastoreCount(vmcount string, datastorevmcount string) string {
 /* This public function calculates the size of the datastores based on total capacity required and the number of datastores determined */
 func GetStorageDatastoreSize(vmcount string, datastorevmcount string, vmdisksize string, storagecapacityoverhead string, storagededuperatio string, vmdisplaycount string, vmdisplayresolution string, vmvideoram string, vmmemorysize string) string {
 
-	r := f.StrtoFloat64(GetStorageCapacity(vmcount, vmdisksize, storagecapacityoverhead, storagededuperatio, vmdisplaycount,vmdisplayresolution, vmvideoram, vmmemorysize)) / f.StrtoFloat64(GetStorageDatastoreCount(vmcount, datastorevmcount))
+	r := f.StrtoFloat64(GetStorageCapacity(vmcount, vmdisksize, storagecapacityoverhead, storagededuperatio, vmdisplaycount, vmdisplayresolution, vmvideoram, vmmemorysize)) / f.StrtoFloat64(GetStorageDatastoreCount(vmcount, datastorevmcount))
 
 	return f.Float64toStr(r)
 }
@@ -61,7 +61,7 @@ func GetStorageDatastoreIops(vmiopscount string, vmiopsreadratio string, storage
 
 	datastoreFrontendIops := f.StrtoInt(vmiopscount) * f.StrtoInt(storagedatastorevmcount)
 	datastoreBackendReadIops := int(((f.StrtoFloat64(vmiopsreadratio) / 100) * f.StrtoFloat64(vmiopscount)) * f.StrtoFloat64(storagedatastorevmcount))
-	datastoreBackendWriteIops := int(((1-(f.StrtoFloat64(vmiopsreadratio) / 100)) * f.StrtoFloat64(vmiopscount)) * f.StrtoFloat64(storagedatastorevmcount))
+	datastoreBackendWriteIops := int(((1 - (f.StrtoFloat64(vmiopsreadratio) / 100)) * f.StrtoFloat64(vmiopscount)) * f.StrtoFloat64(storagedatastorevmcount))
 
 	switch storageraidtype {
 	case "5":

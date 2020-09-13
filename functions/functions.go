@@ -110,9 +110,9 @@ func DataLoad(class c.Configurations) map[string]interface{} {
 		"storagededuperatio":              class.Storage.Deduperatio,
 		"storagededuperatiolabel":         class.Storage.Deduperatiolabel,
 		"storagededuperatioselected":      class.Storage.Deduperatioselected,
-		"storageraidtype": class.Storage.Raidtype,
-		"storageraidtypelabel": class.Storage.Raidtypelabel,
-		"storageraidtypeselected": class.Storage.Raidtypeselected,
+		"storageraidtype":                 class.Storage.Raidtype,
+		"storageraidtypelabel":            class.Storage.Raidtypelabel,
+		"storageraidtypeselected":         class.Storage.Raidtypeselected,
 		/* hostresults are used to display resulting calculation for hosts */
 		"hostresultscount":          class.HostResults.Count,
 		"hostresultscountlabel":     class.HostResults.Countlabel,
@@ -123,14 +123,14 @@ func DataLoad(class c.Configurations) map[string]interface{} {
 		"hostresultvmcount":         class.HostResults.Hostvmcount,
 		"hostresultvmcountlabel":    class.HostResults.Hostvmcountlabel,
 		/* storageresults are used to display resulting calculation for storage */
-		"storageresultcapacity":            class.StorageResults.Storagecapacity,
-		"storageresultcapacitylabel":       class.StorageResults.Storagecapacitylabel,
-		"storageresultdatastorecount":      class.StorageResults.Storagedatastorecount,
-		"storageresultdatastorecountlabel": class.StorageResults.Storagedatastorecountabel,
-		"storageresultdatastoresize:":      class.StorageResults.Storagedatastoresize,
-		"storageresultdatastoresizelabel":  class.StorageResults.Storagedatastoresizelabel,
+		"storageresultcapacity":              class.StorageResults.Storagecapacity,
+		"storageresultcapacitylabel":         class.StorageResults.Storagecapacitylabel,
+		"storageresultdatastorecount":        class.StorageResults.Storagedatastorecount,
+		"storageresultdatastorecountlabel":   class.StorageResults.Storagedatastorecountabel,
+		"storageresultdatastoresize:":        class.StorageResults.Storagedatastoresize,
+		"storageresultdatastoresizelabel":    class.StorageResults.Storagedatastoresizelabel,
 		"storagedatastorefroentendiopslabel": class.StorageResults.Storagedatastorefroentendiopslabel,
-		"storagedatastorebackendiopslabel": class.StorageResults.Storagedatastorebackendiopslabel,
+		"storagedatastorebackendiopslabel":   class.StorageResults.Storagedatastorebackendiopslabel,
 	}
 
 	return data

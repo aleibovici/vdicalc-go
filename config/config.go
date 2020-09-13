@@ -100,9 +100,9 @@ type StorageConfigurations struct {
 	Deduperatio              int
 	Deduperatiolabel         string
 	Deduperatioselected      string
-	Raidtype map[int]interface{}
-	Raidtypelabel string
-	Raidtypeselected string
+	Raidtype                 map[int]interface{}
+	Raidtypelabel            string
+	Raidtypeselected         string
 }
 
 // HostResultsConfiguration exported
@@ -119,14 +119,14 @@ type HostResultsConfiguration struct {
 
 // StorageResultsConfiguration exported
 type StorageResultsConfiguration struct {
-	Storagecapacitylabel      string
-	Storagecapacity           string
-	Storagedatastorecountabel string
-	Storagedatastorecount     string
-	Storagedatastoresize      string
-	Storagedatastoresizelabel string
-	Storagedatastorefroentendiops string
+	Storagecapacitylabel               string
+	Storagecapacity                    string
+	Storagedatastorecountabel          string
+	Storagedatastorecount              string
+	Storagedatastoresize               string
+	Storagedatastoresizelabel          string
+	Storagedatastorefroentendiops      string
 	Storagedatastorefroentendiopslabel string
-	Storagedatastorebackendiops string
-	Storagedatastorebackendiopslabel string
+	Storagedatastorebackendiops        string
+	Storagedatastorebackendiopslabel   string
 }
