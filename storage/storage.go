@@ -16,12 +16,14 @@ func main() {
 // GetStorageCapacity function
 /* This public function calculates the storage capacity.
 It returns result in terabytes. */
-func GetStorageCapacity(vmcount string, vmdisksize string, storagecapacityoverhead string, storagededuperatio string, vmdisplaycount string, vmdisplayresolution string, vmvideoram string) string {
+func GetStorageCapacity(vmcount string, vmdisksize string, storagecapacityoverhead string, storagededuperatio string, vmdisplaycount string, vmdisplayresolution string, vmvideoram string, vmmemorysize string) string {
 
 	_, vmdisplaystorageoverhead := vm.GetVMDisplayOverhead(vmdisplaycount, vmdisplayresolution, vmvideoram)
 
-	/* vmdisplaystorageoverhead is converted from MB to GB to match vmdisksize*/
-	r := (f.StrtoFloat64(vmcount) * (f.StrtoFloat64(vmdisksize) + (f.StrtoFloat64(vmdisplaystorageoverhead) / 1000)))
+	/* vmmemorysize is used for VM swap calculation
+	vmdisplaystorageoverhead is converted from MB to GB to match vmdisksize
+	vmmemorysize is converted from MB to GB to match vmdisksize */
+	r := (f.StrtoFloat64(vmcount) * (f.StrtoFloat64(vmdisksize) + (f.StrtoFloat64(vmmemorysize) / 1000 ) + (f.StrtoFloat64(vmdisplaystorageoverhead) / 1000)))
 
 	if storagecapacityoverhead != "0" {
 		r += (f.StrtoFloat64(storagecapacityoverhead) / 100) * r
@@ -46,9 +48,9 @@ func GetStorageDatastoreCount(vmcount string, datastorevmcount string) string {
 
 // GetStorageDatastoreSize function
 /* This public function calculates the size of the datastores based on total capacity required and the number of datastores determined */
-func GetStorageDatastoreSize(vmcount string, datastorevmcount string, vmdisksize string, storagecapacityoverhead string, storagededuperatio string, vmdisplaycount string, vmdisplayresolution string, vmvideoram string) string {
+func GetStorageDatastoreSize(vmcount string, datastorevmcount string, vmdisksize string, storagecapacityoverhead string, storagededuperatio string, vmdisplaycount string, vmdisplayresolution string, vmvideoram string, vmmemorysize string) string {
 
-	r := f.StrtoFloat64(GetStorageCapacity(vmcount, vmdisksize, storagecapacityoverhead, storagededuperatio, vmdisplaycount,vmdisplayresolution, vmvideoram)) / f.StrtoFloat64(GetStorageDatastoreCount(vmcount, datastorevmcount))
+	r := f.StrtoFloat64(GetStorageCapacity(vmcount, vmdisksize, storagecapacityoverhead, storagededuperatio, vmdisplaycount,vmdisplayresolution, vmvideoram, vmmemorysize)) / f.StrtoFloat64(GetStorageDatastoreCount(vmcount, datastorevmcount))
 
 	return f.Float64toStr(r)
 }
