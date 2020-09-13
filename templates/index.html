@@ -263,13 +263,13 @@
               </td>
               <td></td>
               <td>
-                <label>{{ .hostresultsvmcountlabel }}</label>
+                <label>{{ .storageresultscapacitylabel }}</label>
               </td>
               <td>
                 <table class="darkGreyTable">
                   <tr>
                     <td>
-                      <label>{{ .hostresultsvmcount }}</label>
+                      <label>{{ .storageresultscapacity }}</label>
                     </td>
                   </tr>
                 </table>
@@ -289,19 +289,32 @@
               </td>
               <td></td>
               <td>
-                <label>{{ .hostresultsmemorylabel }}</label>
+                <label>{{ .storageresultsdatastoresizelabel }}</label>
               </td>
               <td>
                 <table class="darkGreyTable">
                   <tr>
                     <td>
-                      <label>{{ .hostresultsmemory }}</label>
+                      <label>{{ .storageresultsdatastoresize }}</label>
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
             <tr>
+              <td>
+                <label>{{ .hostresultsvmcountlabel }}</label>
+              </td>
+              <td>
+                <table class="darkGreyTable">
+                  <tr>
+                    <td>
+                      <label>{{ .hostresultsvmcount }}</label>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <td></td>
               <td>
                 <label>{{ .storageresultsdatastorecountlabel }}</label>
               </td>
@@ -314,29 +327,16 @@
                   </tr>
                 </table>
               </td>
-              <td></td>
-              <td>
-                <label>{{ .storageresultscapacitylabel }}</label>
-              </td>
-              <td>
-                <table class="darkGreyTable">
-                  <tr>
-                    <td>
-                      <label>{{ .storageresultscapacity }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
             </tr>
             <tr>
               <td>
-                <label>{{ .storageresultsdatastoresizelabel }}</label>
+                <label>{{ .hostresultsmemorylabel }}</label>
               </td>
               <td>
                 <table class="darkGreyTable">
                   <tr>
                     <td>
-                      <label>{{ .storageresultsdatastoresize }}</label>
+                      <label>{{ .hostresultsmemory }}</label>
                     </td>
                   </tr>
                 </table>
