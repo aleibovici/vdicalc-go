@@ -4,6 +4,8 @@ package functions
 It must be imported using "vdicalc/functions" */
 
 import (
+	"log"
+	"os"
 	"strconv"
 	c "vdicalc/config"
 )
@@ -36,6 +38,16 @@ func StrtoFloat64(value string) float64 {
 func Float64toStr(value float64) string {
 
 	return strconv.FormatFloat(value, 'f', 2, 64)
+}
+
+// MustGetenv is a helper function for getting environment variables.
+// Displays a warning if the environment variable is not set.
+func MustGetenv(k string) string {
+	v := os.Getenv(k)
+	if v == "" {
+		log.Fatalf("Warning: %s environment variable not set.\n", k)
+	}
+	return v
 }
 
 // DataLoad fuction

@@ -1,5 +1,9 @@
 package config
 
+import (
+	_ "github.com/go-sql-driver/mysql"
+)
+
 /* This package contains external config used across the app.
 It must be imported using "vdicalc/config" */
 

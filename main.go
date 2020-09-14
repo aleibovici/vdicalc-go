@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"html/template"
 	"log"
@@ -10,6 +11,7 @@ import (
 	c "vdicalc/config"
 	f "vdicalc/functions"
 	host "vdicalc/host"
+	"vdicalc/mysql"
 	storage "vdicalc/storage"
 
 	"github.com/spf13/viper"
@@ -17,6 +19,7 @@ import (
 
 var tlp *template.Template
 var configuration c.Configurations
+var db *sql.DB
 
 func init() {
 
@@ -170,6 +173,34 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				panic(err)
 			}
+
+			/* This conditional does not allow profile changes to be recorded on the database */
+			if r.PostFormValue("submitselect") != "vmprofile" {
+
+				// If the optional DB_TCP_HOST environment variable is set, it contains
+				// the IP address and port number of a TCP connection pool to be created,
+				// such as "127.0.0.1:3306". If DB_TCP_HOST is not set, a Unix socket
+				// connection pool will be created instead.
+				if os.Getenv("DB_TCP_HOST") != "" {
+
+					db, err = mysql.InitTCPConnectionPool()
+					if err != nil {
+						log.Fatalf("initTCPConnectionPool: unable to connect: %v", err)
+					}
+				} else {
+					db, err = mysql.InitTCPConnectionPool()
+					if err != nil {
+						log.Fatalf("initSocketConnectionPool: unable to connect: %v", err)
+					}
+				}
+
+				/* Build MySQL statement  */
+				sqlInsert, _ := mysql.SQLBuilder(fullData["hostresultscount"], fullData["hostresultsclockused"], fullData["hostresultsmemory"], fullData["hostresultsvmcount"], fullData["storageresultscapacity"], fullData["storageresultsdatastorecount"], fullData["storageresultsdatastoresize"], fullData["storagedatastorefroentendiops"], fullData["storagedatastorebackendiops"], fullData["storageresultsfrontendiops"], fullData["storageresultsbackendiops"])
+
+				/* This function execues the SQL estatement on Google SQL Run database */
+				mysql.Insert(db, sqlInsert)
+			}
+
 		}
 
 	default:
