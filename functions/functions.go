@@ -5,6 +5,7 @@ It must be imported using "vdicalc/functions" */
 
 import (
 	"log"
+	"net/http"
 	"os"
 	"strconv"
 	c "vdicalc/config"
@@ -48,6 +49,18 @@ func MustGetenv(k string) string {
 		log.Fatalf("Warning: %s environment variable not set.\n", k)
 	}
 	return v
+}
+
+// GetIP gets a requests IP address by reading off the forwarded-for
+// header (for proxies) and falls back to use the remote address.
+func GetIP(r *http.Request) string {
+
+	forwarded := r.Header.Get("X-FORWARDED-FOR")
+	if forwarded != "" {
+		return forwarded
+	}
+
+	return r.RemoteAddr
 }
 
 // DataLoad fuction

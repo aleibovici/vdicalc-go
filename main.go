@@ -195,7 +195,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 				}
 
 				/* Build MySQL statement  */
-				sqlInsert, _ := mysql.SQLBuilder(fullData["hostresultscount"], fullData["hostresultsclockused"], fullData["hostresultsmemory"], fullData["hostresultsvmcount"], fullData["storageresultscapacity"], fullData["storageresultsdatastorecount"], fullData["storageresultsdatastoresize"], fullData["storagedatastorefroentendiops"], fullData["storagedatastorebackendiops"], fullData["storageresultsfrontendiops"], fullData["storageresultsbackendiops"])
+				sqlInsert, _ := mysql.SQLBuilder(f.GetIP(r), fullData["hostresultscount"], fullData["hostresultsclockused"], fullData["hostresultsmemory"], fullData["hostresultsvmcount"], fullData["storageresultscapacity"], fullData["storageresultsdatastorecount"], fullData["storageresultsdatastoresize"], fullData["storagedatastorefroentendiops"], fullData["storagedatastorebackendiops"], fullData["storageresultsfrontendiops"], fullData["storageresultsbackendiops"])
 
 				/* This function execues the SQL estatement on Google SQL Run database */
 				mysql.Insert(db, sqlInsert)
