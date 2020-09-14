@@ -188,7 +188,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 						log.Fatalf("initTCPConnectionPool: unable to connect: %v", err)
 					}
 				} else {
-					db, err = mysql.InitTCPConnectionPool()
+					db, err = mysql.InitSocketConnectionPool()
 					if err != nil {
 						log.Fatalf("initSocketConnectionPool: unable to connect: %v", err)
 					}

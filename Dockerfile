@@ -10,6 +10,8 @@ WORKDIR /go/src/vdicalc
 # This allows the container build to reuse cached dependencies.
 COPY  . .
 RUN go get github.com/spf13/viper
+RUN go get github.com/doug-martin/goqu
+RUN go get github.com/go-sql-driver/mysql
 
 # Build the binary.
 RUN go build -o main .
