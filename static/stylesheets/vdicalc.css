@@ -60,11 +60,32 @@ table.greyTable tfoot .links a {
 
 /* This CSS is for the results field within results table */
 table.darkGreyTable {
-  /* border: 5px solid #1c6ea4; */
+  border: 5px solid #1c6ea4;
   border: 0;
   background-color: #a5a5a5;
   width: 100%;
   text-align: left;
+  border-collapse: collapse;
+}
+
+/* This CSS is for the results field within HostResults table */
+table.hostResults {
+  background-color: #d6bfa0;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* This CSS is for the results field within VirtualizationResults table */
+table.storageResults {
+  background-color: #a0b2d6;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* This CSS is for the results field within VirtualizationResults table */
+table.virtualizationResults {
+  background-color: #8cad92;
+  width: 100%;
   border-collapse: collapse;
 }
 

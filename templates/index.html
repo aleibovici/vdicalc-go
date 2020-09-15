@@ -14,7 +14,7 @@
 
     <meta charset="utf-8" />
     <title>{{ .title }}</title>
-    <link rel="stylesheet" href="../static/stylesheets/vdicalc.css" />
+    <link href="../static/stylesheets/vdicalc.css" rel="stylesheet" type="text/css"/>
   </head>
 
   <body>
@@ -281,7 +281,7 @@
                 <label>{{ .hostresultscountlabel }}</label>
               </td>
               <td>
-                <table class="darkGreyTable">
+                <table class="hostResults">
                   <tr>
                     <td>
                       <label>{{ .hostresultscount }}</label>
@@ -294,7 +294,7 @@
                 <label>{{ .storageresultscapacitylabel }}</label>
               </td>
               <td>
-                <table class="darkGreyTable">
+                <table class="storageResults">
                   <tr>
                     <td>
                       <label>{{ .storageresultscapacity }}</label>
@@ -307,7 +307,7 @@
                 <label>{{ .hostresultsclockusedlabel }}</label>
               </td>
               <td>
-                <table class="darkGreyTable">
+                <table class="hostResults">
                   <tr>
                     <td>
                       <label>{{ .hostresultsclockused }}</label>
@@ -320,7 +320,7 @@
                 <label>{{ .storageresultsdatastoresizelabel }}</label>
               </td>
               <td>
-                <table class="darkGreyTable">
+                <table class="storageResults">
                   <tr>
                     <td>
                       <label>{{ .storageresultsdatastoresize }}</label>
@@ -334,7 +334,7 @@
                 <label>{{ .hostresultsvmcountlabel }}</label>
               </td>
               <td>
-                <table class="darkGreyTable">
+                <table class="hostResults">
                   <tr>
                     <td>
                       <label>{{ .hostresultsvmcount }}</label>
@@ -347,7 +347,7 @@
                 <label>{{ .storageresultsdatastorecountlabel }}</label>
               </td>
               <td>
-                <table class="darkGreyTable">
+                <table class="storageResults">
                   <tr>
                     <td>
                       <label>{{ .storageresultsdatastorecount }}</label>
@@ -361,7 +361,7 @@
                 <label>{{ .hostresultsmemorylabel }}</label>
               </td>
               <td>
-                <table class="darkGreyTable">
+                <table class="hostResults">
                   <tr>
                     <td>
                       <label>{{ .hostresultsmemory }}</label>
@@ -374,7 +374,7 @@
                 <label>{{ .storageresultsdatastorefroentendiopslabel }}</label>
               </td>
               <td>
-                <table class="darkGreyTable">
+                <table class="storageResults">
                   <tr>
                     <td>
                       <label>{{ .storagedatastorefroentendiops }}</label>
@@ -388,7 +388,7 @@
                 <label>{{ .virtualizationresultsclustercountlabel }}</label>
               </td>
               <td>
-                <table class="darkGreyTable">
+                <table class="virtualizationResults">
                   <tr>
                     <td>
                       <label>{{ .virtualizationresultsclustercount }}</label>
@@ -401,7 +401,7 @@
                 <label>{{ .storageresultsdatastorebackendiopslabel }}</label>
               </td>
               <td>
-                <table class="darkGreyTable">
+                <table class="storageResults">
                   <tr>
                     <td>
                       <label>{{ .storagedatastorebackendiops }}</label>
@@ -415,7 +415,7 @@
                 <label>{{ .virtualizationresultsmanagementservercountlabel }}</label>
               </td>
               <td>
-                <table class="darkGreyTable">
+                <table class="virtualizationResults">
                   <tr>
                     <td>
                       <label>{{ .virtualizationresultsmanagementservercount }}</label>
@@ -428,7 +428,7 @@
                 <label>{{ .storageresultsfrontendiopslabel }}</label>
               </td>
               <td>
-                <table class="darkGreyTable">
+                <table class="storageResults">
                   <tr>
                     <td>
                       <label>{{ .storageresultsfrontendiops }}</label>
@@ -455,7 +455,7 @@
                 <label>{{ .storageresultsbackendiopslabel }}</label>
               </td>
               <td>
-                <table class="darkGreyTable">
+                <table class="storageResults">
                   <tr>
                     <td>
                       <label>{{ .storageresultsbackendiops }}</label>
