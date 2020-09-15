@@ -9,17 +9,19 @@ It must be imported using "vdicalc/config" */
 
 // Configurations exported
 type Configurations struct {
-	Server         ServerConfigurations
-	Variable       VariableConfigurations
-	VM             VMConfigurations
-	VMProfile01    VMConfigurations
-	VMProfile02    VMConfigurations
-	VMProfile03    VMConfigurations
-	VMProfile04    VMConfigurations
-	Host           HostConfigurations
-	Storage        StorageConfigurations
-	HostResults    HostResultsConfiguration
-	StorageResults StorageResultsConfiguration
+	Server                ServerConfigurations
+	Variable              VariableConfigurations
+	VM                    VMConfigurations
+	VMProfile01           VMConfigurations
+	VMProfile02           VMConfigurations
+	VMProfile03           VMConfigurations
+	VMProfile04           VMConfigurations
+	Host                  HostConfigurations
+	Storage               StorageConfigurations
+	Virtualization        VirtualizationConfigurations
+	HostResults           HostResultsConfiguration
+	StorageResults        StorageResultsConfiguration
+	VirtualizationResults VirtualizationResultsConfiguration
 }
 
 // ServerConfigurations exported
@@ -109,6 +111,16 @@ type StorageConfigurations struct {
 	Raidtypeselected         string
 }
 
+// VirtualizationConfigurations exported
+type VirtualizationConfigurations struct {
+	Clusterhostsize                 map[int]interface{}
+	Clusterhostsizelabel            string
+	Clusterhostsizeselected         string
+	Managementservervmcount         int
+	Managementservervmcountlabel    string
+	Managementservervmcountselected string
+}
+
 // HostResultsConfiguration exported
 type HostResultsConfiguration struct {
 	Countlabel         string
@@ -137,4 +149,12 @@ type StorageResultsConfiguration struct {
 	Storagefrontendiopslabel           string
 	Storagebackendiops                 string
 	Storagebackendiopslabel            string
+}
+
+// VirtualizationResultsConfiguration exported
+type VirtualizationResultsConfiguration struct {
+	Clustercount               string
+	Clustercountlabel          string
+	Managementservercount      string
+	Managementservercountlabel string
 }

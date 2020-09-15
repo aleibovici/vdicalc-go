@@ -138,6 +138,13 @@ func DataLoad(class c.Configurations) map[string]interface{} {
 		"storageraidtype":                 class.Storage.Raidtype,
 		"storageraidtypelabel":            class.Storage.Raidtypelabel,
 		"storageraidtypeselected":         class.Storage.Raidtypeselected,
+		/* virtualization are used to display form items for storage */
+		"virtualizationclusterhostsize":               class.Virtualization.Clusterhostsize,
+		"virtualizationclusterhostsizelabel":          class.Virtualization.Clusterhostsizelabel,
+		"virtualizationclusterhostsizeselected":       class.Virtualization.Clusterhostsizeselected,
+		"virtualizationmanagementservertvmcount":         class.Virtualization.Managementservervmcount,
+		"virtualizationmanagementservertvmcountlabel":    class.Virtualization.Managementservervmcountlabel,
+		"virtualizationmanagementservertvmcountselected": class.Virtualization.Managementservervmcountselected,
 		/* hostresults are used to display resulting calculation for hosts */
 		"hostresultscount":          class.HostResults.Count,
 		"hostresultscountlabel":     class.HostResults.Countlabel,
@@ -160,6 +167,11 @@ func DataLoad(class c.Configurations) map[string]interface{} {
 		"storageresultsfrontendiopslabel":           class.StorageResults.Storagefrontendiopslabel,
 		"storageresultsbackendiops":                 class.StorageResults.Storagebackendiops,
 		"storageresultsbackendiopslabel":            class.StorageResults.Storagebackendiopslabel,
+		/* virtualizationresults are used to display resulting calculation for virtualization */
+		"virtualizationresultsclustercount":               class.VirtualizationResults.Clustercount,
+		"virtualizationresultsclustercountlabel":          class.VirtualizationResults.Clustercountlabel,
+		"virtualizationresultsmanagementservercount":      class.VirtualizationResults.Managementservercount,
+		"virtualizationresultsmanagementservercountlabel": class.VirtualizationResults.Managementservercountlabel,
 	}
 
 	return data

@@ -245,6 +245,34 @@
           <tfoot></tfoot>
         </table>
 
+        <table class="blueTable">
+          <thead>Virtualization</thead>
+          <div>
+            <tr>
+              <td>
+                <label>Cluster Size</label>
+              </td>
+              <td>
+                <select id="virtualizationclusterhostsize" name="virtualizationclusterhostsize">
+                  {{range $key, $value := .virtualizationclusterhostsize}}
+                  <option value="{{ $value }}" {{ if (eq $value $.virtualizationclusterhostsizeselected) }}selected{{ end }}>
+                    {{ $key }}
+                  </option>
+                  {{end}}
+                </select>
+              </td>
+              <td>
+                <label>{{ .virtualizationmanagementservertvmcountlabel }}</label>
+              </td>
+              <td>
+                <input id="virtualizationmanagementservertvmcount" name="virtualizationmanagementservertvmcount" type="text" size="5" maxlength="5"
+                  value="{{ .virtualizationmanagementservertvmcountselected }}" />
+              </td>
+            </tr>
+          </div>
+          <tfoot></tfoot>
+        </table>
+
         <table class="greyTable">
           <thead>Results</thead>
           <div>
@@ -357,13 +385,13 @@
             </tr>
             <tr>
               <td>
-                <label></label>
+                <label>{{ .virtualizationresultsclustercountlabel }}</label>
               </td>
               <td>
                 <table class="darkGreyTable">
                   <tr>
                     <td>
-                      <label></label>
+                      <label>{{ .virtualizationresultsclustercount }}</label>
                     </td>
                   </tr>
                 </table>
@@ -384,13 +412,13 @@
             </tr>
             <tr>
               <td>
-                <label></label>
+                <label>{{ .virtualizationresultsmanagementservercountlabel }}</label>
               </td>
               <td>
                 <table class="darkGreyTable">
                   <tr>
                     <td>
-                      <label></label>
+                      <label>{{ .virtualizationresultsmanagementservercount }}</label>
                     </td>
                   </tr>
                 </table>

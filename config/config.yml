@@ -166,6 +166,15 @@ storage:
   raidtypelabel: "Raid Type"
   raidtypeselected: "6"
 
+# These are the VirtualizationConfigurations struct values
+virtualization:
+  clusterhostsize: { "8": "8", "16": "16", "32": "32", "64": "64" }
+  clusterhostsizelabel: "Cluster Size"
+  clusterhostsizeselected: 8
+  managementservervmcount: 2000
+  managementservervmcountlabel: "VM Limit"
+  managementservervmcountselected: 2000
+
 # These are the HostResultsConfiguration struct values
 hostresults:
   countlabel: "Number of Hosts"
@@ -182,3 +191,9 @@ storageresults:
   storagedatastorebackendiopslabel: "Datastore Backend IOps"
   storagefrontendiopslabel: "Storage Frontend IOps"
   storagebackendiopslabel: "Storage Backend IOps"
+
+
+  # These are the VirtualizationResultsConfiguration struct values
+virtualizationresults:
+  clustercountlabel: "Number of Clusters"
+  Managementservercountlabel: "Number of Management Servers"
