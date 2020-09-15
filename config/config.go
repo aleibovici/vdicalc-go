@@ -36,6 +36,7 @@ type VariableConfigurations struct {
 	Update   string
 	About    string
 	Print    string
+	Guide    string
 }
 
 // VMConfigurations exported

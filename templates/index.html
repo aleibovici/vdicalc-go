@@ -14,7 +14,7 @@
 
     <meta charset="utf-8" />
     <title>{{ .title }}</title>
-    <link href="../static/stylesheets/vdicalc.css" rel="stylesheet" type="text/css"/>
+    <link href="../static/stylesheets/vdicalc.css" rel="stylesheet" type="text/css" />
   </head>
 
   <body>
@@ -267,7 +267,8 @@
               <td>
                 <select id="virtualizationclusterhostsize" name="virtualizationclusterhostsize">
                   {{range $key, $value := .virtualizationclusterhostsize}}
-                  <option value="{{ $value }}" {{ if (eq $value $.virtualizationclusterhostsizeselected) }}selected{{ end }}>
+                  <option value="{{ $value }}"
+                    {{ if (eq $value $.virtualizationclusterhostsizeselected) }}selected{{ end }}>
                     {{ $key }}
                   </option>
                   {{end}}
@@ -277,8 +278,8 @@
                 <label>{{ .virtualizationmanagementservertvmcountlabel }}</label>
               </td>
               <td>
-                <input id="virtualizationmanagementservertvmcount" name="virtualizationmanagementservertvmcount" type="text" size="5" maxlength="5"
-                  value="{{ .virtualizationmanagementservertvmcountselected }}" />
+                <input id="virtualizationmanagementservertvmcount" name="virtualizationmanagementservertvmcount"
+                  type="text" size="5" maxlength="5" value="{{ .virtualizationmanagementservertvmcountselected }}" />
               </td>
             </tr>
           </div>
@@ -488,6 +489,8 @@
             onclick="window.print();return false;">{{ .print }}</button>
           <button class="blueButton" id="about" name="about"
             onclick="document.getElementById('submitselect').value='about';this.form.submit()">{{ .about }}</button>
+          <button target="_blank" class="blueButton" id="guide" name="guide"
+            onclick=" window.open('http://myvirtualcloud.net/vdi-calculator-guide/')">{{ .guide }}</button>
         </div>
       </form>
     </div>

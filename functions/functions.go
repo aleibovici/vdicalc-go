@@ -74,6 +74,7 @@ func DataLoad(class c.Configurations) map[string]interface{} {
 		"update":   class.Variable.Update,
 		"about":    class.Variable.About,
 		"print":    class.Variable.Print,
+		"guide":    class.Variable.Guide,
 		/* vm are used to display form items for hosts */
 		"vmprofilelabel":                 class.VM.Vmprofilelabel,
 		"vmprofile":                      class.VM.Vmprofile,
