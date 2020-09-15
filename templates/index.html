@@ -490,7 +490,7 @@
           <button class="blueButton" id="about" name="about"
             onclick="document.getElementById('submitselect').value='about';this.form.submit()">{{ .about }}</button>
           <button target="_blank" class="blueButton" id="guide" name="guide"
-            onclick=" window.open('http://myvirtualcloud.net/vdi-calculator-guide/')">{{ .guide }}</button>
+            onclick="window.open('http://myvirtualcloud.net/vdi-calculator-guide/'),document.getElementById('submitselect').value='guide';this.form.submit()">{{ .guide }}</button>
         </div>
       </form>
     </div>

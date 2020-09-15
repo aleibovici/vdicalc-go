@@ -109,7 +109,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 				panic(err)
 			}
 
-		case "back":
+		case "back", "guide":
 
 			/* This is the template execution for 'back' */
 			err := tlp.ExecuteTemplate(w, "index.html", fullData)
