@@ -68,6 +68,10 @@ vm:
   iopsreadratio: 20
   iopsreadratioselected: 20
   iopsreadratiolabel: "IOps Read Ratio (%)"
+  clonesizerefreshrate:
+    { "Off": "0", "10": "10", "20": "20", "30": "30", "40": "40", "50": "50", "60": "60", "70": "70", "80": "80", "90": "90" }
+  clonesizerefreshratelabel: "Clone Refresh Rate (%)"
+  clonesizerefreshrateselected: "0"
 
 # This is the profile for Task user
 vmprofile01:
@@ -81,6 +85,7 @@ vmprofile01:
   disksizeselected: 100
   iopscountselected: 6
   iopsreadratioselected: 20
+  clonesizerefreshrateselected: "0"
 
 # This is the profile for Office user
 vmprofile02:
@@ -94,6 +99,7 @@ vmprofile02:
   disksizeselected: 100
   iopscountselected: 8
   iopsreadratioselected: 20
+  clonesizerefreshrateselected: "0"
 
 # This is the profile for Knowledge user
 vmprofile03:
@@ -107,6 +113,7 @@ vmprofile03:
   disksizeselected: 100
   iopscountselected: 9
   iopsreadratioselected: 20
+  clonesizerefreshrateselected: "0"
 
 # This is the profile for Power user
 vmprofile04:
@@ -120,6 +127,7 @@ vmprofile04:
   disksizeselected: 100
   iopscountselected: 11
   iopsreadratioselected: 20
+  clonesizerefreshrateselected: "0"
 
 # These are the HostConfigurations struct values
 host:

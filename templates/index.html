@@ -145,6 +145,18 @@
                 <input id="vmiopsreadratio" name="vmiopsreadratio" type="text" size="3" maxlength="3"
                   value="{{ .vmiopsreadratioselected }}" />
               </td>
+              <td>
+                <label>{{ .vmclonesizerefreshratelabel }}</label>
+              </td>
+              <td>
+                <select id="vmclonesizerefreshrate" name="vmclonesizerefreshrate">
+                  {{range $key, $value := .vmclonesizerefreshrate}}
+                  <option value="{{ $value }}" {{ if (eq $value $.vmclonesizerefreshrateselected) }}selected{{ end }}>
+                    {{ $key }}
+                  </option>
+                  {{end}}
+                </select>
+              </td>
             </tr>
           </div>
           <tfoot></tfoot>
