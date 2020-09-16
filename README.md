@@ -2,8 +2,8 @@
 
 ## Synopsis
 
-The myvirtucalcloud.net VDI Calculator has been used by thousands of users over the years to size VDI deployments.
-This is a newgen version using golang and presenting the calculator using html.
+The myvirtucalcloud.net VDI Calculator has been used over the years to size VDI deployments.
+This is a newgen release using GoLang, HTML and CSS.
 
 ## Author
 
