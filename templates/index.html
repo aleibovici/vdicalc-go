@@ -65,7 +65,7 @@
                 <label>{{ .vmvcpumhzlabel }}</label>
               </td>
               <td>
-                <input id="vmvcpumhz" name="vmvcpumhz" size="5" maxlength="5" value="{{ .vmvcpumhzselected }}" />
+                <input id="vmvcpumhz" name="vmvcpumhz" title='{{ .vmvcpumhztooltip }}' size="5" maxlength="5" value="{{ .vmvcpumhzselected }}" />
               </td>
             </tr>
             <tr>
@@ -135,21 +135,22 @@
                 <label>{{ .vmiopscountlabel }}</label>
               </td>
               <td>
-                <input id="vmiopscount" name="vmiopscount" type="text" size="3" maxlength="3"
+                <input id="vmiopscount" name="vmiopscount" title='{{ .vmiopscounttooltip }}' type="text" size="3" maxlength="3"
                   value="{{ .vmiopscountselected }}" />
               </td>
               <td>
                 <label>{{ .vmiopsreadratiolabel }}</label>
               </td>
               <td>
-                <input id="vmiopsreadratio" name="vmiopsreadratio" type="text" size="3" maxlength="3"
+                <input id="vmiopsreadratio" name="vmiopsreadratio" title='{{ .vmiopsreadratiotooltip }}' type="text" size="3" maxlength="3"
                   value="{{ .vmiopsreadratioselected }}" />
               </td>
               <td>
                 <label>{{ .vmclonesizerefreshratelabel }}</label>
               </td>
               <td>
-                <select id="vmclonesizerefreshrate" name="vmclonesizerefreshrate">
+                <select id="vmclonesizerefreshrate" name="vmclonesizerefreshrate"
+                  title='{{ .vmclonesizerefreshratetooltip }}'>
                   {{range $key, $value := .vmclonesizerefreshrate}}
                   <option value="{{ $value }}" {{ if (eq $value $.vmclonesizerefreshrateselected) }}selected{{ end }}>
                     {{ $key }}
@@ -180,8 +181,8 @@
               <label>{{ .hostmemoryoverheadlabel }}</label>
             </td>
             <td>
-              <input id="hostmemoryoverhead" name="hostmemoryoverhead" type="text" size="3" maxlength="3"
-                value="{{ .hostmemoryoverheadselected }}" />
+              <input id="hostmemoryoverhead" name="hostmemoryoverhead" title='{{ .hostmemoryoverheadtooltip }}'
+                type="text" size="3" maxlength="3" value="{{ .hostmemoryoverheadselected }}" />
             </td>
           </tr>
           <tr>
@@ -201,8 +202,8 @@
               <label>{{ .hostcoresoverheadlabel }}</label>
             </td>
             <td>
-              <input id="hostcoresoverhead" name="hostcoresoverhead" type="text" size="3" maxlength="2"
-                value="{{ .hostcoresoverheadselected }}" />
+              <input id="hostcoresoverhead" name="hostcoresoverhead" title='{{ .hostcoresoverheadtooltip }}' type="text"
+                size="3" maxlength="2" value="{{ .hostcoresoverheadselected }}" />
             </td>
           </tr>
           <tfoot></tfoot>
@@ -216,7 +217,8 @@
                 <label>{{ .storagecapacityoverheadlabel }}</label>
               </td>
               <td>
-                <select id="storagecapacityoverhead" name="storagecapacityoverhead">
+                <select id="storagecapacityoverhead" name="storagecapacityoverhead"
+                  title='{{ .storagecapacityoverheadtooltip }}'>
                   {{range $key, $value := .storagecapacityoverhead}}
                   <option value="{{ $value }}" {{ if (eq $value $.storagecapacityoverheadselected) }}selected{{ end }}>
                     {{ $key }}
@@ -228,7 +230,8 @@
                 <label>{{ .storagedatastorevmcountlabel }}</label>
               </td>
               <td>
-                <input id="storagedatastorevmcount" name="storagedatastorevmcount" type="text" size="3" maxlength="3"
+                <input id="storagedatastorevmcount" name="storagedatastorevmcount"
+                  title='{{ .storagedatastorevmcounttooltip }}' type="text" size="3" maxlength="3"
                   value="{{ .storagedatastorevmcountselected }}" />
               </td>
             </tr>
@@ -237,8 +240,8 @@
                 <label>{{ .storagededuperatiolabel }}</label>
               </td>
               <td>
-                <input id="storagededuperatio" name="storagededuperatio" type="text" size="3" maxlength="2"
-                  value="{{ .storagededuperatioselected }}" />
+                <input id="storagededuperatio" name="storagededuperatio" title='{{ .storagededuperatiotooltip }}' type="text"
+                  size="3" maxlength="2" value="{{ .storagededuperatioselected }}" />
               </td>
               <td>
                 <label>{{ .storageraidtypelabel }}</label>
@@ -265,7 +268,8 @@
                 <label>Cluster Size</label>
               </td>
               <td>
-                <select id="virtualizationclusterhostsize" name="virtualizationclusterhostsize">
+                <select id="virtualizationclusterhostsize" name="virtualizationclusterhostsize"
+                  title='{{ .virtualizationclusterhostsizetooltip }}'>
                   {{range $key, $value := .virtualizationclusterhostsize}}
                   <option value="{{ $value }}"
                     {{ if (eq $value $.virtualizationclusterhostsizeselected) }}selected{{ end }}>
@@ -279,7 +283,8 @@
               </td>
               <td>
                 <input id="virtualizationmanagementservertvmcount" name="virtualizationmanagementservertvmcount"
-                  type="text" size="5" maxlength="5" value="{{ .virtualizationmanagementservertvmcountselected }}" />
+                  title='{{ .virtualizationmanagementservertvmcounttooltip }}' type="text" size="5" maxlength="5"
+                  value="{{ .virtualizationmanagementservertvmcountselected }}" />
               </td>
             </tr>
           </div>

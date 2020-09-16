@@ -53,6 +53,7 @@ type VMConfigurations struct {
 	Vcpumhzlabel                 string
 	Vcpumhz                      int
 	Vcpumhzselected              int
+	Vcpumhztooltip               string
 	Vmpercorecountlabel          string
 	Vmpercorecount               map[int]interface{}
 	Vmpercorecountselected       string
@@ -74,13 +75,16 @@ type VMConfigurations struct {
 	Iopscount                    int
 	Iopscountselected            string
 	Iopscountlabel               string
+	Iopscounttooltip             string
 	Iopsreadratio                int
 	Iopsreadratioselected        string
 	Iopsreadratiolabel           string
+	Iopsreadratiotooltip         string
 	Iopswriteratio               int
 	Clonesizerefreshrate         map[string]interface{}
 	Clonesizerefreshratelabel    string
 	Clonesizerefreshrateselected string
+	Clonesizerefreshratetooltip  string
 }
 
 // HostConfigurations exported
@@ -94,9 +98,11 @@ type HostConfigurations struct {
 	Memoryoverhead           int
 	Memoryoverheadselected   int
 	Memoryoverheadlabel      string
+	Memoryoverheadtooltip    string
 	Coresoverhead            int
 	Coresoverheadselected    string
 	Coresoverheadlabel       string
+	Coresoverheadtooltip     string
 }
 
 // StorageConfigurations exported
@@ -104,12 +110,15 @@ type StorageConfigurations struct {
 	Capacityoverhead         map[int]interface{}
 	Capacityoverheadlabel    string
 	Capacityoverheadselected string
+	Capacityoverheadtooltip  string
 	Datastorevmcount         int
 	Datastorevmcountlabel    string
 	Datastorevmcountselected string
+	Datastorevmcounttooltip  string
 	Deduperatio              int
 	Deduperatiolabel         string
 	Deduperatioselected      string
+	Deduperatiotooltip       string
 	Raidtype                 map[int]interface{}
 	Raidtypelabel            string
 	Raidtypeselected         string
@@ -120,9 +129,11 @@ type VirtualizationConfigurations struct {
 	Clusterhostsize                 map[int]interface{}
 	Clusterhostsizelabel            string
 	Clusterhostsizeselected         string
+	Clusterhostsizetooltip          string
 	Managementservervmcount         int
 	Managementservervmcountlabel    string
 	Managementservervmcountselected string
+	Managementservervmcounttooltip  string
 }
 
 // HostResultsConfiguration exported
