@@ -43,7 +43,7 @@ func GetStorageCapacity(vmcount string, vmdisksize string, storagecapacityoverhe
 	}
 
 	/* Results are converted from GB to TB */
-	return f.Float64toStr(r / 1000)
+	return f.Float64toStr((r / 1000), 2)
 }
 
 // GetStorageDatastoreCount function
@@ -61,7 +61,7 @@ func GetStorageDatastoreSize(vmcount string, datastorevmcount string, vmdisksize
 
 	r := f.StrtoFloat64(GetStorageCapacity(vmcount, vmdisksize, storagecapacityoverhead, storagededuperatio, vmdisplaycount, vmdisplayresolution, vmvideoram, vmmemorysize, vmclonesizerefreshrate)) / f.StrtoFloat64(GetStorageDatastoreCount(vmcount, datastorevmcount))
 
-	return f.Float64toStr(r)
+	return f.Float64toStr(r, 2)
 }
 
 // GetStorageDatastoreIops function

@@ -50,7 +50,7 @@ func GetHostClockUsed(vmvcpucount string, vmvcpumhz string, vmcount string, host
 
 	r := (f.StrtoFloat64(vmvcpucount) * f.StrtoFloat64(vmvcpumhz) * f.StrtoFloat64(GetHostVMCount(vmcount, hostsocketcount, hostsocketcorescount, vmspercore, hostcoresoverhead)) / f.StrtoFloat64(getHostCoresCount(hostsocketcount, hostsocketcorescount, hostcoresoverhead))) / 1000
 
-	return f.Float64toStr(r)
+	return f.Float64toStr(r,1)
 }
 
 // GetHostMemory function

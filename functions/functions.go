@@ -35,10 +35,10 @@ func StrtoFloat64(value string) float64 {
 }
 
 // Float64toStr function
-/* This public function convert float64 to string using .00 digits */
-func Float64toStr(value float64) string {
+/* This public function convert float64 to string with variable precision */
+func Float64toStr(value float64, prec int) string {
 
-	return strconv.FormatFloat(value, 'f', 2, 64)
+	return strconv.FormatFloat(value, 'f', prec, 64)
 }
 
 // MustGetenv is a helper function for getting environment variables.
