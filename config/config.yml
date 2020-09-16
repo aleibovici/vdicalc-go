@@ -209,7 +209,7 @@ virtualization:
 # These are the HostResultsConfiguration struct values
 hostresults:
   countlabel: "Number of Hosts"
-  hostclockusedlabel: "Host CPU (MHz)"
+  hostclockusedlabel: "Host CPU (GHz)"
   hostmemorylabel: "Host Memory (GB)"
   hostvmcountlabel: "VMs per Host"
 

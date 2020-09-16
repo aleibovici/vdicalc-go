@@ -45,12 +45,12 @@ func GetHostCount(vmcount string, hostsocketcount string, hostsocketcorescount s
 }
 
 // GetHostClockUsed function
-/* This public function calculates the host clock rate */
+/* This public function calculates the host clock rate and converts it from MHz to GHz*/
 func GetHostClockUsed(vmvcpucount string, vmvcpumhz string, vmcount string, hostsocketcount string, hostsocketcorescount string, vmspercore string, hostcoresoverhead string) string {
 
-	r := (f.StrtoInt(vmvcpucount) * f.StrtoInt(vmvcpumhz) * f.StrtoInt(GetHostVMCount(vmcount, hostsocketcount, hostsocketcorescount, vmspercore, hostcoresoverhead)) / f.StrtoInt(getHostCoresCount(hostsocketcount, hostsocketcorescount, hostcoresoverhead)))
+	r := (f.StrtoFloat64(vmvcpucount) * f.StrtoFloat64(vmvcpumhz) * f.StrtoFloat64(GetHostVMCount(vmcount, hostsocketcount, hostsocketcorescount, vmspercore, hostcoresoverhead)) / f.StrtoFloat64(getHostCoresCount(hostsocketcount, hostsocketcorescount, hostcoresoverhead))) / 1000
 
-	return f.InttoStr(r)
+	return f.Float64toStr(r)
 }
 
 // GetHostMemory function
