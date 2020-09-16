@@ -181,7 +181,7 @@ host:
 storage:
   capacityoverhead: { "0": "0", "5": "5", "10": "10", "20": "20", "30": "30" }
   capacityoverheadlabel: "Capacity Overhead (%)"
-  capacityoverheadselected:
+  capacityoverheadselected: "5"
   capacityoverheadtooltip: "Aditional storage capacity"
   datastorevmcount: "100"
   datastorevmcountlabel: "VMs per Datastore"
