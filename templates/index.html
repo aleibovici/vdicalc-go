@@ -65,7 +65,8 @@
                 <label>{{ .vmvcpumhzlabel }}</label>
               </td>
               <td>
-                <input id="vmvcpumhz" name="vmvcpumhz" title='{{ .vmvcpumhztooltip }}' size="5" maxlength="5" value="{{ .vmvcpumhzselected }}" />
+                <input id="vmvcpumhz" name="vmvcpumhz" title='{{ .vmvcpumhztooltip }}' size="5" maxlength="5"
+                  value="{{ .vmvcpumhzselected }}" />
               </td>
             </tr>
             <tr>
@@ -135,15 +136,15 @@
                 <label>{{ .vmiopscountlabel }}</label>
               </td>
               <td>
-                <input id="vmiopscount" name="vmiopscount" title='{{ .vmiopscounttooltip }}' type="text" size="3" maxlength="3"
-                  value="{{ .vmiopscountselected }}" />
+                <input id="vmiopscount" name="vmiopscount" title='{{ .vmiopscounttooltip }}' type="text" size="3"
+                  maxlength="3" value="{{ .vmiopscountselected }}" />
               </td>
               <td>
                 <label>{{ .vmiopsreadratiolabel }}</label>
               </td>
               <td>
-                <input id="vmiopsreadratio" name="vmiopsreadratio" title='{{ .vmiopsreadratiotooltip }}' type="text" size="3" maxlength="3"
-                  value="{{ .vmiopsreadratioselected }}" />
+                <input id="vmiopsreadratio" name="vmiopsreadratio" title='{{ .vmiopsreadratiotooltip }}' type="text"
+                  size="3" maxlength="3" value="{{ .vmiopsreadratioselected }}" />
               </td>
               <td>
                 <label>{{ .vmclonesizerefreshratelabel }}</label>
@@ -240,8 +241,8 @@
                 <label>{{ .storagededuperatiolabel }}</label>
               </td>
               <td>
-                <input id="storagededuperatio" name="storagededuperatio" title='{{ .storagededuperatiotooltip }}' type="text"
-                  size="3" maxlength="2" value="{{ .storagededuperatioselected }}" />
+                <input id="storagededuperatio" name="storagededuperatio" title='{{ .storagededuperatiotooltip }}'
+                  type="text" size="3" maxlength="2" value="{{ .storagededuperatioselected }}" />
               </td>
               <td>
                 <label>{{ .storageraidtypelabel }}</label>
@@ -496,9 +497,9 @@
             onclick="document.getElementById('submitselect').value='about';this.form.submit()">{{ .about }}</button>
           <button target="_blank" class="blueButton" id="guide" name="guide"
             onclick="window.open('http://myvirtualcloud.net/vdi-calculator-guide/'),document.getElementById('submitselect').value='guide';this.form.submit()">{{ .guide }}</button>
-        </div>
-      </form>
-    </div>
+          </div>
+        </form>
+      </div>
     <div>
       <form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
         <input type="hidden" name="cmd" value="_s-xclick" />
@@ -507,6 +508,10 @@
           name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
         <img alt="" border="0" src="https://www.paypal.com/en_NZ/i/scr/pixel.gif" width="1" height="1" />
       </form>
+    </div>
+    <p></p>
+    <div align="right">
+      <a href="mailto:ableibovici@gmail.com?&subject=Bug%20Report">Report a Bug</a> 
     </div>
   </body>
 
