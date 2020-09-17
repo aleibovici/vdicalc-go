@@ -22,6 +22,7 @@ type Configurations struct {
 	HostResults           HostResultsConfiguration
 	StorageResults        StorageResultsConfiguration
 	VirtualizationResults VirtualizationResultsConfiguration
+	ErrorResults          ErrorResultsConfiguration
 }
 
 // ServerConfigurations exported
@@ -65,6 +66,7 @@ type VMConfigurations struct {
 	Displayresolutionselected    string
 	Memorysizelabel              string
 	Memorysize                   int
+	Memorysizelimit              string
 	Memorysizeselected           int
 	Videoram                     map[string]interface{}
 	Videoramselected             string
@@ -142,7 +144,9 @@ type HostResultsConfiguration struct {
 	Count              string
 	Hostclockusedlabel string
 	Hostclockused      string
+	Hostclockusedlimit string
 	Hostmemory         string
+	Hostmemorylimit    string
 	Hostmemorylabel    string
 	Hostvmcount        string
 	Hostvmcountlabel   string
@@ -172,4 +176,16 @@ type VirtualizationResultsConfiguration struct {
 	Clustercountlabel          string
 	Managementservercount      string
 	Managementservercountlabel string
+	Managementservercountlimit string
+}
+
+// ErrorResultsConfiguration exported
+type ErrorResultsConfiguration struct {
+	Error []ErrorConfiguration
+}
+
+// ErrorConfiguration exported
+type ErrorConfiguration struct {
+	Code        string
+	Description string
 }

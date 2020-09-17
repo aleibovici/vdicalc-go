@@ -13,6 +13,7 @@ import (
 	host "vdicalc/host"
 	"vdicalc/mysql"
 	storage "vdicalc/storage"
+	"vdicalc/validation"
 	v "vdicalc/virtualization"
 
 	"github.com/spf13/viper"
@@ -171,6 +172,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			fullData["storagedatastorefroentendiops"], fullData["storagedatastorebackendiops"], fullData["storageresultsfrontendiops"], fullData["storageresultsbackendiops"] = storage.GetStorageDatastoreIops(r.FormValue("vmiopscount"), r.FormValue("vmiopsreadratio"), r.FormValue("storagedatastorevmcount"), r.FormValue("storageraidtype"), r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"))
 			fullData["virtualizationresultsclustercount"] = v.GetClusterSize(r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"), r.FormValue("virtualizationclusterhostsize"))
 			fullData["virtualizationresultsmanagementservercount"] = v.GetManagementServerCount(r.FormValue("vmcount"), r.FormValue("virtualizationmanagementservertvmcount"))
+			fullData["errorresults"] = validation.ValidateHostResults(fullData["hostresultsclockused"], r.FormValue("virtualizationmanagementservertvmcount"), r.FormValue("vmmemorysize"))
 
 			/* This is the template execution for 'update' */
 			err := tlp.ExecuteTemplate(w, "index.html", fullData)

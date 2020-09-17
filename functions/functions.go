@@ -187,6 +187,8 @@ func DataLoad(class c.Configurations) map[string]interface{} {
 		"virtualizationresultsclustercountlabel":          class.VirtualizationResults.Clustercountlabel,
 		"virtualizationresultsmanagementservercount":      class.VirtualizationResults.Managementservercount,
 		"virtualizationresultsmanagementservercountlabel": class.VirtualizationResults.Managementservercountlabel,
+		/* errorresults are used to display error and limits */
+		"errorresults": class.ErrorResults,
 	}
 
 	return data

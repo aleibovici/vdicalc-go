@@ -223,8 +223,7 @@ storageresults:
   storagefrontendiopslabel: "Storage Frontend IOps"
   storagebackendiopslabel: "Storage Backend IOps"
 
-
-  # These are the VirtualizationResultsConfiguration struct values
+# These are the VirtualizationResultsConfiguration struct values
 virtualizationresults:
   clustercountlabel: "Number of Clusters"
-  Managementservercountlabel: "Number of Management Servers"
+  managementservercountlabel: "Number of Management Servers"
