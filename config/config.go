@@ -149,6 +149,7 @@ type HostResultsConfiguration struct {
 	Hostmemorylimit    string
 	Hostmemorylabel    string
 	Hostvmcount        string
+	Hostvmcountlimit   string
 	Hostvmcountlabel   string
 }
 
