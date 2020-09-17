@@ -13,14 +13,14 @@ var (
 
 func init() {
 
-	hostResults.Hostclockusedlimit = "4.2"
-	hostResults.Hostmemorylimit = "222"
-	virtualizationResults.Managementservercountlimit = "10000"
-	vmResults.Memorysizelimit = "1048576"
+	hostResults.Hostclockusedlimit = "4.2"                     // Maximum Intel CPU clock rate available
+	virtualizationResults.Managementservercountlimit = "10000" // VMware vCenter maximum (https://configmax.vmware.com/guest?vmwareproduct=Horizon&release=Horizon%208%202006&categories=46-0)
+	vmResults.Memorysizelimit = "6128000"                      // RAM per VM (https://configmax.vmware.com/guest?vmwareproduct=vSphere&release=vSphere%207.0&categories=1-0)
 
 }
 
 // ValidateHostResults export
+/* This public function validate input field and calucation results, raising errors using ErrorResultsConfiguration */
 func ValidateHostResults(hostresultsclockused, virtualizationmanagementservertvmcount, memorysize interface{}) config.ErrorResultsConfiguration {
 
 	var errorList config.ErrorResultsConfiguration
