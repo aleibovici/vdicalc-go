@@ -197,7 +197,7 @@ storage:
 
 # These are the VirtualizationConfigurations struct values
 virtualization:
-  clusterhostsize: { "8": "8", "16": "16", "32": "32", "64": "64" }
+  clusterhostsize: { "8": "8", "16": "16", "32": "32" }
   clusterhostsizelabel: "Cluster Size"
   clusterhostsizeselected: 8
   clusterhostsizetooltip: "Number of hosts per cluster"
