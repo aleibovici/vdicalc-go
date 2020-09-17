@@ -497,12 +497,12 @@
             onclick="document.getElementById('submitselect').value='about';this.form.submit()">{{ .about }}</button>
           <button target="_blank" class="blueButton" id="guide" name="guide"
             onclick="window.open('http://myvirtualcloud.net/vdi-calculator-guide/'),document.getElementById('submitselect').value='guide';this.form.submit()">{{ .guide }}</button>
+          <label style="color:red" id="errorresults" name="errorresults">{{ .errorresults }}</label>
         </div>
       </form>
     </div>
     <br>
     <div>
-      <label style="color:red" id="errorresults" name="errorresults">{{ .errorresults }}</label>
     </div>
     <div>
       <form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
