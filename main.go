@@ -154,6 +154,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			fullData["vmvideoramselected"] = key.Videoramselected
 			fullData["vmdisksizeselected"] = key.Disksizeselected
 			fullData["vmiopscountselected"] = key.Iopscountselected
+			fullData["vmiopsreadratioselected"] = key.Iopsreadratioselected
 			fullData["vmclonesizerefreshrateselected"] = key.Clonesizerefreshrateselected
 
 			/* Fallthrough ensures 'update' is always executed after 'vmprofile' */
