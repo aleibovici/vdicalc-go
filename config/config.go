@@ -158,6 +158,7 @@ type StorageResultsConfiguration struct {
 	Storagecapacity                    string
 	Storagedatastorecountabel          string
 	Storagedatastorecount              string
+	Storagedatastorecountlimit         string
 	Storagedatastoresize               string
 	Storagedatastoresizelabel          string
 	Storagedatastorefroentendiops      string
