@@ -23,42 +23,47 @@ func init() {
 }
 
 // ValidateResults export
-/* This public function validate input field and calucation results, raising errors using ErrorResultsConfiguration */
-func ValidateResults(hostresultsclockused, virtualizationmanagementservertvmcount, memorysize, storagedatastorevmcount, hostresultsvmcount interface{}) config.ErrorResultsConfiguration {
+/* This public function validate inputs and results, raising errors using ErrorResultsConfiguration */
+func ValidateResults(fullData map[string]interface{}) config.ErrorResultsConfiguration {
 
 	var errorList config.ErrorResultsConfiguration
 
-	/* Validate VM */
-	if functions.StrtoFloat64(memorysize.(string)) > functions.StrtoFloat64(vmResults.Memorysizelimit) {
-		error := config.ErrorConfiguration{Code: "Warning: ", Description: "VM memory size above limit."}
-		errorList.Error = append(errorList.Error, error)
-		return errorList
-	}
+	for key, values := range fullData {
 
-	/* Validate Host */
-	if functions.StrtoFloat64(hostresultsclockused.(string)) > functions.StrtoFloat64(hostResults.Hostclockusedlimit) {
-		error := config.ErrorConfiguration{Code: "Warning: ", Description: "Host CPU (GHz) above limit. (max=4.2)"}
-		errorList.Error = append(errorList.Error, error)
-		return errorList
-	}
-	if functions.StrtoFloat64(hostresultsvmcount.(string)) > functions.StrtoFloat64(hostResults.Hostvmcountlimit) {
-		error := config.ErrorConfiguration{Code: "Warning: ", Description: "Number os VMs per host avobe limit. (max=200)"}
-		errorList.Error = append(errorList.Error, error)
-		return errorList
-	}
+		switch key {
+		case "vmmemorysizeselected":
 
-	/* Validate Storage */
-	if functions.StrtoFloat64(storagedatastorevmcount.(string)) > functions.StrtoFloat64(storageResults.Storagedatastorecountlimit) {
-		error := config.ErrorConfiguration{Code: "Warning: ", Description: "Number os datastores above limit (max=500)."}
-		errorList.Error = append(errorList.Error, error)
-		return errorList
-	}
+			if functions.StrtoFloat64(values.(string)) > functions.StrtoFloat64(vmResults.Memorysizelimit) {
+				error := config.ErrorConfiguration{Code: "Warning: ", Description: "VM memory size above limit."}
+				errorList.Error = append(errorList.Error, error)
+				return errorList
+			}
 
-	/* Validate Virtualization */
-	if functions.StrtoFloat64(virtualizationmanagementservertvmcount.(string)) > functions.StrtoFloat64(virtualizationResults.Managementservercountlimit) {
-		error := config.ErrorConfiguration{Code: "Warning: ", Description: "Number of VMs per management server above limit."}
-		errorList.Error = append(errorList.Error, error)
-		return errorList
+		case "hostresultsclockused":
+
+			if functions.StrtoFloat64(values.(string)) > functions.StrtoFloat64(hostResults.Hostclockusedlimit) {
+				error := config.ErrorConfiguration{Code: "Warning: ", Description: "Host CPU (GHz) above limit. (max=4.2)"}
+				errorList.Error = append(errorList.Error, error)
+				return errorList
+			}
+
+		case "hostresultsvmcount":
+
+			if functions.StrtoFloat64(values.(string)) > functions.StrtoFloat64(hostResults.Hostvmcountlimit) {
+				error := config.ErrorConfiguration{Code: "Warning: ", Description: "Number os VMs per host avobe limit. (max=200)"}
+				errorList.Error = append(errorList.Error, error)
+				return errorList
+			}
+
+		case "storageresultsdatastorecount":
+
+			if functions.StrtoFloat64(values.(string)) > functions.StrtoFloat64(storageResults.Storagedatastorecountlimit) {
+				error := config.ErrorConfiguration{Code: "Warning: ", Description: "Number os datastores above limit (max=500)."}
+				errorList.Error = append(errorList.Error, error)
+				return errorList
+			}
+		}
+
 	}
 
 	return errorList
