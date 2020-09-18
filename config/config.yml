@@ -56,8 +56,8 @@ vm:
   displayresolution: { "1280x800": "1", "1920x1200": "2", "2560x1600": "3" }
   displayresolutionselected: "2"
   memorysizelabel: "Memory Size (MB)"
-  memorysize: 1536
-  memorysizeselected: 1536
+  memorysize: "1536"
+  memorysizeselected: "1536"
   videoram: { "Off": "0", "64": "64", "128": "128", "256": "256", "512": "512" }
   videoramlabel: "3D Graphics (MB)"
   videoramselected: "0"
@@ -94,7 +94,7 @@ vmprofile01:
   vcpucountselected: "1"
   vcpumhz: 500
   vmpercorecountselected: "5"
-  memorysize: 1536
+  memorysize: "1536"
   displaycountselected: "1"
   displayresolutionselected: "2"
   videoramselected: "0"
@@ -108,7 +108,7 @@ vmprofile02:
   vcpucountselected: "1"
   vcpumhz: 500
   vmpercorecountselected: "5"
-  memorysize: 2048
+  memorysize: "2048"
   displaycountselected: "1"
   displayresolutionselected: "2"
   videoramselected: "64"
@@ -122,7 +122,7 @@ vmprofile03:
   vcpucountselected: "2"
   vcpumhz: 315
   vmpercorecountselected: "4"
-  memorysize: 2048
+  memorysize: "2048"
   displaycountselected: "1"
   displayresolutionselected: "2"
   videoramselected: "64"
@@ -136,7 +136,7 @@ vmprofile04:
   vcpucountselected: "2"
   vcpumhz: 625
   vmpercorecountselected: "2"
-  memorysize: 4096
+  memorysize: "4096"
   displaycountselected: "2"
   displayresolutionselected: "3"
   videoramselected: "128"
