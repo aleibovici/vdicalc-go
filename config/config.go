@@ -27,7 +27,8 @@ type Configurations struct {
 
 // ServerConfigurations exported
 type ServerConfigurations struct {
-	Port int
+	Port        int
+	AuthAddress string
 }
 
 // VariableConfigurations exported

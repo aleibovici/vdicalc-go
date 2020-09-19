@@ -12,12 +12,48 @@
       gtag('config', 'G-DNDQC1YRBV');
     </script>
 
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id"
+      content="893974452758-3kri5mk29j09q273ftqs0r1kdoh8gifi.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
     <meta charset="utf-8" />
     <title>{{ .title }}</title>
     <link href="../static/stylesheets/vdicalc.css" rel="stylesheet" type="text/css" />
   </head>
 
   <body>
+    <div align="right" class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    <script>
+      function onSignIn(googleUser) {
+
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
+
+        var xhr = new XMLHttpRequest();
+        var authaddress = "{{ .authaddress }}"
+        xhr.open('POST', authaddress + '/tokensignin?id_token=' + id_token);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send('idtoken=' + id_token);
+      }
+    </script>
+
+    <div align="right"><a href="#" onclick="signOut();">Sign out</a></div>
+    <script>
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+        });
+
+        var xhr = new XMLHttpRequest();
+        var authaddress = "{{ .authaddress }}"
+        xhr.open('POST', authaddress + '/tokensignoff');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send();
+      }
+    </script>
+
     <div style="border-bottom:1px;">
       <h1 style="text-align:center;">{{ .title }}</h1>
       <h4 style="text-align:center;">{{ .titlesub }}</h4>
@@ -517,6 +553,8 @@
     <div align="right">
       <a href="mailto:ableibovici@gmail.com?&subject=Bug%20Report">Report a Bug</a>
     </div>
+
+
   </body>
 
 </html>

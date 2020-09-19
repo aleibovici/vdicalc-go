@@ -28,13 +28,15 @@ func Insert(db *sql.DB, sqlInsert string) error {
 // SQLBuilder export
 // This functions uses goqu packages to create a mySQL compatible SQL estatement
 // github.com/doug-martin/goqu
-func SQLBuilder(ip string, hostresultscount interface{}, hostresultsclockused interface{}, hostresultsmemory interface{}, hostresultsvmcount interface{}, storageresultscapacity interface{}, storageresultsdatastorecount interface{}, storageresultsdatastoresize interface{}, storagedatastorefroentendiops interface{}, storagedatastorebackendiops interface{}, storageresultsfrontendiops interface{}, storageresultsbackendiops interface{}) (string, []interface{}) {
+func SQLBuilder(guserid string, email string, ip string, hostresultscount interface{}, hostresultsclockused interface{}, hostresultsmemory interface{}, hostresultsvmcount interface{}, storageresultscapacity interface{}, storageresultsdatastorecount interface{}, storageresultsdatastoresize interface{}, storagedatastorefroentendiops interface{}, storagedatastorebackendiops interface{}, storageresultsfrontendiops interface{}, storageresultsbackendiops interface{}) (string, []interface{}) {
 
 	// look up the dialect
 	dialect := goqu.Dialect("mysql")
 	ds := dialect.Insert(functions.MustGetenv("DB_NAME")).Rows(goqu.Record{
 		"ip":                            ip,
 		"datetime":                      time.Now(),
+		"guserid":                       guserid,
+		"email":                         email,
 		"hostresultscount":              hostresultscount,
 		"hostresultsclockused":          hostresultsclockused,
 		"hostresultsmemory":             hostresultsmemory,

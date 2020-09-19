@@ -75,6 +75,8 @@ func DataLoad(class c.Configurations) map[string]interface{} {
 		"about":    class.Variable.About,
 		"print":    class.Variable.Print,
 		"guide":    class.Variable.Guide,
+		/* server is used for internal and backend variables interaction with client */
+		"authaddress": class.Server.AuthAddress,
 		/* vm are used to display form items for hosts */
 		"vmprofilelabel":                 class.VM.Vmprofilelabel,
 		"vmprofile":                      class.VM.Vmprofile,
