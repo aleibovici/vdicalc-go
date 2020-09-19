@@ -12,6 +12,7 @@ COPY  . .
 RUN go get github.com/spf13/viper
 RUN go get github.com/doug-martin/goqu
 RUN go get github.com/go-sql-driver/mysql
+RUN go get google.golang.org/api/oauth2/v2
 
 # Build the binary.
 RUN go build -o main .
