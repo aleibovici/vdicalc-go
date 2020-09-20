@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
-	"time"
 	"vdicalc/functions"
 
 	"github.com/doug-martin/goqu"
@@ -25,30 +24,14 @@ func Insert(db *sql.DB, sqlInsert string) error {
 	// [END cloud_sql_mysql_databasesql_connection]
 }
 
-// SQLBuilder export
-// This functions uses goqu packages to create a mySQL compatible SQL estatement
+// SQLBuilderInsert export
+// This functions uses goqu packages to create a mySQL compatible SQL
+// statement and require input as map[string]interface{}
 // github.com/doug-martin/goqu
-func SQLBuilder(guserid string, email string, ip string, hostresultscount interface{}, hostresultsclockused interface{}, hostresultsmemory interface{}, hostresultsvmcount interface{}, storageresultscapacity interface{}, storageresultsdatastorecount interface{}, storageresultsdatastoresize interface{}, storagedatastorefroentendiops interface{}, storagedatastorebackendiops interface{}, storageresultsfrontendiops interface{}, storageresultsbackendiops interface{}) (string, []interface{}) {
+func SQLBuilderInsert(s ...interface{}) (string, []interface{}) {
 
-	// look up the dialect
 	dialect := goqu.Dialect("mysql")
-	ds := dialect.Insert(functions.MustGetenv("DB_NAME")).Rows(goqu.Record{
-		"ip":                            ip,
-		"datetime":                      time.Now(),
-		"guserid":                       guserid,
-		"email":                         email,
-		"hostresultscount":              hostresultscount,
-		"hostresultsclockused":          hostresultsclockused,
-		"hostresultsmemory":             hostresultsmemory,
-		"hostresultsvmcount":            hostresultsvmcount,
-		"storageresultscapacity":        storageresultscapacity,
-		"storageresultsdatastorecount":  storageresultsdatastorecount,
-		"storageresultsdatastoresize":   storageresultsdatastoresize,
-		"storagedatastorefroentendiops": storagedatastorefroentendiops,
-		"storagedatastorebackendiops":   storagedatastorebackendiops,
-		"storageresultsfrontendiops":    storageresultsfrontendiops,
-		"storageresultsbackendiops":     storageresultsbackendiops,
-	})
+	ds := dialect.Insert(functions.MustGetenv("DB_NAME")).Rows(s)
 
 	sql, args, err := ds.ToSQL()
 	if err != nil {

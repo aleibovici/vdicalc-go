@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"vdicalc/auth"
 	"vdicalc/config"
@@ -247,7 +248,23 @@ func handler(w http.ResponseWriter, r *http.Request) {
 					}
 
 					/* Build MySQL statement  */
-					sqlInsert, _ := mysql.SQLBuilder(tokeninfo.UserId, tokeninfo.Email, f.GetIP(r), fullData["hostresultscount"], fullData["hostresultsclockused"], fullData["hostresultsmemory"], fullData["hostresultsvmcount"], fullData["storageresultscapacity"], fullData["storageresultsdatastorecount"], fullData["storageresultsdatastoresize"], fullData["storagedatastorefroentendiops"], fullData["storagedatastorebackendiops"], fullData["storageresultsfrontendiops"], fullData["storageresultsbackendiops"])
+					sqlInsert, _ := mysql.SQLBuilderInsert(map[string]interface{}{
+						"datetime":                      time.Now(),
+						"guserid":                       tokeninfo.UserId,
+						"email":                         tokeninfo.Email,
+						"ip":                            f.GetIP(r),
+						"hostresultscount":              fmt.Sprint(fullData["hostresultscount"]),
+						"hostresultsclockused":          fmt.Sprint(fullData["hostresultsclockused"]),
+						"hostresultsmemory":             fmt.Sprint(fullData["hostresultsmemory"]),
+						"hostresultsvmcount":            fmt.Sprint(fullData["hostresultsvmcount"]),
+						"storageresultscapacity":        fmt.Sprint(fullData["storageresultscapacity"]),
+						"storageresultsdatastorecount":  fmt.Sprint(fullData["storageresultsdatastorecount"]),
+						"storageresultsdatastoresize":   fmt.Sprint(fullData["storageresultsdatastoresize"]),
+						"storagedatastorefroentendiops": fmt.Sprint(fullData["storagedatastorefroentendiops"]),
+						"storagedatastorebackendiops":   fmt.Sprint(fullData["storagedatastorebackendiops"]),
+						"storageresultsfrontendiops":    fmt.Sprint(fullData["storageresultsfrontendiops"]),
+						"storageresultsbackendiops":     fmt.Sprint(fullData["storageresultsbackendiops"]),
+					})
 
 					/* This function execues the SQL estatement on Google SQL Run database */
 					mysql.Insert(db, sqlInsert)
