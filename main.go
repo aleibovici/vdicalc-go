@@ -99,7 +99,19 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 			/* The index.html signin JS triggers a http POST on /tokensignin and the user's token is associated to tokeninfo for verification*/
 			if tokeninfo == nil {
+
 				tokeninfo, _ = auth.VerifyIDToken(strings.TrimPrefix(r.URL.RawQuery, "id_token="))
+
+				/* Inititalize DB connection */
+				db = mysql.DBInit()
+
+				/* Test if user exist in vdicalc.users table and if not add user to the database*/
+				if mysql.QueryUser(db, tokeninfo.UserId) == false {
+
+					/* This function executes the SQL estatement on Google SQL Run database */
+					mysql.CreateUser(db, tokeninfo.UserId, tokeninfo.Email)
+
+				}
 			}
 
 		case "/tokensignoff":
@@ -230,28 +242,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 				/* This conditional does not allow profile changes to be recorded on the database */
 				if r.PostFormValue("submitselect") != "vmprofile" {
 
-					// If the optional DB_TCP_HOST environment variable is set, it contains
-					// the IP address and port number of a TCP connection pool to be created,
-					// such as "127.0.0.1:3306". If DB_TCP_HOST is not set, a Unix socket
-					// connection pool will be created instead.
-					if os.Getenv("DB_TCP_HOST") != "" {
-
-						db, err = mysql.InitTCPConnectionPool()
-						if err != nil {
-							log.Fatalf("initTCPConnectionPool: unable to connect: %v", err)
-						}
-					} else {
-						db, err = mysql.InitSocketConnectionPool()
-						if err != nil {
-							log.Fatalf("initSocketConnectionPool: unable to connect: %v", err)
-						}
-					}
-
 					/* Build MySQL statement  */
-					sqlInsert, _ := mysql.SQLBuilderInsert(map[string]interface{}{
+					sqlInsert, _ := mysql.SQLBuilderInsert("vdicalc", map[string]interface{}{
 						"datetime":                      time.Now(),
 						"guserid":                       tokeninfo.UserId,
-						"email":                         tokeninfo.Email,
 						"ip":                            f.GetIP(r),
 						"hostresultscount":              fmt.Sprint(fullData["hostresultscount"]),
 						"hostresultsclockused":          fmt.Sprint(fullData["hostresultsclockused"]),

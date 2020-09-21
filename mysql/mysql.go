@@ -3,12 +3,42 @@ package mysql
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
+	"time"
 	"vdicalc/functions"
 
 	"github.com/doug-martin/goqu"
 	_ "github.com/doug-martin/goqu/dialect/mysql" // import the dialect
 )
+
+// DBInit export
+/* This function initializes GCP mysql database connectivity */
+func DBInit() *sql.DB {
+
+	var db *sql.DB
+	var err error
+
+	// If the optional DB_TCP_HOST environment variable is set, it contains
+	// the IP address and port number of a TCP connection pool to be created,
+	// such as "127.0.0.1:3306". If DB_TCP_HOST is not set, a Unix socket
+	// connection pool will be created instead.
+	if os.Getenv("DB_TCP_HOST") != "" {
+
+		db, err = InitTCPConnectionPool()
+		if err != nil {
+			log.Fatalf("initTCPConnectionPool: unable to connect: %v", err)
+		}
+	} else {
+		db, err = InitSocketConnectionPool()
+		if err != nil {
+			log.Fatalf("initSocketConnectionPool: unable to connect: %v", err)
+		}
+	}
+
+	return db
+
+}
 
 // Insert exported
 // This function executes a SQL Insert
@@ -24,14 +54,80 @@ func Insert(db *sql.DB, sqlInsert string) error {
 	// [END cloud_sql_mysql_databasesql_connection]
 }
 
+// QueryUser exported
+func QueryUser(db *sql.DB, UserID string) bool {
+
+	sqlSelect, _ := sqlBuilderSelectUser(UserID)
+
+	var (
+		id       int
+		datetime string
+		guserid  string
+		email    string
+	)
+
+	rows, err := db.Query(sqlSelect)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		err := rows.Scan(&id, &datetime, &guserid, &email)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if guserid == UserID {
+			return true
+		}
+	}
+
+	return false
+
+}
+
+// CreateUser export
+func CreateUser(db *sql.DB, userid, email string) {
+
+	/* Build MySQL statement  */
+	sqlInsert, _ := SQLBuilderInsert("users", map[string]interface{}{
+		"datetime": time.Now(),
+		"guserid":  userid,
+		"email":    email,
+	})
+
+	/* This function execues the SQL estatement on Google SQL Run database */
+	Insert(db, sqlInsert)
+
+}
+
+// SQLBuilderSelect export
+// This functions uses goqu packages to create a mySQL compatible SQL
+// statement and require input as map[string]interface{}
+// github.com/doug-martin/goqu
+func sqlBuilderSelectUser(guserid string) (string, []interface{}) {
+
+	dialect := goqu.Dialect("mysql")
+	ds := dialect.From("vdicalc.users").Where(goqu.Ex{
+		"guserid": guserid,
+	})
+
+	sql, args, err := ds.ToSQL()
+	if err != nil {
+		fmt.Println("An error occurred while generating the SQL", err.Error())
+	}
+
+	return sql, args
+}
+
 // SQLBuilderInsert export
 // This functions uses goqu packages to create a mySQL compatible SQL
 // statement and require input as map[string]interface{}
 // github.com/doug-martin/goqu
-func SQLBuilderInsert(s ...interface{}) (string, []interface{}) {
+func SQLBuilderInsert(table string, s ...interface{}) (string, []interface{}) {
 
 	dialect := goqu.Dialect("mysql")
-	ds := dialect.Insert(functions.MustGetenv("DB_NAME")).Rows(s)
+	ds := dialect.Insert(table).Rows(s)
 
 	sql, args, err := ds.ToSQL()
 	if err != nil {
