@@ -100,12 +100,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			/* The index.html signin JS triggers a http POST on /tokensignin and the user's token is associated to tokeninfo for verification*/
 			if tokeninfo == nil {
 
+				/* This function will verify user's token validity with Google GCP service */
 				tokeninfo, _ = auth.VerifyIDToken(strings.TrimPrefix(r.URL.RawQuery, "id_token="))
 
 				/* Inititalize DB connection */
 				db = mysql.DBInit()
 
-				/* Test if user exist in vdicalc.users table and if not add user to the database*/
+				/* Test if user exist in mySQL vdicalc.users table, and if not add user to the table*/
 				if mysql.QueryUser(db, tokeninfo.UserId) == false {
 
 					/* This function executes the SQL estatement on Google SQL Run database */
@@ -242,7 +243,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 				/* This conditional does not allow profile changes to be recorded on the database */
 				if r.PostFormValue("submitselect") != "vmprofile" {
 
-					/* Build MySQL statement  */
+					/* This function build a SQL statement for inserting calculation data into vdicalc.vdicalc  */
 					sqlInsert, _ := mysql.SQLBuilderInsert("vdicalc", map[string]interface{}{
 						"datetime":                      time.Now(),
 						"guserid":                       tokeninfo.UserId,

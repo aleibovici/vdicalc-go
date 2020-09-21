@@ -55,6 +55,7 @@ func Insert(db *sql.DB, sqlInsert string) error {
 }
 
 // QueryUser exported
+/* This public function retrieve a single user from vdicalc.users */
 func QueryUser(db *sql.DB, UserID string) bool {
 
 	sqlSelect, _ := sqlBuilderSelectUser(UserID)
@@ -87,6 +88,7 @@ func QueryUser(db *sql.DB, UserID string) bool {
 }
 
 // CreateUser export
+/* This function inserts new user into vdicalc.users */
 func CreateUser(db *sql.DB, userid, email string) {
 
 	/* Build MySQL statement  */
@@ -102,8 +104,7 @@ func CreateUser(db *sql.DB, userid, email string) {
 }
 
 // SQLBuilderSelect export
-// This functions uses goqu packages to create a mySQL compatible SQL
-// statement and require input as map[string]interface{}
+// This functions uses goqu packages to create a mySQL compatible SQL statement
 // github.com/doug-martin/goqu
 func sqlBuilderSelectUser(guserid string) (string, []interface{}) {
 
