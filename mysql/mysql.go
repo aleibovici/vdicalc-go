@@ -58,7 +58,9 @@ func Insert(db *sql.DB, sqlInsert string) error {
 /* This public function retrieve a single user from vdicalc.users */
 func QueryUser(db *sql.DB, UserID string) bool {
 
-	sqlSelect, _ := sqlBuilderSelectUser(UserID)
+	sqlSelect, _ := sqlBuilderSelectWhere("vdicalc.users", map[string]interface{}{
+		"guserid": UserID,
+	})
 
 	var (
 		id       int
@@ -103,15 +105,13 @@ func CreateUser(db *sql.DB, userid, email string) {
 
 }
 
-// SQLBuilderSelect export
+// sqlBuilderSelectWhere export
 // This functions uses goqu packages to create a mySQL compatible SQL statement
 // github.com/doug-martin/goqu
-func sqlBuilderSelectUser(guserid string) (string, []interface{}) {
+func sqlBuilderSelectWhere(table string, s map[string]interface{}) (string, []interface{}) {
 
 	dialect := goqu.Dialect("mysql")
-	ds := dialect.From("vdicalc.users").Where(goqu.Ex{
-		"guserid": guserid,
-	})
+	ds := dialect.From(table).Where(goqu.Ex(s))
 
 	sql, args, err := ds.ToSQL()
 	if err != nil {
