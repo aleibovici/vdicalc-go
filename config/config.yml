@@ -10,6 +10,8 @@ variable:
   about: "About"
   print: "Print"
   guide: "Guide"
+  load: "Load"
+  save: "Save"
 
 # These are the VMConfigurations struct values
 vm:

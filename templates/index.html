@@ -530,6 +530,30 @@
             onclick="document.getElementById('submitselect').value='update';this.form.submit()">{{ .update }}</button>
           <button class="blueButton" id="print" name="print"
             onclick="window.print();return false;">{{ .print }}</button>
+          <button class="blueButton" id="load" name="load"
+            onclick="return popup('http://localhost:8080/load', 'Load')" disabled="disabled">{{ .load }}</button>
+          <SCRIPT TYPE="text/javascript">
+            function popup(mylink, windowname) {
+              if (!window.focus) return true;
+              var href;
+              if (typeof (mylink) == 'string') href = mylink;
+              else href = mylink.href;
+              window.open(href, 'windowname', 'width=600,height=200,scrollbars=no,titlebar=no,resizable=no');
+              return false;
+            }
+          </SCRIPT>
+          <button class="blueButton" id="save" name="save"
+            onclick="return popup('http://localhost:8080/save', 'Save')" disabled="disabled">{{ .save }}</button>
+          <SCRIPT TYPE="text/javascript">
+            function popup(mylink, windowname) {
+              if (!window.focus) return true;
+              var href;
+              if (typeof (mylink) == 'string') href = mylink;
+              else href = mylink.href;
+              window.open(href, 'windowname', 'width=600,height=200,scrollbars=no,titlebar=no,resizable=no');
+              return false;
+            }
+          </SCRIPT>
           <button class="blueButton" id="about" name="about"
             onclick="document.getElementById('submitselect').value='about';this.form.submit()">{{ .about }}</button>
           <button target="_blank" class="blueButton" id="guide" name="guide"

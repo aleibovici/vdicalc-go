@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../static/stylesheets/vdicalc.css" />
+    </head>
+
+    <body>
+        <br /><br />
+        <form method="POST" action="/save">
+            <div align="center">
+                <label>Save Name</label>
+                <input id="savename" name="savename" size="30" maxlength="30" value="" />
+            </div>
+            <br /><br /><br />
+            <div>
+                <button class="blueButton" id="save" name="save"
+                    onclick="this.form.submit();">
+                    save
+                </button>
+                <button class="blueButton" id="close" name="close" onclick="closeWin()">
+                    Close
+                </button>
+                <script>
+                    function closeWin() {
+                        window.opener = self;
+                        window.close();
+                    }
+                </script>
+            </div>
+        </form>
+        </script>
+    </body>
+
+</html>

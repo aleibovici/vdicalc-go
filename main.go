@@ -11,14 +11,11 @@ import (
 	"time"
 
 	"vdicalc/auth"
+	"vdicalc/calculations"
 	"vdicalc/config"
 	c "vdicalc/config"
 	f "vdicalc/functions"
-	host "vdicalc/host"
 	"vdicalc/mysql"
-	storage "vdicalc/storage"
-	"vdicalc/validation"
-	v "vdicalc/virtualization"
 
 	"github.com/spf13/viper"
 	"google.golang.org/api/oauth2/v2"
@@ -80,14 +77,39 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 
-		/* Determine the backend service address to be passsed to index.html js for authentication.
-		AUTH_ADDRESS is an environment variable and must be defined at the container execution level */
-		fullData["authaddress"] = os.Getenv("AUTH_ADDRESS")
+		/* Determine the URI path to de taken */
+		switch r.URL.Path {
 
-		/* This is the template execution for 'index' */
-		err := tlp.ExecuteTemplate(w, "index.html", fullData)
-		if err != nil {
-			panic(err)
+		case "/":
+
+			/* Determine the backend service address to be passsed to index.html js for authentication.
+			AUTH_ADDRESS is an environment variable and must be defined at the container execution level */
+			fullData["authaddress"] = os.Getenv("AUTH_ADDRESS")
+
+			/* This is the template execution for 'index' */
+			err := tlp.ExecuteTemplate(w, "index.html", fullData)
+			if err != nil {
+				panic(err)
+			}
+
+		case "/load":
+
+			/* This is the template execution for 'about' */
+			err := tlp.ExecuteTemplate(w, "load.html", "")
+			if err != nil {
+				panic(err)
+			}
+
+		case "/save":
+
+			// Must save transactio  first, then save records
+
+			/* This is the template execution for 'about' */
+			err := tlp.ExecuteTemplate(w, "save.html", "")
+			if err != nil {
+				panic(err)
+			}
+
 		}
 
 	case "POST":
@@ -119,6 +141,19 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 			/* The index.html signoff JS triggers a http POST on /tokensignoff and the user's token id is removed*/
 			tokeninfo = nil
+
+		case "/save":
+
+			/* This case deal with hitting the save button in the save.html window */
+
+			/* This function reads and parse the html form */
+			if err := r.ParseForm(); err != nil {
+				fmt.Fprintf(w, "ParseForm() err: %v", err)
+				return
+			}
+			r.ParseForm()
+
+			fmt.Println(r)
 
 		case "/":
 
@@ -220,18 +255,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 				} else {
 
-					/* This is the default template execution mode with results calculation */
-					fullData["hostresultscount"] = host.GetHostCount(r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"))
-					fullData["hostresultsclockused"] = host.GetHostClockUsed(r.FormValue("vmvcpucount"), r.FormValue("vmvcpumhz"), r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"))
-					fullData["hostresultsmemory"] = host.GetHostMemory(r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("hostcoresoverhead"), r.FormValue("vmpercorecount"), r.FormValue("vmmemorysize"), r.FormValue("hostmemoryoverhead"), r.FormValue("vmdisplaycount"), r.FormValue("vmdisplayresolution"), r.FormValue("vmvcpucount"), r.FormValue("vmvideoram"))
-					fullData["hostresultsvmcount"] = host.GetHostVMCount(r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"))
-					fullData["storageresultscapacity"] = storage.GetStorageCapacity(r.FormValue("vmcount"), r.FormValue("vmdisksize"), r.FormValue("storagecapacityoverhead"), r.FormValue("storagededuperatio"), r.FormValue("vmdisplaycount"), r.FormValue("vmdisplayresolution"), r.FormValue("vmvideoram"), r.FormValue("vmmemorysize"), r.FormValue("vmclonesizerefreshrate"))
-					fullData["storageresultsdatastorecount"] = storage.GetStorageDatastoreCount(r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"))
-					fullData["storageresultsdatastoresize"] = storage.GetStorageDatastoreSize(r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"), r.FormValue("vmdisksize"), r.FormValue("storagecapacityoverhead"), r.FormValue("storagededuperatio"), r.FormValue("vmdisplaycount"), r.FormValue("vmdisplayresolution"), r.FormValue("vmvideoram"), r.FormValue("vmmemorysize"), r.FormValue("vmclonesizerefreshrate"))
-					fullData["storagedatastorefroentendiops"], fullData["storagedatastorebackendiops"], fullData["storageresultsfrontendiops"], fullData["storageresultsbackendiops"] = storage.GetStorageDatastoreIops(r.FormValue("vmiopscount"), r.FormValue("vmiopsreadratio"), r.FormValue("storagedatastorevmcount"), r.FormValue("storageraidtype"), r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"))
-					fullData["virtualizationresultsclustercount"] = v.GetClusterSize(r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"), r.FormValue("virtualizationclusterhostsize"))
-					fullData["virtualizationresultsmanagementservercount"] = v.GetManagementServerCount(r.FormValue("vmcount"), r.FormValue("virtualizationmanagementservertvmcount"))
-					fullData["errorresults"] = validation.ValidateResults(fullData)
+					calculations.Calculate(fullData, r)
 				}
 
 				/* This is the template execution for 'update' */

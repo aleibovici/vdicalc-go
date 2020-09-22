@@ -39,6 +39,8 @@ type VariableConfigurations struct {
 	About    string
 	Print    string
 	Guide    string
+	Load     string
+	Save     string
 }
 
 // VMConfigurations exported
