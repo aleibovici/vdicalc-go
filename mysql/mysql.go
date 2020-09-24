@@ -12,13 +12,6 @@ import (
 	_ "github.com/doug-martin/goqu/dialect/mysql" // import the dialect
 )
 
-// // DBSaves exported
-// /* This struc is used for retrieving saved data with QuerySaves */
-// type DBSaves struct {
-// 	datetime string
-// 	savename string
-// }
-
 // DBInit export
 /* This function initializes GCP mysql database connectivity */
 func DBInit() *sql.DB {
@@ -104,11 +97,11 @@ func QueryUser(db *sql.DB, UserID string) bool {
 }
 
 // LoadUserSaves exported
-/* This public function is responsible for loading all saves from a user */
+/* This public function is responsible for loading save entires for a user */
 func LoadUserSaves(db *sql.DB, UserID string) map[string]interface{} {
 
 	var (
-		Id       string
+		ID       string
 		Savename string
 	)
 
@@ -131,11 +124,11 @@ func LoadUserSaves(db *sql.DB, UserID string) map[string]interface{} {
 	allSaves["-"] = "-"
 
 	for rows.Next() {
-		err = rows.Scan(&Id, &Savename)
+		err = rows.Scan(&ID, &Savename)
 		if err != nil {
 			// handle it
 		}
-		newKey := Id
+		newKey := ID
 		allSaves[Savename] = newKey
 	}
 
@@ -144,7 +137,7 @@ func LoadUserSaves(db *sql.DB, UserID string) map[string]interface{} {
 }
 
 // LoadSaveByID exported
-/* This public function is responsible for loading all saves from a user by ID.
+/* This public function is responsible for loading all saved configurations for a user by ID.
 The ID is obtained from a dropdown manu that loads the IDs and SaveName using LoadUserSaves  */
 func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 

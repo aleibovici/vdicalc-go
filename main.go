@@ -13,7 +13,6 @@ import (
 	"vdicalc/calculations"
 	c "vdicalc/config"
 	"vdicalc/functions"
-	f "vdicalc/functions"
 	"vdicalc/mysql"
 
 	"github.com/spf13/viper"
@@ -66,7 +65,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	db = mysql.DBInit()
 
 	/* This function call up a function (functions/Dataload) to dynamicaly populate the dataset for the HTML files */
-	FullData := f.DataLoad(configuration)
+	FullData := functions.DataLoad(configuration)
 
 	switch r.Method {
 	case "GET":
@@ -313,7 +312,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 					sqlInsert, _ := mysql.SQLBuilderInsert("vdicalc", map[string]interface{}{
 						"datetime":                      time.Now(),
 						"guserid":                       tokeninfo.UserId,
-						"ip":                            f.GetIP(r),
+						"ip":                            functions.GetIP(r),
 						"hostresultscount":              fmt.Sprint(FullData["hostresultscount"]),
 						"hostresultsclockused":          fmt.Sprint(FullData["hostresultsclockused"]),
 						"hostresultsmemory":             fmt.Sprint(FullData["hostresultsmemory"]),
@@ -338,5 +337,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		}
 
 	}
+
+	db.Close()
 
 }

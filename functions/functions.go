@@ -11,7 +11,6 @@ import (
 	"os"
 	"strconv"
 	"vdicalc/config"
-	c "vdicalc/config"
 )
 
 // ReturnError exported
@@ -100,7 +99,7 @@ func GetIP(r *http.Request) string {
 // DataLoad fuction
 /* This function builds created the map interface with all items for the HTML content.
 It expect type 'Configurations' as defined in 'config.go' */
-func DataLoad(class c.Configurations) map[string]interface{} {
+func DataLoad(class config.Configurations) map[string]interface{} {
 
 	data := map[string]interface{}{
 		"title":     class.Variable.Title,

@@ -9,6 +9,7 @@ import (
 )
 
 // Calculate export
+/* This public function is reponsible for executing all necessary calculations to obtain results */
 func Calculate(fullData map[string]interface{}, r *http.Request) {
 
 	fullData["hostresultscount"] = host.GetHostCount(r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"))
