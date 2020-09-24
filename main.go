@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -12,8 +11,8 @@ import (
 
 	"vdicalc/auth"
 	"vdicalc/calculations"
-	"vdicalc/config"
 	c "vdicalc/config"
+	"vdicalc/functions"
 	f "vdicalc/functions"
 	"vdicalc/mysql"
 
@@ -21,7 +20,6 @@ import (
 	"google.golang.org/api/oauth2/v2"
 )
 
-var tlp *template.Template
 var configuration c.Configurations
 var db *sql.DB
 var tokeninfo *oauth2.Tokeninfo // Maintain user's token authentication during sessions
@@ -46,13 +44,6 @@ func init() {
 
 func main() {
 
-	var err error
-
-	tlp, err = template.ParseGlob("./templates/*")
-	if err != nil {
-		panic(err)
-	}
-
 	/* Determine port for HTTP service. */
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -71,8 +62,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/html")
 
+	/* Inititalize DB connection */
+	db = mysql.DBInit()
+
 	/* This function call up a function (functions/Dataload) to dynamicaly populate the dataset for the HTML files */
-	fullData := f.DataLoad(configuration)
+	FullData := f.DataLoad(configuration)
 
 	switch r.Method {
 	case "GET":
@@ -84,31 +78,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 			/* Determine the backend service address to be passsed to index.html js for authentication.
 			AUTH_ADDRESS is an environment variable and must be defined at the container execution level */
-			fullData["authaddress"] = os.Getenv("AUTH_ADDRESS")
+			FullData["authaddress"] = os.Getenv("AUTH_ADDRESS")
 
 			/* This is the template execution for 'index' */
-			err := tlp.ExecuteTemplate(w, "index.html", fullData)
-			if err != nil {
-				panic(err)
-			}
-
-		case "/load":
-
-			/* This is the template execution for 'about' */
-			err := tlp.ExecuteTemplate(w, "load.html", "")
-			if err != nil {
-				panic(err)
-			}
-
-		case "/save":
-
-			// Must save transactio  first, then save records
-
-			/* This is the template execution for 'about' */
-			err := tlp.ExecuteTemplate(w, "save.html", "")
-			if err != nil {
-				panic(err)
-			}
+			functions.ExecuteTemplate(w, "index.html", FullData)
 
 		}
 
@@ -116,6 +89,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 		/* Determine the URI path to de taken */
 		switch r.URL.Path {
+
+		case "/tokensignoff":
+
+			/* The index.html signoff JS triggers a http POST on /tokensignoff and the user's token id is removed*/
+			tokeninfo = nil
 
 		case "/tokensignin":
 
@@ -125,9 +103,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 				/* This function will verify user's token validity with Google GCP service */
 				tokeninfo, _ = auth.VerifyIDToken(strings.TrimPrefix(r.URL.RawQuery, "id_token="))
 
-				/* Inititalize DB connection */
-				db = mysql.DBInit()
-
 				/* Test if user exist in mySQL vdicalc.users table, and if not add user to the table*/
 				if mysql.QueryUser(db, tokeninfo.UserId) == false {
 
@@ -136,24 +111,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 				}
 			}
-
-		case "/tokensignoff":
-
-			/* The index.html signoff JS triggers a http POST on /tokensignoff and the user's token id is removed*/
-			tokeninfo = nil
-
-		case "/save":
-
-			/* This case deal with hitting the save button in the save.html window */
-
-			/* This function reads and parse the html form */
-			if err := r.ParseForm(); err != nil {
-				fmt.Fprintf(w, "ParseForm() err: %v", err)
-				return
-			}
-			r.ParseForm()
-
-			fmt.Println(r)
 
 		case "/":
 
@@ -169,7 +126,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			for key, values := range r.Form {
 
 				newKey := key + "selected"
-				fullData[newKey] = values[0]
+				FullData[newKey] = values[0]
 
 			}
 
@@ -180,17 +137,102 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			case "about":
 
 				/* This is the template execution for 'about' */
-				err := tlp.ExecuteTemplate(w, "about.html", "")
-				if err != nil {
-					panic(err)
-				}
+				functions.ExecuteTemplate(w, "about.html", "")
 
 			case "back", "guide":
 
-				/* This is the template execution for 'back' */
-				err := tlp.ExecuteTemplate(w, "index.html", fullData)
-				if err != nil {
-					panic(err)
+				/* This is the template execution for 'index' */
+				functions.ExecuteTemplate(w, "index.html", FullData)
+
+			case "load":
+
+				/* If not valid tokenID is present a error is raised requesting user to signin, else execute calculations */
+				if tokeninfo == nil {
+
+					/* This  function return error codes to html */
+					FullData["errorresults"] = functions.ReturnError("Warning", "You must be Signed In")
+
+					/* This is the template execution for 'index' */
+					functions.ExecuteTemplate(w, "index.html", FullData)
+
+					break
+
+				} else {
+
+					/* This function load saved configurations */
+					var data interface{} = mysql.LoadUserSaves(db, tokeninfo.UserId)
+					FullData["usersaves"] = data
+
+					/* This is the template execution for 'index' */
+					functions.ExecuteTemplate(w, "index.html", FullData)
+
+				}
+
+			case "usersaves":
+
+				/* This map variable store results from LoadSaveByID. This function retrieve data from an existing configuration. */
+				var data map[string]interface{} = mysql.LoadSaveByID(db, r.PostFormValue("usersaves"))
+
+				for key := range data {
+
+					FullData[key] = data[key]
+
+				}
+
+				/* This is the template execution for 'index' */
+				functions.ExecuteTemplate(w, "index.html", FullData)
+
+			case "save":
+
+				/* If not valid tokenID is present a error is raised requesting user to signin, else execute calculations */
+				if tokeninfo == nil {
+
+					/* This  function return error codes to html */
+					FullData["errorresults"] = functions.ReturnError("Warning", "You must be Signed In")
+
+					/* This is the template execution for 'index' */
+					functions.ExecuteTemplate(w, "index.html", FullData)
+
+					break
+
+				} else {
+
+					savename := (time.Now().Format("01-02-2006 15:04:05")) + " " + (r.PostFormValue("savename"))
+
+					/* This function build a SQL statement for inserting calculation data into vdicalc.vdicalc  */
+					sqlInsert, _ := mysql.SQLBuilderInsert("saves", map[string]interface{}{
+						"datetime":                                       time.Now(),
+						"guserid":                                        tokeninfo.UserId,
+						"savename":                                       strings.ToUpper(savename),
+						"vmcountselected":                                fmt.Sprint(FullData["vmcountselected"]),
+						"vmvcpucountselected":                            fmt.Sprint(FullData["vmvcpucountselected"]),
+						"vmvcpumhzselected":                              fmt.Sprint(FullData["vmvcpumhzselected"]),
+						"vmpercorecountselected":                         fmt.Sprint(FullData["vmpercorecountselected"]),
+						"vmdisplaycountselected":                         fmt.Sprint(FullData["vmdisplaycountselected"]),
+						"vmdisplayresolutionselected":                    fmt.Sprint(FullData["vmdisplayresolutionselected"]),
+						"vmmemorysizeselected":                           fmt.Sprint(FullData["vmmemorysizeselected"]),
+						"vmvideoramselected":                             fmt.Sprint(FullData["vmvideoramselected"]),
+						"vmdisksizeselected":                             fmt.Sprint(FullData["vmdisksizeselected"]),
+						"vmiopscountselected":                            fmt.Sprint(FullData["vmiopscountselected"]),
+						"vmiopsreadratioselected":                        fmt.Sprint(FullData["vmiopsreadratioselected"]),
+						"vmclonesizerefreshrateselected":                 fmt.Sprint(FullData["vmclonesizerefreshrateselected"]),
+						"hostsocketcountselected":                        fmt.Sprint(FullData["hostsocketcountselected"]),
+						"hostsocketcorescountselected":                   fmt.Sprint(FullData["hostsocketcorescountselected"]),
+						"hostmemoryoverheadselected":                     fmt.Sprint(FullData["hostmemoryoverheadselected"]),
+						"hostcoresoverheadselected":                      fmt.Sprint(FullData["hostcoresoverheadselected"]),
+						"storagecapacityoverheadselected":                fmt.Sprint(FullData["storagecapacityoverheadselected"]),
+						"storagedatastorevmcountselected":                fmt.Sprint(FullData["storagedatastorevmcountselected"]),
+						"storagededuperatioselected":                     fmt.Sprint(FullData["storagededuperatioselected"]),
+						"storageraidtypeselected":                        fmt.Sprint(FullData["storageraidtypeselected"]),
+						"virtualizationclusterhostsizeselected":          fmt.Sprint(FullData["virtualizationclusterhostsizeselected"]),
+						"virtualizationmanagementservertvmcountselected": fmt.Sprint(FullData["virtualizationmanagementservertvmcountselected"]),
+					})
+
+					/* This function execues the SQL estatement on Google SQL Run database */
+					mysql.Insert(db, sqlInsert)
+
+					/* This is the template execution for 'index' */
+					functions.ExecuteTemplate(w, "index.html", FullData)
 				}
 
 			case "vmprofile":
@@ -220,17 +262,17 @@ func handler(w http.ResponseWriter, r *http.Request) {
 					key = configuration.VMProfile04
 				}
 
-				fullData["vmvcpucountselected"] = key.Vcpucountselected
-				fullData["vmvcpumhzselected"] = key.Vcpumhz
-				fullData["vmpercorecountselected"] = key.Vmpercorecountselected
-				fullData["vmmemorysizeselected"] = key.Memorysize
-				fullData["vmdisplaycountselected"] = key.Displaycountselected
-				fullData["vmdisplayresolutionselected"] = key.Displayresolutionselected
-				fullData["vmvideoramselected"] = key.Videoramselected
-				fullData["vmdisksizeselected"] = key.Disksizeselected
-				fullData["vmiopscountselected"] = key.Iopscountselected
-				fullData["vmiopsreadratioselected"] = key.Iopsreadratioselected
-				fullData["vmclonesizerefreshrateselected"] = key.Clonesizerefreshrateselected
+				FullData["vmvcpucountselected"] = key.Vcpucountselected
+				FullData["vmvcpumhzselected"] = key.Vcpumhz
+				FullData["vmpercorecountselected"] = key.Vmpercorecountselected
+				FullData["vmmemorysizeselected"] = key.Memorysize
+				FullData["vmdisplaycountselected"] = key.Displaycountselected
+				FullData["vmdisplayresolutionselected"] = key.Displayresolutionselected
+				FullData["vmvideoramselected"] = key.Videoramselected
+				FullData["vmdisksizeselected"] = key.Disksizeselected
+				FullData["vmiopscountselected"] = key.Iopscountselected
+				FullData["vmiopsreadratioselected"] = key.Iopsreadratioselected
+				FullData["vmclonesizerefreshrateselected"] = key.Clonesizerefreshrateselected
 
 				/* Fallthrough ensures 'update' is always executed after 'vmprofile' */
 				fallthrough
@@ -240,29 +282,21 @@ func handler(w http.ResponseWriter, r *http.Request) {
 				/* If not valid tokenID is present a error is raised requesting user to signin, else execute calculations */
 				if tokeninfo == nil {
 
-					var errorList config.ErrorResultsConfiguration
-					error := config.ErrorConfiguration{Code: "Warning: ", Description: "You must be Signed In"}
-					errorList.Error = append(errorList.Error, error)
-					fullData["errorresults"] = errorList
+					/* This  function return error codes to html */
+					FullData["errorresults"] = functions.ReturnError("Warning", "You must be Signed In")
 
-					/* This is the template execution for 'update' */
-					err := tlp.ExecuteTemplate(w, "index.html", fullData)
-					if err != nil {
-						panic(err)
-					}
+					/* This is the template execution for 'index' */
+					functions.ExecuteTemplate(w, "index.html", FullData)
 
 					break
 
 				} else {
 
-					calculations.Calculate(fullData, r)
+					calculations.Calculate(FullData, r)
 				}
 
-				/* This is the template execution for 'update' */
-				err := tlp.ExecuteTemplate(w, "index.html", fullData)
-				if err != nil {
-					panic(err)
-				}
+				/* This is the template execution for 'index' */
+				functions.ExecuteTemplate(w, "index.html", FullData)
 
 				/* This conditional does not allow profile changes to be recorded on the database */
 				if r.PostFormValue("submitselect") != "vmprofile" {
@@ -272,17 +306,17 @@ func handler(w http.ResponseWriter, r *http.Request) {
 						"datetime":                      time.Now(),
 						"guserid":                       tokeninfo.UserId,
 						"ip":                            f.GetIP(r),
-						"hostresultscount":              fmt.Sprint(fullData["hostresultscount"]),
-						"hostresultsclockused":          fmt.Sprint(fullData["hostresultsclockused"]),
-						"hostresultsmemory":             fmt.Sprint(fullData["hostresultsmemory"]),
-						"hostresultsvmcount":            fmt.Sprint(fullData["hostresultsvmcount"]),
-						"storageresultscapacity":        fmt.Sprint(fullData["storageresultscapacity"]),
-						"storageresultsdatastorecount":  fmt.Sprint(fullData["storageresultsdatastorecount"]),
-						"storageresultsdatastoresize":   fmt.Sprint(fullData["storageresultsdatastoresize"]),
-						"storagedatastorefroentendiops": fmt.Sprint(fullData["storagedatastorefroentendiops"]),
-						"storagedatastorebackendiops":   fmt.Sprint(fullData["storagedatastorebackendiops"]),
-						"storageresultsfrontendiops":    fmt.Sprint(fullData["storageresultsfrontendiops"]),
-						"storageresultsbackendiops":     fmt.Sprint(fullData["storageresultsbackendiops"]),
+						"hostresultscount":              fmt.Sprint(FullData["hostresultscount"]),
+						"hostresultsclockused":          fmt.Sprint(FullData["hostresultsclockused"]),
+						"hostresultsmemory":             fmt.Sprint(FullData["hostresultsmemory"]),
+						"hostresultsvmcount":            fmt.Sprint(FullData["hostresultsvmcount"]),
+						"storageresultscapacity":        fmt.Sprint(FullData["storageresultscapacity"]),
+						"storageresultsdatastorecount":  fmt.Sprint(FullData["storageresultsdatastorecount"]),
+						"storageresultsdatastoresize":   fmt.Sprint(FullData["storageresultsdatastoresize"]),
+						"storagedatastorefroentendiops": fmt.Sprint(FullData["storagedatastorefroentendiops"]),
+						"storagedatastorebackendiops":   fmt.Sprint(FullData["storagedatastorebackendiops"]),
+						"storageresultsfrontendiops":    fmt.Sprint(FullData["storageresultsfrontendiops"]),
+						"storageresultsbackendiops":     fmt.Sprint(FullData["storageresultsbackendiops"]),
 					})
 
 					/* This function execues the SQL estatement on Google SQL Run database */

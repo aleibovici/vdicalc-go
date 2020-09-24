@@ -12,6 +12,7 @@ variable:
   guide: "Guide"
   load: "Load"
   save: "Save"
+  usersaves: {}
 
 # These are the VMConfigurations struct values
 vm:

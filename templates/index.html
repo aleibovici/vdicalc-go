@@ -523,37 +523,34 @@
           </div>
           <tfoot></tfoot>
         </table>
-
         <p></p>
         <div>
+          <table align="center">
+            <td>
+              <select style="width: 250px" id="usersaves" name="usersaves"
+                onchange="document.getElementById('submitselect').value='usersaves';this.form.submit()">
+                {{range $key, $value := .usersaves}}
+                <option value="{{ $value }}">{{ $key }}</option>
+                {{end}}
+              </select>
+            </td>
+            <td>
+              <button class="blueButton" id="load" name="load"
+                onclick="document.getElementById('submitselect').value='load';this.form.submit()">{{ .load }}</button>
+            </td>
+            <td>
+              <input id="savename" name="savename" size="30" maxlength="30" value="" />
+            </td>
+            <td>
+              <button class="blueButton" id="save" name="save"
+                onclick="document.getElementById('submitselect').value='save';this.form.submit()">{{ .save }}</button>
+            </td>
+          </table>
+          <br />
           <button class="blueButton" id="update" name="update"
             onclick="document.getElementById('submitselect').value='update';this.form.submit()">{{ .update }}</button>
           <button class="blueButton" id="print" name="print"
             onclick="window.print();return false;">{{ .print }}</button>
-          <button class="blueButton" id="load" name="load"
-            onclick="return popup('http://localhost:8080/load', 'Load')" disabled="disabled">{{ .load }}</button>
-          <SCRIPT TYPE="text/javascript">
-            function popup(mylink, windowname) {
-              if (!window.focus) return true;
-              var href;
-              if (typeof (mylink) == 'string') href = mylink;
-              else href = mylink.href;
-              window.open(href, 'windowname', 'width=600,height=200,scrollbars=no,titlebar=no,resizable=no');
-              return false;
-            }
-          </SCRIPT>
-          <button class="blueButton" id="save" name="save"
-            onclick="return popup('http://localhost:8080/save', 'Save')" disabled="disabled">{{ .save }}</button>
-          <SCRIPT TYPE="text/javascript">
-            function popup(mylink, windowname) {
-              if (!window.focus) return true;
-              var href;
-              if (typeof (mylink) == 'string') href = mylink;
-              else href = mylink.href;
-              window.open(href, 'windowname', 'width=600,height=200,scrollbars=no,titlebar=no,resizable=no');
-              return false;
-            }
-          </SCRIPT>
           <button class="blueButton" id="about" name="about"
             onclick="document.getElementById('submitselect').value='about';this.form.submit()">{{ .about }}</button>
           <button target="_blank" class="blueButton" id="guide" name="guide"

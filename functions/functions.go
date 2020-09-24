@@ -4,12 +4,46 @@ package functions
 It must be imported using "vdicalc/functions" */
 
 import (
+	"html/template"
+	"io"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
+	"vdicalc/config"
 	c "vdicalc/config"
 )
+
+// ReturnError exported
+/* This public function return error codes to html */
+func ReturnError(code string, description string) config.ErrorResultsConfiguration {
+
+	var errorList config.ErrorResultsConfiguration
+	error := config.ErrorConfiguration{Code: code + ": ", Description: description}
+	errorList.Error = append(errorList.Error, error)
+
+	return errorList
+
+}
+
+// ExecuteTemplate function
+/* This public function i reponsible for executing any templates */
+func ExecuteTemplate(wr io.Writer, name string, data interface{}) {
+
+	var tlp *template.Template
+	var err error
+
+	tlp, err = template.ParseGlob("./templates/*")
+	if err != nil {
+		panic(err)
+	}
+
+	err = tlp.ExecuteTemplate(wr, name, data)
+	if err != nil {
+		panic(err)
+	}
+
+}
 
 // StrtoInt function
 /* This public function convert string to int */
@@ -69,14 +103,15 @@ It expect type 'Configurations' as defined in 'config.go' */
 func DataLoad(class c.Configurations) map[string]interface{} {
 
 	data := map[string]interface{}{
-		"title":    class.Variable.Title,
-		"titlesub": class.Variable.Titlesub,
-		"update":   class.Variable.Update,
-		"about":    class.Variable.About,
-		"print":    class.Variable.Print,
-		"guide":    class.Variable.Guide,
-		"load":     class.Variable.Load,
-		"save":     class.Variable.Save,
+		"title":     class.Variable.Title,
+		"titlesub":  class.Variable.Titlesub,
+		"update":    class.Variable.Update,
+		"about":     class.Variable.About,
+		"print":     class.Variable.Print,
+		"guide":     class.Variable.Guide,
+		"load":      class.Variable.Load,
+		"save":      class.Variable.Save,
+		"usersaves": class.Variable.Usersaves,
 		/* server is used for internal and backend variables interaction with client */
 		"authaddress": class.Server.AuthAddress,
 		/* vm are used to display form items for hosts */

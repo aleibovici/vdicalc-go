@@ -12,6 +12,13 @@ import (
 	_ "github.com/doug-martin/goqu/dialect/mysql" // import the dialect
 )
 
+// // DBSaves exported
+// /* This struc is used for retrieving saved data with QuerySaves */
+// type DBSaves struct {
+// 	datetime string
+// 	savename string
+// }
+
 // DBInit export
 /* This function initializes GCP mysql database connectivity */
 func DBInit() *sql.DB {
@@ -58,7 +65,14 @@ func Insert(db *sql.DB, sqlInsert string) error {
 /* This public function retrieve a single user from vdicalc.users */
 func QueryUser(db *sql.DB, UserID string) bool {
 
-	sqlSelect, _ := sqlBuilderSelectWhere("vdicalc.users", map[string]interface{}{
+	type myStruct struct {
+		id       string
+		datetime string
+		guserid  string
+		email    string
+	}
+
+	sqlSelect, _ := sqlBuilderSelectWhere("vdicalc.users", "*", map[string]interface{}{
 		"guserid": UserID,
 	})
 
@@ -89,6 +103,144 @@ func QueryUser(db *sql.DB, UserID string) bool {
 
 }
 
+// LoadUserSaves exported
+/* This public function is responsible for loading all saves from a user */
+func LoadUserSaves(db *sql.DB, UserID string) map[string]interface{} {
+
+	var (
+		Id       string
+		Savename string
+	)
+
+	sqlSelect, _ := sqlBuilderSelectWhere("vdicalc.saves", "`id`, `savename` ",
+		map[string]interface{}{
+			"guserid": UserID,
+		})
+
+	rows, err := db.Query(sqlSelect)
+	if err != nil {
+		// handle it
+	}
+
+	defer rows.Close()
+
+	allSaves := make(map[string]interface{})
+
+	/* 	This adds the first entry into the datase to fix an issue that happens
+	when the combobox has only a single entry and selection is not possible. */
+	allSaves["-"] = "-"
+
+	for rows.Next() {
+		err = rows.Scan(&Id, &Savename)
+		if err != nil {
+			// handle it
+		}
+		newKey := Id
+		allSaves[Savename] = newKey
+	}
+
+	return allSaves
+
+}
+
+// LoadSaveByID exported
+/* This public function is responsible for loading all saves from a user by ID.
+The ID is obtained from a dropdown manu that loads the IDs and SaveName using LoadUserSaves  */
+func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
+
+	var (
+		vmcountselected                                int
+		vmvcpucountselected                            string
+		vmvcpumhzselected                              int
+		vmpercorecountselected                         string
+		vmdisplaycountselected                         string
+		vmdisplayresolutionselected                    string
+		vmmemorysizeselected                           string
+		vmvideoramselected                             string
+		vmdisksizeselected                             int
+		vmiopscountselected                            string
+		vmiopsreadratioselected                        string
+		vmclonesizerefreshrateselected                 string
+		hostsocketcountselected                        string
+		hostsocketcorescountselected                   string
+		hostmemoryoverheadselected                     int
+		hostcoresoverheadselected                      string
+		storagecapacityoverheadselected                string
+		storagedatastorevmcountselected                string
+		storagededuperatioselected                     string
+		storageraidtypeselected                        string
+		virtualizationclusterhostsizeselected          string
+		virtualizationmanagementservertvmcountselected string
+	)
+
+	sqlSelect, _ := sqlBuilderSelectWhere("vdicalc.saves", "`vmcountselected`, `vmvcpucountselected`, `vmvcpumhzselected`, `vmpercorecountselected`, `vmdisplaycountselected`, `vmdisplayresolutionselected`, `vmmemorysizeselected`, `vmvideoramselected`, `vmdisksizeselected`, `vmiopscountselected`, `vmiopsreadratioselected`, `vmclonesizerefreshrateselected`, `hostsocketcountselected`, `hostsocketcorescountselected`, `hostmemoryoverheadselected`, `hostcoresoverheadselected`, `storagecapacityoverheadselected`, `storagedatastorevmcountselected`, `storagededuperatioselected`, `storageraidtypeselected`, `virtualizationclusterhostsizeselected`, `virtualizationmanagementservertvmcountselected`",
+		map[string]interface{}{
+			"id": ID,
+		})
+
+	rows, err := db.Query(sqlSelect)
+	if err != nil {
+		fmt.Println("no result")
+	}
+
+	defer rows.Close()
+
+	result := make(map[string]interface{})
+
+	for rows.Next() {
+		err = rows.Scan(&vmcountselected, &vmvcpucountselected, &vmvcpumhzselected, &vmpercorecountselected, &vmdisplaycountselected, &vmdisplayresolutionselected, &vmmemorysizeselected, &vmvideoramselected, &vmdisksizeselected, &vmiopscountselected, &vmiopsreadratioselected, &vmclonesizerefreshrateselected, &hostsocketcountselected, &hostsocketcorescountselected, &hostmemoryoverheadselected, &hostcoresoverheadselected, &storagecapacityoverheadselected, &storagedatastorevmcountselected, &storagededuperatioselected, &storageraidtypeselected, &virtualizationclusterhostsizeselected, &virtualizationmanagementservertvmcountselected)
+		if err != nil {
+			// handle it
+		}
+
+		result["vmcountselected"] = vmcountselected
+		result["vmvcpucountselected"] = vmvcpucountselected
+		result["vmvcpumhzselected"] = vmvcpumhzselected
+		result["vmpercorecountselected"] = vmpercorecountselected
+		result["vmdisplaycountselected"] = vmdisplaycountselected
+		result["vmdisplayresolutionselected"] = vmdisplayresolutionselected
+		result["vmmemorysizeselected"] = vmmemorysizeselected
+		result["vmvideoramselected"] = vmvideoramselected
+		result["vmdisksizeselected"] = vmdisksizeselected
+		result["vmiopscountselected"] = vmiopscountselected
+		result["vmiopsreadratioselected"] = vmiopsreadratioselected
+		result["vmclonesizerefreshrateselected"] = vmclonesizerefreshrateselected
+		result["hostsocketcountselected"] = hostsocketcountselected
+		result["hostsocketcorescountselected"] = hostsocketcorescountselected
+		result["hostmemoryoverheadselected"] = hostmemoryoverheadselected
+		result["hostcoresoverheadselected"] = hostcoresoverheadselected
+		result["storagecapacityoverheadselected"] = storagecapacityoverheadselected
+		result["storagedatastorevmcountselected"] = storagedatastorevmcountselected
+		result["storagededuperatioselected"] = storagededuperatioselected
+		result["storageraidtypeselected"] = storageraidtypeselected
+		result["virtualizationclusterhostsizeselected"] = virtualizationclusterhostsizeselected
+		result["virtualizationmanagementservertvmcountselected"] = virtualizationmanagementservertvmcountselected
+
+	}
+
+	return result
+
+}
+
+// sqlBuilderSelectWhere export
+// This functions uses goqu packages to create a mySQL compatible SQL statement
+// 'table' represent the table to be queried
+// 'fields' represent all the field to be retrieved with the query
+// 's' is a map interface with conditions (ex. guserid = 09808098908 )
+// github.com/doug-martin/goqu
+func sqlBuilderSelectWhere(table string, fields string, s map[string]interface{}) (string, []interface{}) {
+
+	dialect := goqu.Dialect("mysql")
+	ds := dialect.From(table).Select(goqu.L(fields)).Where(goqu.Ex(s))
+
+	sql, args, err := ds.ToSQL()
+	if err != nil {
+		fmt.Println("An error occurred while generating the SQL", err.Error())
+	}
+
+	return sql, args
+}
+
 // CreateUser export
 /* This function inserts new user into vdicalc.users */
 func CreateUser(db *sql.DB, userid, email string) {
@@ -103,22 +255,6 @@ func CreateUser(db *sql.DB, userid, email string) {
 	/* This function execues the SQL estatement on Google SQL Run database */
 	Insert(db, sqlInsert)
 
-}
-
-// sqlBuilderSelectWhere export
-// This functions uses goqu packages to create a mySQL compatible SQL statement
-// github.com/doug-martin/goqu
-func sqlBuilderSelectWhere(table string, s map[string]interface{}) (string, []interface{}) {
-
-	dialect := goqu.Dialect("mysql")
-	ds := dialect.From(table).Where(goqu.Ex(s))
-
-	sql, args, err := ds.ToSQL()
-	if err != nil {
-		fmt.Println("An error occurred while generating the SQL", err.Error())
-	}
-
-	return sql, args
 }
 
 // SQLBuilderInsert export

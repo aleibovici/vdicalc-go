@@ -33,14 +33,15 @@ type ServerConfigurations struct {
 
 // VariableConfigurations exported
 type VariableConfigurations struct {
-	Title    string
-	Titlesub string
-	Update   string
-	About    string
-	Print    string
-	Guide    string
-	Load     string
-	Save     string
+	Title     string
+	Titlesub  string
+	Update    string
+	About     string
+	Print     string
+	Guide     string
+	Load      string
+	Save      string
+	Usersaves map[string]interface{}
 }
 
 // VMConfigurations exported
