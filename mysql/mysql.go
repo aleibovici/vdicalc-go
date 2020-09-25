@@ -8,6 +8,7 @@ import (
 	"time"
 	"vdicalc/functions"
 
+	_ "github.com/go-sql-driver/mysql"	// This blank entry is required to enable mysql connectivity
 	"github.com/doug-martin/goqu"
 	_ "github.com/doug-martin/goqu/dialect/mysql" // import the dialect
 )
