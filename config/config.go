@@ -1,7 +1,7 @@
 package config
 
 import (
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql"	// This blank entry is required to enable mysql connectivity
 )
 
 /* This package contains external config used across the app.
