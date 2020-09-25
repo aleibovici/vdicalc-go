@@ -309,7 +309,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 				if r.PostFormValue("submitselect") != "vmprofile" {
 
 					/* This function build a SQL statement for inserting calculation data into vdicalc.vdicalc  */
-					sqlInsert, _ := mysql.SQLBuilderInsert("vdicalc", map[string]interface{}{
+					sqlInsert, _ := mysql.SQLBuilderInsert("transactions", map[string]interface{}{
 						"datetime":                      time.Now(),
 						"guserid":                       tokeninfo.UserId,
 						"ip":                            functions.GetIP(r),
