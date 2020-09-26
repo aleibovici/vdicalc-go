@@ -1,7 +1,15 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
   <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DNDQC1YRBV"></script>
     <script>
@@ -18,14 +26,18 @@
       content="893974452758-3kri5mk29j09q273ftqs0r1kdoh8gifi.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 
-    <meta charset="utf-8" />
     <title>{{ .title }}</title>
     <link href="../static/stylesheets/vdicalc.css" rel="stylesheet" type="text/css" />
   </head>
 
-  <body>
-    <!-- Google Sign-in -->
-    <div align="right" class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" data-longtitle="true"></div>
+  <body class="html">
+
+    <div class="container-fluid">
+      <!-- Google Sign-in -->
+      <div align="right" class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" data-longtitle="true"></div>
+      <!-- Google Sign-out -->
+      <div align="right"><a href="#" onclick="signOut();">Sign out</a></div>
+    </div>
     <script>
       function onSignIn(googleUser) {
 
@@ -37,9 +49,7 @@
         xhr.send('idtoken=' + id_token + "&method=google");
       }
     </script>
-
     <!-- Google Sign-out -->
-    <div align="right"><a href="#" onclick="signOut();">Sign out</a></div>
     <script>
       function signOut() {
         var auth2 = gapi.auth2.getAuthInstance();
@@ -52,514 +62,479 @@
       }
     </script>
 
-    <div style="border-bottom:1px;">
+    <div class="container-fluid" style="border-bottom:1px;">
       <h1 style="text-align:center;">{{ .title }}</h1>
       <h4 style="text-align:center;">{{ .titlesub }}</h4>
     </div>
 
-    <div>
-      <form method="POST" action="/">
-        <input type="hidden" name="submitselect" value="" id="submitselect">
-        <table class="blueTable">
-          <thead></thead>
-          <div>
-            <tr>
-              <td>
-                <label>{{ .vmprofilelabel }}</label>
-                <select id="vmprofile" name="vmprofile"
-                  onchange="document.getElementById('submitselect').value='vmprofile';this.form.submit()">
-                  {{range $key, $value := .vmprofile}}
-                  <option value="{{ $value }}" {{ if (eq $value $.vmprofileselected) }}selected{{ end }}>{{ $key }}
-                  </option>
-                  {{end}}
-                </select>
-                <br></br>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label>{{ .vmcountlabel }}</label>
-              </td>
-              <td>
-                <input id="vmcount" name="vmcount" size="5" maxlength="5" value="{{ .vmcountselected }}" />
-              </td>
-              <td>
-                <label>{{ .vmvcpucountlabel }}</label>
-              </td>
-              <td style="text-align:left">
-                <select id="vmvcpucount" name="vmvcpucount">
-                  {{range $key, $value := .vmvcpucount}}
-                  <option value="{{ $value }}" {{ if (eq $value $.vmvcpucountselected) }}selected{{ end }}>
-                    {{ $key }}
-                  </option>
-                  {{end}}
-                </select>
-              </td>
-              <td>
-                <label>{{ .vmvcpumhzlabel }}</label>
-              </td>
-              <td>
-                <input id="vmvcpumhz" name="vmvcpumhz" title='{{ .vmvcpumhztooltip }}' size="5" maxlength="5"
-                  value="{{ .vmvcpumhzselected }}" />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label>{{ .vmpercorecountlabel }}</label>
-              </td>
-              <td>
-                <select id="vmpercorecount" name="vmpercorecount">
-                  {{range $key, $value := .vmpercorecount}}
-                  <option value="{{ $value }}" {{ if (eq $value $.vmpercorecountselected) }}selected{{ end }}>{{ $key }}
-                  </option>
-                  {{end}}
-                </select>
-              </td>
-              <td>
-                <label>{{ .vmvideoramlabel }}</label>
-              </td>
-              <td>
-                <select id="vmvideoram" name="vmvideoram">
-                  {{range $key, $value := .vmvideoram}}
-                  <option value="{{ $value }}" {{ if (eq $value $.vmvideoramselected) }}selected{{ end }}>{{ $key }}
-                  </option>
-                  {{end}}
-                </select>
-              </td>
-              <td>
-                <label>{{ .vmdisksizelabel }}</label>
-              </td>
-              <td>
-                <input id="vmdisksize" name="vmdisksize" size="4" maxlength="4" value="{{ .vmdisksizeselected }}" />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label>{{ .vmmemorysizelabel }}</label>
-              </td>
-              <td>
-                <input id="vmmemorysize" name="vmmemorysize" type="text" size="7" maxlength="7"
-                  value="{{ .vmmemorysizeselected }}" />
-              </td>
-              <td>
-                <label>{{ .vmdisplaycountlabel }}</label>
-              </td>
-              <td>
-                <select id="vmdisplaycount" name="vmdisplaycount">
-                  {{range $key, $value := .vmdisplaycount}}
-                  <option value="{{ $value }}" {{ if (eq $value $.vmdisplaycountselected) }}selected{{ end }}>{{ $key }}
-                  </option>
-                  {{end}}
-                </select>
-              </td>
-              <td>
-                <label>{{ .vmdisplayresolutionlabel }}</label>
-              </td>
-              <td>
-                <select id="vmdisplayresolution" name="vmdisplayresolution">
-                  {{range $key, $value := .vmdisplayresolution}}
-                  <option value="{{ $value }}" {{ if (eq $value $.vmdisplayresolutionselected) }}selected{{ end }}>
-                    {{ $key }}
-                  </option>
-                  {{end}}
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label>{{ .vmiopscountlabel }}</label>
-              </td>
-              <td>
-                <input id="vmiopscount" name="vmiopscount" title='{{ .vmiopscounttooltip }}' type="text" size="3"
-                  maxlength="3" value="{{ .vmiopscountselected }}" />
-              </td>
-              <td>
-                <label>{{ .vmiopsreadratiolabel }}</label>
-              </td>
-              <td>
-                <input id="vmiopsreadratio" name="vmiopsreadratio" title='{{ .vmiopsreadratiotooltip }}' type="text"
-                  size="3" maxlength="3" value="{{ .vmiopsreadratioselected }}" />
-              </td>
-              <td>
-                <label>{{ .vmclonesizerefreshratelabel }}</label>
-              </td>
-              <td>
-                <select id="vmclonesizerefreshrate" name="vmclonesizerefreshrate"
-                  title='{{ .vmclonesizerefreshratetooltip }}'>
-                  {{range $key, $value := .vmclonesizerefreshrate}}
-                  <option value="{{ $value }}" {{ if (eq $value $.vmclonesizerefreshrateselected) }}selected{{ end }}>
-                    {{ $key }}
-                  </option>
-                  {{end}}
-                </select>
-              </td>
-            </tr>
-          </div>
-          <tfoot></tfoot>
-        </table>
+    <br>
 
-        <table class="blueTable">
-          <thead>Host</thead>
-          <tr>
-            <td>
-              <label>{{ .hostsocketcountlabel }}</label>
-            </td>
-            <td>
-              <select id="hostsocketcount" name="hostsocketcount">
+    <div class="container-fluid">
+      <form method="POST" action="/">
+
+        <input type="hidden" name="submitselect" value="" id="submitselect">
+
+        <div class="container-fluid container-input form-group">
+
+          <div class="row top-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .vmprofilelabel }}</label>
+
+              <select class="form-control form-control-sm" style="width: fit-content;" id="vmprofile" name="vmprofile"
+                onchange="document.getElementById('submitselect').value='vmprofile';this.form.submit()">
+                {{range $key, $value := .vmprofile}}
+                <option value="{{ $value }}" {{ if (eq $value $.vmprofileselected) }}selected{{ end }}>{{ $key }}
+                </option>
+                {{end}}
+              </select>
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+          </div>
+          <br>
+
+          <div class="row top-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .vmcountlabel }}</label>
+            </div>
+            <div class="col-sm input-group input-group-sm">
+              <input type="text" class="form-control" id="vmcount" name="vmcount" maxlength="5"
+                value="{{ .vmcountselected }}" />
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .vmvcpucountlabel }}</label>
+            </div>
+            <div class="col-sm">
+              <select class="form-control form-control-sm" style="width: fit-content;" id="vmvcpucount"
+                name="vmvcpucount">
+                {{range $key, $value := .vmvcpucount}}
+                <option value="{{ $value }}" {{ if (eq $value $.vmvcpucountselected) }}selected{{ end }}>
+                  {{ $key }}
+                </option>
+                {{end}}
+              </select>
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .vmvcpumhzlabel }}</label>
+            </div>
+            <div class="col-sm input-group input-group-sm">
+              <input type="text" class="form-control" id="vmvcpumhz" name="vmvcpumhz" data-toggle="tooltip"
+                title='{{ .vmvcpumhztooltip }}' maxlength="5" value="{{ .vmvcpumhzselected }}" />
+            </div>
+          </div>
+
+          <div class="row top-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .vmpercorecountlabel }}</label>
+            </div>
+            <div class="col-sm">
+              <select class="form-control form-control-sm" style="width: fit-content;" id="vmpercorecount"
+                name="vmpercorecount">
+                {{range $key, $value := .vmpercorecount}}
+                <option value="{{ $value }}" {{ if (eq $value $.vmpercorecountselected) }}selected{{ end }}>{{ $key }}
+                </option>
+                {{end}}
+              </select>
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .vmvideoramlabel }}</label>
+            </div>
+            <div class="col-sm">
+              <select class="form-control form-control-sm" style="width: fit-content;" id="vmvideoram"
+                name="vmvideoram">
+                {{range $key, $value := .vmvideoram}}
+                <option value="{{ $value }}" {{ if (eq $value $.vmvideoramselected) }}selected{{ end }}>{{ $key }}
+                </option>
+                {{end}}
+              </select>
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .vmdisksizelabel }}</label>
+            </div>
+            <div class="col-sm input-group input-group-sm">
+              <input type="text" class="form-control" id="vmdisksize" name="vmdisksize" maxlength="4"
+                value="{{ .vmdisksizeselected }}" />
+            </div>
+          </div>
+
+          <div class="row top-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .vmmemorysizelabel }}</label>
+            </div>
+            <div class="col-sm input-group input-group-sm">
+              <input type="text" class="form-control" id="vmmemorysize" name="vmmemorysize" maxlength="7"
+                value="{{ .vmmemorysizeselected }}" />
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .vmdisplaycountlabel }}</label>
+            </div>
+            <div class="col-sm">
+              <select class="form-control form-control-sm" style="width: fit-content;" id="vmdisplaycount"
+                name="vmdisplaycount">
+                {{range $key, $value := .vmdisplaycount}}
+                <option value="{{ $value }}" {{ if (eq $value $.vmdisplaycountselected) }}selected{{ end }}>{{ $key }}
+                </option>
+                {{end}}
+              </select>
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .vmdisplayresolutionlabel }}</label>
+            </div>
+            <div class="col-sm">
+              <select class="form-control form-control-sm" style="width: fit-content;" id="vmdisplayresolution"
+                name="vmdisplayresolution">
+                {{range $key, $value := .vmdisplayresolution}}
+                <option value="{{ $value }}" {{ if (eq $value $.vmdisplayresolutionselected) }}selected{{ end }}>
+                  {{ $key }}
+                </option>
+                {{end}}
+              </select>
+            </div>
+          </div>
+
+          <div class="row top-buffer bottom-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .vmiopscountlabel }}</label>
+            </div>
+            <div class="col-sm input-group input-group-sm">
+              <input type="text" class="form-control" id="vmiopscount" name="vmiopscount" data-toggle="tooltip"
+                title='{{ .vmiopscounttooltip }}' maxlength="3" value="{{ .vmiopscountselected }}" />
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .vmiopsreadratiolabel }}</label>
+            </div>
+            <div class="col-sm input-group input-group-sm">
+              <input type="text" class="form-control" id="vmiopsreadratio" name="vmiopsreadratio" data-toggle="tooltip"
+                title='{{ .vmiopsreadratiotooltip }}' maxlength="3" value="{{ .vmiopsreadratioselected }}" />
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .vmclonesizerefreshratelabel }}</label>
+            </div>
+            <div class="col-sm">
+              <select class="form-control form-control-sm" style="width: fit-content;" id="vmclonesizerefreshrate"
+                name="vmclonesizerefreshrate" data-toggle="tooltip" title='{{ .vmclonesizerefreshratetooltip }}'>
+                {{range $key, $value := .vmclonesizerefreshrate}}
+                <option value="{{ $value }}" {{ if (eq $value $.vmclonesizerefreshrateselected) }}selected{{ end }}>
+                  {{ $key }}
+                </option>
+                {{end}}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        Host
+
+        <div class="container-fluid container-input form-group">
+          <div class="row top-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .hostsocketcountlabel }}</label>
+            </div>
+            <div class="col-sm">
+              <select class="form-control form-control-sm" style="width: fit-content;" id="hostsocketcount"
+                name="hostsocketcount">
                 {{range $key, $value := .hostsocketcount}}
                 <option value="{{ $value }}" {{ if (eq $value $.hostsocketcountselected) }}selected{{ end }}>{{ $key }}
                 </option>
                 {{end}}
               </select>
-            </td>
-            <td>
-              <label>{{ .hostmemoryoverheadlabel }}</label>
-            </td>
-            <td>
-              <input id="hostmemoryoverhead" name="hostmemoryoverhead" title='{{ .hostmemoryoverheadtooltip }}'
-                type="text" size="3" maxlength="3" value="{{ .hostmemoryoverheadselected }}" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label>{{ .hostsocketcorescountlabel }}</label>
-            </td>
-            <td>
-              <select id="hostsocketcorescount" name="hostsocketcorescount">
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .hostmemoryoverheadlabel }}</label>
+            </div>
+            <div class="col-sm input-group input-group-sm">
+              <input type="text" class="form-control" id="hostmemoryoverhead" name="hostmemoryoverhead"
+                data-toggle="tooltip" title='{{ .hostmemoryoverheadtooltip }}' maxlength="3"
+                value="{{ .hostmemoryoverheadselected }}" />
+            </div>
+          </div>
+
+          <div class="row top-buffer bottom-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .hostsocketcorescountlabel }}</label>
+            </div>
+            <div class="col-sm">
+              <select class="form-control form-control-sm" style="width: fit-content;" id="hostsocketcorescount"
+                name="hostsocketcorescount">
                 {{range $key, $value := .hostsocketcorescount}}
                 <option value="{{ $value }}" {{ if (eq $value $.hostsocketcorescountselected) }}selected{{ end }}>
                   {{ $key }}
                 </option>
                 {{end}}
               </select>
-            </td>
-            <td>
-              <label>{{ .hostcoresoverheadlabel }}</label>
-            </td>
-            <td>
-              <input id="hostcoresoverhead" name="hostcoresoverhead" title='{{ .hostcoresoverheadtooltip }}' type="text"
-                size="3" maxlength="2" value="{{ .hostcoresoverheadselected }}" />
-            </td>
-          </tr>
-          <tfoot></tfoot>
-        </table>
-
-        <table class="blueTable">
-          <thead>Storage</thead>
-          <div>
-            <tr>
-              <td>
-                <label>{{ .storagecapacityoverheadlabel }}</label>
-              </td>
-              <td>
-                <select id="storagecapacityoverhead" name="storagecapacityoverhead"
-                  title='{{ .storagecapacityoverheadtooltip }}'>
-                  {{range $key, $value := .storagecapacityoverhead}}
-                  <option value="{{ $value }}" {{ if (eq $value $.storagecapacityoverheadselected) }}selected{{ end }}>
-                    {{ $key }}
-                  </option>
-                  {{end}}
-                </select>
-              </td>
-              <td>
-                <label>{{ .storagedatastorevmcountlabel }}</label>
-              </td>
-              <td>
-                <input id="storagedatastorevmcount" name="storagedatastorevmcount"
-                  title='{{ .storagedatastorevmcounttooltip }}' type="text" size="4" maxlength="4"
-                  value="{{ .storagedatastorevmcountselected }}" />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label>{{ .storagededuperatiolabel }}</label>
-              </td>
-              <td>
-                <input id="storagededuperatio" name="storagededuperatio" title='{{ .storagededuperatiotooltip }}'
-                  type="text" size="3" maxlength="2" value="{{ .storagededuperatioselected }}" />
-              </td>
-              <td>
-                <label>{{ .storageraidtypelabel }}</label>
-              </td>
-              <td>
-                <select id="storageraidtype" name="storageraidtype">
-                  {{range $key, $value := .storageraidtype}}
-                  <option value="{{ $value }}" {{ if (eq $value $.storageraidtypeselected) }}selected{{ end }}>
-                    {{ $key }}
-                  </option>
-                  {{end}}
-                </select>
-              </td>
-            </tr>
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .hostcoresoverheadlabel }}</label>
+            </div>
+            <div class="col-sm input-group input-group-sm">
+              <input type="text" class="form-control" id="hostcoresoverhead" name="hostcoresoverhead"
+                data-toggle="tooltip" title='{{ .hostcoresoverheadtooltip }}' maxlength="2"
+                value="{{ .hostcoresoverheadselected }}" />
+            </div>
           </div>
-          <tfoot></tfoot>
-        </table>
+        </div>
 
-        <table class="blueTable">
-          <thead>Virtualization</thead>
-          <div>
-            <tr>
-              <td>
-                <label>Cluster Size</label>
-              </td>
-              <td>
-                <select id="virtualizationclusterhostsize" name="virtualizationclusterhostsize"
-                  title='{{ .virtualizationclusterhostsizetooltip }}'>
-                  {{range $key, $value := .virtualizationclusterhostsize}}
-                  <option value="{{ $value }}"
-                    {{ if (eq $value $.virtualizationclusterhostsizeselected) }}selected{{ end }}>
-                    {{ $key }}
-                  </option>
-                  {{end}}
-                </select>
-              </td>
-              <td>
-                <label>{{ .virtualizationmanagementservertvmcountlabel }}</label>
-              </td>
-              <td>
-                <input id="virtualizationmanagementservertvmcount" name="virtualizationmanagementservertvmcount"
-                  title='{{ .virtualizationmanagementservertvmcounttooltip }}' type="text" size="5" maxlength="5"
-                  value="{{ .virtualizationmanagementservertvmcountselected }}" />
-              </td>
-            </tr>
-          </div>
-          <tfoot></tfoot>
-        </table>
+        Storage
 
-        <table class="greyTable">
-          <thead>Results</thead>
-          <div>
-            <tr>
-              <td>
-                <label>{{ .hostresultscountlabel }}</label>
-              </td>
-              <td>
-                <table class="hostResults">
-                  <tr>
-                    <td>
-                      <label>{{ .hostresultscount }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-              <td></td>
-              <td>
-                <label>{{ .storageresultscapacitylabel }}</label>
-              </td>
-              <td>
-                <table class="storageResults">
-                  <tr>
-                    <td>
-                      <label>{{ .storageresultscapacity }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            <tr>
-              <td>
-                <label>{{ .hostresultsclockusedlabel }}</label>
-              </td>
-              <td>
-                <table class="hostResults">
-                  <tr>
-                    <td>
-                      <label>{{ .hostresultsclockused }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-              <td></td>
-              <td>
-                <label>{{ .storageresultsdatastoresizelabel }}</label>
-              </td>
-              <td>
-                <table class="storageResults">
-                  <tr>
-                    <td>
-                      <label>{{ .storageresultsdatastoresize }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label>{{ .hostresultsvmcountlabel }}</label>
-              </td>
-              <td>
-                <table class="hostResults">
-                  <tr>
-                    <td>
-                      <label>{{ .hostresultsvmcount }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-              <td></td>
-              <td>
-                <label>{{ .storageresultsdatastorecountlabel }}</label>
-              </td>
-              <td>
-                <table class="storageResults">
-                  <tr>
-                    <td>
-                      <label>{{ .storageresultsdatastorecount }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label>{{ .hostresultsmemorylabel }}</label>
-              </td>
-              <td>
-                <table class="hostResults">
-                  <tr>
-                    <td>
-                      <label>{{ .hostresultsmemory }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-              <td></td>
-              <td>
-                <label>{{ .storageresultsdatastorefroentendiopslabel }}</label>
-              </td>
-              <td>
-                <table class="storageResults">
-                  <tr>
-                    <td>
-                      <label>{{ .storagedatastorefroentendiops }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label>{{ .virtualizationresultsclustercountlabel }}</label>
-              </td>
-              <td>
-                <table class="virtualizationResults">
-                  <tr>
-                    <td>
-                      <label>{{ .virtualizationresultsclustercount }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-              <td></td>
-              <td>
-                <label>{{ .storageresultsdatastorebackendiopslabel }}</label>
-              </td>
-              <td>
-                <table class="storageResults">
-                  <tr>
-                    <td>
-                      <label>{{ .storagedatastorebackendiops }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label>{{ .virtualizationresultsmanagementservercountlabel }}</label>
-              </td>
-              <td>
-                <table class="virtualizationResults">
-                  <tr>
-                    <td>
-                      <label>{{ .virtualizationresultsmanagementservercount }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-              <td></td>
-              <td>
-                <label>{{ .storageresultsfrontendiopslabel }}</label>
-              </td>
-              <td>
-                <table class="storageResults">
-                  <tr>
-                    <td>
-                      <label>{{ .storageresultsfrontendiops }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label></label>
-              </td>
-              <td>
-                <table class="darkGreyTable">
-                  <tr>
-                    <td>
-                      <label></label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-              <td></td>
-              <td>
-                <label>{{ .storageresultsbackendiopslabel }}</label>
-              </td>
-              <td>
-                <table class="storageResults">
-                  <tr>
-                    <td>
-                      <label>{{ .storageresultsbackendiops }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
+        <div class="container-fluid container-input form-group">
+          <div class="row top-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .storagecapacityoverheadlabel }}</label>
+            </div>
+            <div class="col-sm">
+              <select class="form-control form-control-sm" style="width: fit-content;" id="storagecapacityoverhead"
+                name="storagecapacityoverhead" data-toggle="tooltip" title='{{ .storagecapacityoverheadtooltip }}'>
+                {{range $key, $value := .storagecapacityoverhead}}
+                <option value="{{ $value }}" {{ if (eq $value $.storagecapacityoverheadselected) }}selected{{ end }}>
+                  {{ $key }}
+                </option>
+                {{end}}
+              </select>
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .storagedatastorevmcountlabel }}</label>
+            </div>
+            <div class="col-sm input-group input-group-sm">
+              <input type="text" class="form-control" id="storagedatastorevmcount" name="storagedatastorevmcount"
+                data-toggle="tooltip" title='{{ .storagedatastorevmcounttooltip }}' maxlength="4"
+                value="{{ .storagedatastorevmcountselected }}" />
+            </div>
           </div>
-          <tfoot></tfoot>
-        </table>
-        <p></p>
-        <div>
-          <table align="center">
-            <td>
-              <select style="width: 250px" id="usersaves" name="usersaves"
+
+          <div class="row top-buffer bottom-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .storagededuperatiolabel }}</label>
+            </div>
+            <div class="col-sm input-group input-group-sm">
+              <input type="text" class="form-control" id="storagededuperatio" name="storagededuperatio"
+                data-toggle="tooltip" title='{{ .storagededuperatiotooltip }}' maxlength="2"
+                value="{{ .storagededuperatioselected }}" />
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .storageraidtypelabel }}</label>
+            </div>
+            <div class="col-sm">
+              <select class="form-control form-control-sm" style="width: fit-content;" id="storageraidtype"
+                name="storageraidtype">
+                {{range $key, $value := .storageraidtype}}
+                <option value="{{ $value }}" {{ if (eq $value $.storageraidtypeselected) }}selected{{ end }}>
+                  {{ $key }}
+                </option>
+                {{end}}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        Virtualization
+
+        <div class="container-fluid container-input form-group">
+          <div class="row top-buffer bottom-buffer">
+            <div class="col-sm">
+              <label class="control-label">Cluster Size</label>
+            </div>
+            <div class="col-sm">
+              <select class="form-control form-control-sm" style="width: fit-content;"
+                id="virtualizationclusterhostsize" name="virtualizationclusterhostsize" data-toggle="tooltip"
+                title='{{ .virtualizationclusterhostsizetooltip }}'>
+                {{range $key, $value := .virtualizationclusterhostsize}}
+                <option value="{{ $value }}"
+                  {{ if (eq $value $.virtualizationclusterhostsizeselected) }}selected{{ end }}>
+                  {{ $key }}
+                </option>
+                {{end}}
+              </select>
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .virtualizationmanagementservertvmcountlabel }}</label>
+            </div>
+            <div class="col-sm input-group input-group-sm">
+              <input type="text" class="form-control" id="virtualizationmanagementservertvmcount"
+                name="virtualizationmanagementservertvmcount" data-toggle="tooltip"
+                title='{{ .virtualizationmanagementservertvmcounttooltip }}' maxlength="5"
+                value="{{ .virtualizationmanagementservertvmcountselected }}" />
+            </div>
+          </div>
+        </div>
+
+        Results
+
+        <div class="container-fluid container-result">
+          <div class="row top-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .hostresultscountlabel }}</label>
+            </div>
+            <div class="col-sm div-results">
+              <label class="label-hostresults">{{ .hostresultscount }}</label>
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .storageresultscapacitylabel }}</label>
+            </div>
+            <div class="col-sm  div-results">
+              <label class="label-storageresults">{{ .storageresultscapacity }}</label>
+            </div>
+          </div>
+
+          <div class="row top-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .hostresultsclockusedlabel }}</label>
+            </div>
+            <div class="col-sm div-results">
+              <label class="label-hostresults">{{ .hostresultsclockused }}</label>
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .storageresultsdatastoresizelabel }}</label>
+            </div>
+            <div class="col-sm div-results">
+              <label class="label-storageresults">{{ .storageresultsdatastoresize }}</label>
+            </div>
+          </div>
+
+          <div class="row top-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .hostresultsvmcountlabel }}</label>
+            </div>
+            <div class="col-sm div-results">
+              <label class="label-hostresults">{{ .hostresultsvmcount }}</label>
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .storageresultsdatastorecountlabel }}</label>
+            </div>
+            <div class="col-sm div-results">
+              <label class="label-storageresults">{{ .storageresultsdatastorecount }}</label>
+            </div>
+          </div>
+
+          <div class="row top-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .hostresultsmemorylabel }}</label>
+            </div>
+            <div class="col-sm div-results">
+              <label class="label-hostresults">{{ .hostresultsmemory }}</label>
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .storageresultsdatastorefroentendiopslabel }}</label>
+            </div>
+            <div class="col-sm div-results">
+              <label class="label-storageresults">{{ .storagedatastorefroentendiops }}</label>
+            </div>
+          </div>
+
+          <div class="row top-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .virtualizationresultsclustercountlabel }}</label>
+            </div>
+            <div class="col-sm div-results">
+              <label class="label-virtualizationresults">{{ .virtualizationresultsclustercount }}</label>
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .storageresultsdatastorebackendiopslabel }}</label>
+            </div>
+            <div class="col-sm div-results">
+              <label class="label-storageresults">{{ .storagedatastorebackendiops }}</label>
+            </div>
+          </div>
+
+          <div class="row top-buffer">
+            <div class="col-sm">
+              <label class="control-label">{{ .virtualizationresultsmanagementservercountlabel }}</label>
+            </div>
+            <div class="col-sm div-results">
+              <label class="label-virtualizationresults">{{ .virtualizationresultsmanagementservercount }}</label>
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .storageresultsfrontendiopslabel }}</label>
+            </div>
+            <div class="col-sm div-results">
+              <label class="label-storageresults">{{ .storageresultsfrontendiops }}</label>
+            </div>
+          </div>
+
+          <div class="row top-buffer">
+            <div class="col-sm">
+            </div>
+            <div class="col-sm">
+            </div>
+            <div class="col-sm">
+              <label class="control-label">{{ .storageresultsbackendiopslabel }}</label>
+            </div>
+            <div class="col-sm div-results">
+              <label class="label-storageresults">{{ .storageresultsbackendiops }}</label>
+            </div>
+          </div>
+        </div>
+        <br>
+
+        <!-- Load and save -->
+        <div class="container">
+          <div class="row">
+            <div class="col-md-auto">
+              <select class="form-control form-control-sm" style="width: 250px;" id="usersaves" name="usersaves"
                 onchange="document.getElementById('submitselect').value='usersaves';this.form.submit()">
                 {{range $key, $value := .usersaves}}
                 <option value="{{ $value }}">{{ $key }}</option>
                 {{end}}
               </select>
-            </td>
-            <td>
-              <button class="blueButton" id="load" name="load"
+            </div>
+            <div class="col-md-auto">
+              <button type="button" class="btn btn-primary btn-primary-addon" id="load" name="load"
                 onclick="document.getElementById('submitselect').value='load';this.form.submit()">{{ .load }}</button>
-            </td>
-            <td>
-              <input id="savename" name="savename" size="30" maxlength="30" value="" />
-            </td>
-            <td>
-              <button class="blueButton" id="save" name="save"
+            </div>
+            <div class="col-sm input-group input-group-sm">
+              <input type="text" class="form-control" id="savename" name="savename" maxlength="30" value="" />
+            </div>
+            <div class="col-md-auto">
+              <button type="button" class="btn btn-primary btn-primary-addon" id="save" name="save"
                 onclick="document.getElementById('submitselect').value='save';this.form.submit()">{{ .save }}</button>
-            </td>
-          </table>
-          <br />
-          <button class="blueButton" id="update" name="update"
-            onclick="document.getElementById('submitselect').value='update';this.form.submit()">{{ .update }}</button>
-          <button class="blueButton" id="print" name="print"
-            onclick="window.print();return false;">{{ .print }}</button>
-          <button class="blueButton" id="about" name="about"
-            onclick="document.getElementById('submitselect').value='about';this.form.submit()">{{ .about }}</button>
-          <button target="_blank" class="blueButton" id="guide" name="guide"
-            onclick="window.open('http://myvirtualcloud.net/vdi-calculator-guide/'),document.getElementById('submitselect').value='guide';this.form.submit()">{{ .guide }}</button>
-          <label style="color:red" id="errorresults" name="errorresults">{{ .errorresults }}</label>
+            </div>
+          </div>
         </div>
+
+        <br><br>
+
+        <!-- Buttons -->
+        <div class="container-fluid">
+          <div class="row">
+            <button type="button" class="btn btn-primary btn-primary-addon" id="update" name="update"
+              onclick="document.getElementById('submitselect').value='update';this.form.submit()">{{ .update }}</button>
+            <button type="button" class="btn btn-primary btn-primary-addon" id="print" name="print"
+              onclick="window.print();return false;">{{ .print }}</button>
+            <button type="button" class="btn btn-primary btn-primary-addon" id="about" name="about"
+              onclick="document.getElementById('submitselect').value='about';this.form.submit()">{{ .about }}</button>
+            <button target="_blank" type="button" class="btn btn-primary btn-primary-addon" id="guide" name="guide"
+              onclick="window.open('http://myvirtualcloud.net/vdi-calculator-guide/'),document.getElementById('submitselect').value='guide';this.form.submit()">{{ .guide }}</button>
+            <div class="col">
+              <label class="bbadge badge-danger" style="color:white" id="errorresults"
+                name="errorresults">{{ .errorresults }}</label>
+            </div>
+          </div>
+        </div>
+
+
+
+
       </form>
     </div>
-    <div align="right">
-      <a href="mailto:ableibovici@gmail.com?&subject=Bug%20Report">Report a Bug</a>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm" style="text-align: right;">
+          <a href="mailto:ableibovici@gmail.com?&subject=Bug%20Report">Report a Bug</a>
+        </div>
+      </div>
     </div>
 
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"></script>
 
   </body>
 

@@ -1,96 +1,48 @@
-/* This CSS is for the parameters table */
-table.blueTable {
-  border: 5px solid #1c6ea4;
+.container-input {
+  border-style:solid;
+  border-width:4px !important;
+  border-color: #1c6ea4;
   background-color: #eeeeee;
-  width: 100%;
-  text-align: left;
-  table-layout: fixed;
-}
-table.blueTable td,
-table.blueTable th {
-  /* border: 1px solid #030303; */
-  padding: 2px 2px;
-}
-table.blueTable tbody td {
-  font-size: 16px;
-}
-table.blueTable tfoot td {
-  font-size: 14px;
-}
-table.blueTable tfoot .links {
-  text-align: right;
-}
-table.blueTable tfoot .links a {
-  display: inline-block;
-  background: #1c6ea4;
-  color: #ffffff;
-  padding: 2px 8px;
-  border-radius: 5px;
 }
 
-/* This CSS is for the results table */
-table.greyTable {
-  border: 5px solid #1c6ea4;
-  background-color: #c8c8c8;
-  width: 100%;
-  text-align: left;
-  border-collapse: collapse;
-}
-table.greyTable td,
-table.greyTable th {
-  /* border: 1px solid #030303; */
-  padding: 2px 2px;
-}
-table.greyTable tbody td {
-  font-size: 16px;
-}
-table.greyTable tfoot td {
-  font-size: 14px;
-}
-table.greyTable tfoot .links {
-  text-align: right;
-}
-table.greyTable tfoot .links a {
-  display: inline-block;
-  background: #1c6ea4;
-  color: #ffffff;
-  padding: 2px 8px;
-  border-radius: 5px;
-}
-
-/* This CSS is for the results field within results table */
-table.darkGreyTable {
-  border: 5px solid #1c6ea4;
-  border: 0;
+.container-result {
+  border-style:solid;
+  border-width:4px !important;
+  border-color: #1c6ea4;
   background-color: #a5a5a5;
-  width: 100%;
-  text-align: left;
-  border-collapse: collapse;
 }
 
-/* This CSS is for the results field within HostResults table */
-table.hostResults {
+.div-results {
+  text-align: right;
+}
+
+.label-hostresults {
   background-color: #d6bfa0;
-  width: 100%;
-  border-collapse: collapse;
+  width: 80px;
+  text-align: left;
 }
 
-/* This CSS is for the results field within VirtualizationResults table */
-table.storageResults {
+.label-storageresults {
   background-color: #a0b2d6;
-  width: 100%;
-  border-collapse: collapse;
+  width: 80px;
+  text-align: left;
 }
 
-/* This CSS is for the results field within VirtualizationResults table */
-table.virtualizationResults {
+.label-virtualizationresults {
   background-color: #8cad92;
-  width: 100%;
-  border-collapse: collapse;
+  width: 80px;
+  text-align: left;
 }
 
-/* This CSS is for the buttons */
-button.blueButton {
+.top-buffer { margin-top:3px; }
+
+.bottom-buffer { margin-bottom:3px; }
+
+.html {
+  font-size: 14px;
+}
+
+.btn-primary-addon {
   box-shadow: inset 0px 1px 0px 0px #54a3f7;
   background: linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
   background-color: #007dc1;
@@ -99,17 +51,19 @@ button.blueButton {
   display: inline-block;
   cursor: pointer;
   color: #ffffff;
-  font-family: Arial;
-  font-size: 13px;
+  /* font-family: Arial; */
+  font-size: 14px;
   padding: 6px 24px;
   text-decoration: none;
   text-shadow: 0px 1px 0px #154682;
+  margin-right: 5px;
 }
-button.blueButton:hover {
+
+.btn-primary-addon:hover {
   background: linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
   background-color: #0061a7;
 }
-button.blueButton:active {
+.btn-primary-addon:active {
   position: relative;
   top: 1px;
 }

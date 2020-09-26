@@ -22,7 +22,7 @@ vm:
   vmcountlabel: "Number of Desktops"
   vmcount: 2000
   vmcountselected: 2000
-  vcpucountlabel: "CPU Count:"
+  vcpucountlabel: "CPU Count"
   vcpucount: { "1": "1", "2": "2", "4": "4", "8": "8" }
   vmvcpucountselected: "1"
   vcpumhzlabel: "Average vCPU MHz"
@@ -89,7 +89,7 @@ vm:
       "90": "90",
     }
   clonesizerefreshratetooltip: "Linked clone disk capacity utilized. Off=Full Clone"
-  clonesizerefreshratelabel: "Clone Refresh Rate (%)"
+  clonesizerefreshratelabel: "Refresh Rate (%)"
   clonesizerefreshrateselected: "0"
 
 # This is the profile for Task user
