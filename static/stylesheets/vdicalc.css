@@ -20,18 +20,21 @@
   background-color: #d6bfa0;
   width: 80px;
   text-align: left;
+  border-radius: 8%;
 }
 
 .label-storageresults {
   background-color: #a0b2d6;
   width: 80px;
   text-align: left;
+  border-radius: 8%;
 }
 
 .label-virtualizationresults {
   background-color: #8cad92;
   width: 80px;
   text-align: left;
+  border-radius: 8%;
 }
 
 .top-buffer { margin-top:3px; }
