@@ -212,7 +212,6 @@ virtualization:
   clusterhosthalabel: "Cluster HA"
   clusterhosthatooltip: "Enable cluster high availailability calculation"
   clusterhosthaselected: "No"
-  clusterhosthamultiplier: 1.125
 
 # These are the HostResultsConfiguration struct values
 hostresults:

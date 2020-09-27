@@ -140,7 +140,6 @@ type VirtualizationConfigurations struct {
 	Clusterhosthalabel              string
 	Clusterhosthaselected           string
 	Clusterhosthatooltip            string
-	Clusterhosthamultiplier         float64
 }
 
 // HostResultsConfiguration exported
