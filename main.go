@@ -226,6 +226,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 							"storageraidtypeselected":                        fmt.Sprint(FullData["storageraidtypeselected"]),
 							"virtualizationclusterhostsizeselected":          fmt.Sprint(FullData["virtualizationclusterhostsizeselected"]),
 							"virtualizationmanagementservertvmcountselected": fmt.Sprint(FullData["virtualizationmanagementservertvmcountselected"]),
+							"virtualizationclusterhosthaselected":            fmt.Sprint(FullData["virtualizationclusterhosthaselected"]),
 						})
 
 						/* This function execues the SQL estatement on Google SQL Run database */

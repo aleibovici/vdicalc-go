@@ -8,9 +8,9 @@ import (
 	"time"
 	"vdicalc/functions"
 
-	_ "github.com/go-sql-driver/mysql"	// This blank entry is required to enable mysql connectivity
 	"github.com/doug-martin/goqu"
 	_ "github.com/doug-martin/goqu/dialect/mysql" // import the dialect
+	_ "github.com/go-sql-driver/mysql"            // This blank entry is required to enable mysql connectivity
 )
 
 // DBInit export
@@ -165,9 +165,10 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 		storageraidtypeselected                        string
 		virtualizationclusterhostsizeselected          string
 		virtualizationmanagementservertvmcountselected string
+		virtualizationclusterhosthaselected            string
 	)
 
-	sqlSelect, _ := sqlBuilderSelectWhere("vdicalc.saves", "`vmcountselected`, `vmvcpucountselected`, `vmvcpumhzselected`, `vmpercorecountselected`, `vmdisplaycountselected`, `vmdisplayresolutionselected`, `vmmemorysizeselected`, `vmvideoramselected`, `vmdisksizeselected`, `vmiopscountselected`, `vmiopsreadratioselected`, `vmclonesizerefreshrateselected`, `hostsocketcountselected`, `hostsocketcorescountselected`, `hostmemoryoverheadselected`, `hostcoresoverheadselected`, `storagecapacityoverheadselected`, `storagedatastorevmcountselected`, `storagededuperatioselected`, `storageraidtypeselected`, `virtualizationclusterhostsizeselected`, `virtualizationmanagementservertvmcountselected`",
+	sqlSelect, _ := sqlBuilderSelectWhere("vdicalc.saves", "`vmcountselected`, `vmvcpucountselected`, `vmvcpumhzselected`, `vmpercorecountselected`, `vmdisplaycountselected`, `vmdisplayresolutionselected`, `vmmemorysizeselected`, `vmvideoramselected`, `vmdisksizeselected`, `vmiopscountselected`, `vmiopsreadratioselected`, `vmclonesizerefreshrateselected`, `hostsocketcountselected`, `hostsocketcorescountselected`, `hostmemoryoverheadselected`, `hostcoresoverheadselected`, `storagecapacityoverheadselected`, `storagedatastorevmcountselected`, `storagededuperatioselected`, `storageraidtypeselected`, `virtualizationclusterhostsizeselected`, `virtualizationmanagementservertvmcountselected`, `virtualizationclusterhosthaselected`",
 		map[string]interface{}{
 			"id": ID,
 		})
@@ -182,7 +183,7 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 	result := make(map[string]interface{})
 
 	for rows.Next() {
-		err = rows.Scan(&vmcountselected, &vmvcpucountselected, &vmvcpumhzselected, &vmpercorecountselected, &vmdisplaycountselected, &vmdisplayresolutionselected, &vmmemorysizeselected, &vmvideoramselected, &vmdisksizeselected, &vmiopscountselected, &vmiopsreadratioselected, &vmclonesizerefreshrateselected, &hostsocketcountselected, &hostsocketcorescountselected, &hostmemoryoverheadselected, &hostcoresoverheadselected, &storagecapacityoverheadselected, &storagedatastorevmcountselected, &storagededuperatioselected, &storageraidtypeselected, &virtualizationclusterhostsizeselected, &virtualizationmanagementservertvmcountselected)
+		err = rows.Scan(&vmcountselected, &vmvcpucountselected, &vmvcpumhzselected, &vmpercorecountselected, &vmdisplaycountselected, &vmdisplayresolutionselected, &vmmemorysizeselected, &vmvideoramselected, &vmdisksizeselected, &vmiopscountselected, &vmiopsreadratioselected, &vmclonesizerefreshrateselected, &hostsocketcountselected, &hostsocketcorescountselected, &hostmemoryoverheadselected, &hostcoresoverheadselected, &storagecapacityoverheadselected, &storagedatastorevmcountselected, &storagededuperatioselected, &storageraidtypeselected, &virtualizationclusterhostsizeselected, &virtualizationmanagementservertvmcountselected, &virtualizationclusterhosthaselected)
 		if err != nil {
 			// handle it
 		}
@@ -209,6 +210,7 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 		result["storageraidtypeselected"] = storageraidtypeselected
 		result["virtualizationclusterhostsizeselected"] = virtualizationclusterhostsizeselected
 		result["virtualizationmanagementservertvmcountselected"] = virtualizationmanagementservertvmcountselected
+		result["virtualizationclusterhosthaselected"] = virtualizationclusterhosthaselected
 
 	}
 
