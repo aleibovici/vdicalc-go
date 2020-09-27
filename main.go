@@ -136,7 +136,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			case "about":
 
 				/* This is the template execution for 'about' */
-				functions.ExecuteTemplate(w, "about.html", "")
+				functions.ExecuteTemplate(w, "about.html", FullData)
 
 			case "back", "guide":
 
