@@ -42,6 +42,15 @@
   font-size: 14px;
 }
 
+.badge-danger-addon {
+  color:white;
+}
+
+.dropdown-addon {
+  width: fit-content;
+  height: 30px;
+}
+
 .btn-primary-addon {
   box-shadow: inset 0px 1px 0px 0px #54a3f7;
   background: linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
