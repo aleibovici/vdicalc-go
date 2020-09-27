@@ -207,7 +207,7 @@ virtualization:
   managementservervmcount: 2000
   managementservervmcountlabel: "VM Limit"
   managementservervmcountselected: 2000
-  managementservervmcounttooltip: "Number of VMs per management server"
+  managementservervmcounttooltip: "Number of VMs per management server (e.g. vcenter)"
   clusterhostha: { "No": "0", "Yes": "1" }
   clusterhosthalabel: "Cluster HA"
   clusterhosthatooltip: "Enable cluster high availailability calculation"
