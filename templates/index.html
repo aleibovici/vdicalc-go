@@ -78,7 +78,7 @@
 
           <div class="row top-buffer">
             <div class="col">
-              <label class="control-label">{{ .vmprofilelabel }}</label>
+              <label class="col-form-label">{{ .vmprofilelabel }}</label>
 
               <select class="form-control form-control-sm dropdown-addon" id="vmprofile" name="vmprofile"
                 onchange="document.getElementById('submitselect').value='vmprofile';this.form.submit()">
@@ -95,14 +95,14 @@
 
           <div class="row top-buffer">
             <div class="col">
-              <label class="control-label">{{ .vmcountlabel }}</label>
+              <label class="col-form-label">{{ .vmcountlabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="vmcount" name="vmcount" maxlength="5"
                 value="{{ .vmcountselected }}" />
             </div>
             <div class="col">
-              <label class="control-label">{{ .vmvcpucountlabel }}</label>
+              <label class="col-form-label">{{ .vmvcpucountlabel }}</label>
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon" id="vmvcpucount"
@@ -115,7 +115,7 @@
               </select>
             </div>
             <div class="col">
-              <label class="control-label">{{ .vmvcpumhzlabel }}</label>
+              <label class="col-form-label">{{ .vmvcpumhzlabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="vmvcpumhz" name="vmvcpumhz" data-toggle="tooltip"
@@ -125,7 +125,7 @@
 
           <div class="row top-buffer">
             <div class="col">
-              <label class="control-label">{{ .vmpercorecountlabel }}</label>
+              <label class="col-form-label">{{ .vmpercorecountlabel }}</label>
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon" id="vmpercorecount"
@@ -137,7 +137,7 @@
               </select>
             </div>
             <div class="col">
-              <label class="control-label">{{ .vmvideoramlabel }}</label>
+              <label class="col-form-label">{{ .vmvideoramlabel }}</label>
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon" id="vmvideoram"
@@ -149,7 +149,7 @@
               </select>
             </div>
             <div class="col">
-              <label class="control-label">{{ .vmdisksizelabel }}</label>
+              <label class="col-form-label">{{ .vmdisksizelabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="vmdisksize" name="vmdisksize" maxlength="4"
@@ -159,14 +159,14 @@
 
           <div class="row top-buffer">
             <div class="col">
-              <label class="control-label">{{ .vmmemorysizelabel }}</label>
+              <label class="col-form-label">{{ .vmmemorysizelabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="vmmemorysize" name="vmmemorysize" maxlength="7"
                 value="{{ .vmmemorysizeselected }}" />
             </div>
             <div class="col">
-              <label class="control-label">{{ .vmdisplaycountlabel }}</label>
+              <label class="col-form-label">{{ .vmdisplaycountlabel }}</label>
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon" id="vmdisplaycount"
@@ -178,7 +178,7 @@
               </select>
             </div>
             <div class="col">
-              <label class="control-label">{{ .vmdisplayresolutionlabel }}</label>
+              <label class="col-form-label">{{ .vmdisplayresolutionlabel }}</label>
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon" id="vmdisplayresolution"
@@ -194,21 +194,21 @@
 
           <div class="row top-buffer bottom-buffer">
             <div class="col">
-              <label class="control-label">{{ .vmiopscountlabel }}</label>
+              <label class="col-form-label">{{ .vmiopscountlabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="vmiopscount" name="vmiopscount" data-toggle="tooltip"
                 title='{{ .vmiopscounttooltip }}' maxlength="3" value="{{ .vmiopscountselected }}" />
             </div>
             <div class="col">
-              <label class="control-label">{{ .vmiopsreadratiolabel }}</label>
+              <label class="col-form-label">{{ .vmiopsreadratiolabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="vmiopsreadratio" name="vmiopsreadratio" data-toggle="tooltip"
                 title='{{ .vmiopsreadratiotooltip }}' maxlength="3" value="{{ .vmiopsreadratioselected }}" />
             </div>
             <div class="col">
-              <label class="control-label">{{ .vmclonesizerefreshratelabel }}</label>
+              <label class="col-form-label">{{ .vmclonesizerefreshratelabel }}</label>
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon" id="vmclonesizerefreshrate"
@@ -228,7 +228,7 @@
         <div class="container-fluid container-input form-group">
           <div class="row top-buffer">
             <div class="col">
-              <label class="control-label">{{ .hostsocketcountlabel }}</label>
+              <label class="col-form-label">{{ .hostsocketcountlabel }}</label>
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon" id="hostsocketcount"
@@ -240,7 +240,7 @@
               </select>
             </div>
             <div class="col">
-              <label class="control-label">{{ .hostmemoryoverheadlabel }}</label>
+              <label class="col-form-label">{{ .hostmemoryoverheadlabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="hostmemoryoverhead" name="hostmemoryoverhead"
@@ -251,7 +251,7 @@
 
           <div class="row top-buffer bottom-buffer">
             <div class="col">
-              <label class="control-label">{{ .hostsocketcorescountlabel }}</label>
+              <label class="col-form-label">{{ .hostsocketcorescountlabel }}</label>
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon" id="hostsocketcorescount"
@@ -264,7 +264,7 @@
               </select>
             </div>
             <div class="col">
-              <label class="control-label">{{ .hostcoresoverheadlabel }}</label>
+              <label class="col-form-label">{{ .hostcoresoverheadlabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="hostcoresoverhead" name="hostcoresoverhead"
@@ -279,7 +279,7 @@
         <div class="container-fluid container-input form-group">
           <div class="row top-buffer">
             <div class="col">
-              <label class="control-label">{{ .storagecapacityoverheadlabel }}</label>
+              <label class="col-form-label">{{ .storagecapacityoverheadlabel }}</label>
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon" id="storagecapacityoverhead"
@@ -292,7 +292,7 @@
               </select>
             </div>
             <div class="col">
-              <label class="control-label">{{ .storagedatastorevmcountlabel }}</label>
+              <label class="col-form-label">{{ .storagedatastorevmcountlabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="storagedatastorevmcount" name="storagedatastorevmcount"
@@ -303,7 +303,7 @@
 
           <div class="row top-buffer bottom-buffer">
             <div class="col">
-              <label class="control-label">{{ .storagededuperatiolabel }}</label>
+              <label class="col-form-label">{{ .storagededuperatiolabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="storagededuperatio" name="storagededuperatio"
@@ -311,7 +311,7 @@
                 value="{{ .storagededuperatioselected }}" />
             </div>
             <div class="col">
-              <label class="control-label">{{ .storageraidtypelabel }}</label>
+              <label class="col-form-label">{{ .storageraidtypelabel }}</label>
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon" id="storageraidtype"
@@ -331,7 +331,7 @@
         <div class="container-fluid container-input form-group">
           <div class="row top-buffer bottom-buffer">
             <div class="col">
-              <label class="control-label">{{ .virtualizationclusterhostsizelabel }}</label>
+              <label class="col-form-label">{{ .virtualizationclusterhostsizelabel }}</label>
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon"
@@ -347,7 +347,7 @@
             </div>
 
             <div class="col">
-              <label class="control-label">{{ .virtualizationclusterhosthalabel }}</label>
+              <label class="col-form-label">{{ .virtualizationclusterhosthalabel }}</label>
             </div>
             <div class="col">
                 <select class="form-control form-control-sm dropdown-addon"
@@ -363,7 +363,7 @@
             </div>              
 
             <div class="col">
-              <label class="control-label">{{ .virtualizationmanagementservertvmcountlabel }}</label>
+              <label class="col-form-label">{{ .virtualizationmanagementservertvmcountlabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="virtualizationmanagementservertvmcount"
@@ -379,91 +379,91 @@
         <div class="container-fluid container-result">
           <div class="row top-buffer">
             <div class="col">
-              <label class="control-label">{{ .hostresultscountlabel }}</label>
+              <label class="col-form-label">{{ .hostresultscountlabel }}</label>
             </div>
             <div class="col div-results">
-              <label class="label-hostresults">{{ .hostresultscount }}</label>
+              <label class="col-form-label label-hostresults">{{ .hostresultscount }}</label>
             </div>
             <div class="col">
-              <label class="control-label">{{ .storageresultscapacitylabel }}</label>
+              <label class="col-form-label">{{ .storageresultscapacitylabel }}</label>
             </div>
             <div class="col  div-results">
-              <label class="label-storageresults">{{ .storageresultscapacity }}</label>
+              <label class="col-form-label label-storageresults">{{ .storageresultscapacity }}</label>
             </div>
           </div>
 
           <div class="row top-buffer">
             <div class="col">
-              <label class="control-label">{{ .hostresultsclockusedlabel }}</label>
+              <label class="col-form-label">{{ .hostresultsclockusedlabel }}</label>
             </div>
             <div class="col div-results">
-              <label class="label-hostresults">{{ .hostresultsclockused }}</label>
+              <label class="col-form-label label-hostresults">{{ .hostresultsclockused }}</label>
             </div>
             <div class="col">
-              <label class="control-label">{{ .storageresultsdatastoresizelabel }}</label>
+              <label class="col-form-label">{{ .storageresultsdatastoresizelabel }}</label>
             </div>
             <div class="col div-results">
-              <label class="label-storageresults">{{ .storageresultsdatastoresize }}</label>
+              <label class="col-form-label label-storageresults">{{ .storageresultsdatastoresize }}</label>
             </div>
           </div>
 
           <div class="row top-buffer">
             <div class="col">
-              <label class="control-label">{{ .hostresultsvmcountlabel }}</label>
+              <label class="col-form-label">{{ .hostresultsvmcountlabel }}</label>
             </div>
             <div class="col div-results">
-              <label class="label-hostresults">{{ .hostresultsvmcount }}</label>
+              <label class="col-form-label label-hostresults">{{ .hostresultsvmcount }}</label>
             </div>
             <div class="col">
-              <label class="control-label">{{ .storageresultsdatastorecountlabel }}</label>
+              <label class="col-form-label">{{ .storageresultsdatastorecountlabel }}</label>
             </div>
             <div class="col div-results">
-              <label class="label-storageresults">{{ .storageresultsdatastorecount }}</label>
+              <label class="col-form-label label-storageresults">{{ .storageresultsdatastorecount }}</label>
             </div>
           </div>
 
           <div class="row top-buffer">
             <div class="col">
-              <label class="control-label">{{ .hostresultsmemorylabel }}</label>
+              <label class="col-form-label">{{ .hostresultsmemorylabel }}</label>
             </div>
             <div class="col div-results">
-              <label class="label-hostresults">{{ .hostresultsmemory }}</label>
+              <label class="col-form-label label-hostresults">{{ .hostresultsmemory }}</label>
             </div>
             <div class="col">
-              <label class="control-label">{{ .storageresultsdatastorefroentendiopslabel }}</label>
+              <label class="col-form-label">{{ .storageresultsdatastorefroentendiopslabel }}</label>
             </div>
             <div class="col div-results">
-              <label class="label-storageresults">{{ .storagedatastorefroentendiops }}</label>
+              <label class="col-form-label label-storageresults">{{ .storagedatastorefroentendiops }}</label>
             </div>
           </div>
 
           <div class="row top-buffer">
             <div class="col">
-              <label class="control-label">{{ .virtualizationresultsclustercountlabel }}</label>
+              <label class="col-form-label">{{ .virtualizationresultsclustercountlabel }}</label>
             </div>
             <div class="col div-results">
-              <label class="label-virtualizationresults">{{ .virtualizationresultsclustercount }}</label>
+              <label class="col-form-label label-virtualizationresults">{{ .virtualizationresultsclustercount }}</label>
             </div>
             <div class="col">
-              <label class="control-label">{{ .storageresultsdatastorebackendiopslabel }}</label>
+              <label class="col-form-label">{{ .storageresultsdatastorebackendiopslabel }}</label>
             </div>
             <div class="col div-results">
-              <label class="label-storageresults">{{ .storagedatastorebackendiops }}</label>
+              <label class="col-form-label label-storageresults">{{ .storagedatastorebackendiops }}</label>
             </div>
           </div>
 
           <div class="row top-buffer">
             <div class="col">
-              <label class="control-label">{{ .virtualizationresultsmanagementservercountlabel }}</label>
+              <label class="col-form-label">{{ .virtualizationresultsmanagementservercountlabel }}</label>
             </div>
             <div class="col div-results">
-              <label class="label-virtualizationresults">{{ .virtualizationresultsmanagementservercount }}</label>
+              <label class="col-form-label label-virtualizationresults">{{ .virtualizationresultsmanagementservercount }}</label>
             </div>
             <div class="col">
-              <label class="control-label">{{ .storageresultsfrontendiopslabel }}</label>
+              <label class="col-form-label">{{ .storageresultsfrontendiopslabel }}</label>
             </div>
             <div class="col div-results">
-              <label class="label-storageresults">{{ .storageresultsfrontendiops }}</label>
+              <label class="col-form-label label-storageresults">{{ .storageresultsfrontendiops }}</label>
             </div>
           </div>
 
@@ -473,10 +473,10 @@
             <div class="col">
             </div>
             <div class="col">
-              <label class="control-label">{{ .storageresultsbackendiopslabel }}</label>
+              <label class="col-form-label">{{ .storageresultsbackendiopslabel }}</label>
             </div>
             <div class="col div-results">
-              <label class="label-storageresults">{{ .storageresultsbackendiops }}</label>
+              <label class="col-form-label label-storageresults">{{ .storageresultsbackendiops }}</label>
             </div>
           </div>
         </div>
