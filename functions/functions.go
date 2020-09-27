@@ -198,6 +198,11 @@ func DataLoad(class config.Configurations) map[string]interface{} {
 		"virtualizationmanagementservertvmcountlabel":    class.Virtualization.Managementservervmcountlabel,
 		"virtualizationmanagementservertvmcountselected": class.Virtualization.Managementservervmcountselected,
 		"virtualizationmanagementservertvmcounttooltip":  class.Virtualization.Managementservervmcounttooltip,
+		"virtualizationclusterhostha":                    class.Virtualization.Clusterhostha,
+		"virtualizationclusterhosthalabel":               class.Virtualization.Clusterhosthalabel,
+		"virtualizationclusterhosthatooltip":             class.Virtualization.Clusterhosthatooltip,
+		"virtualizationclusterhosthaselected":            class.Virtualization.Clusterhosthaselected,
+		"virtualizationclusterhosthamultiplier":          class.Virtualization.Clusterhosthamultiplier,
 		/* hostresults are used to display resulting calculation for hosts */
 		"hostresultscount":          class.HostResults.Count,
 		"hostresultscountlabel":     class.HostResults.Countlabel,

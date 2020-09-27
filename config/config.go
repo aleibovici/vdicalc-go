@@ -136,6 +136,11 @@ type VirtualizationConfigurations struct {
 	Managementservervmcountlabel    string
 	Managementservervmcountselected string
 	Managementservervmcounttooltip  string
+	Clusterhostha                   map[string]interface{}
+	Clusterhosthalabel              string
+	Clusterhosthaselected           string
+	Clusterhosthatooltip            string
+	Clusterhosthamultiplier         float64
 }
 
 // HostResultsConfiguration exported

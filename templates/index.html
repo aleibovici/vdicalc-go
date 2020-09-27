@@ -345,6 +345,23 @@
                 {{end}}
               </select>
             </div>
+
+            <div class="col">
+              <label class="control-label">{{ .virtualizationclusterhosthalabel }}</label>
+            </div>
+            <div class="col">
+                <select class="form-control form-control-sm dropdown-addon"
+                id="virtualizationclusterhostha" name="virtualizationclusterhostha" data-toggle="tooltip"
+                title='{{ .virtualizationclusterhosthatooltip }}'>
+                {{range $key, $value := .virtualizationclusterhostha}}
+                <option value="{{ $value }}"
+                  {{ if (eq $value $.virtualizationclusterhosthaselected) }}selected{{ end }}>
+                  {{ $key }}
+                </option>
+                {{end}}
+              </select>
+            </div>              
+
             <div class="col">
               <label class="control-label">{{ .virtualizationmanagementservertvmcountlabel }}</label>
             </div>

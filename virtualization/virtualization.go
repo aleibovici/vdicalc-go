@@ -8,9 +8,9 @@ import (
 
 // GetClusterSize function
 /* This public function retrieve the virtualization cluster size */
-func GetClusterSize(vmcount string, hostsocketcount string, hostsocketcorescount string, vmpercorecount string, hostcoresoverhead string, virtualizationclusterhostsize string) string {
+func GetClusterSize(vmcount string, hostsocketcount string, hostsocketcorescount string, vmpercorecount string, hostcoresoverhead string, virtualizationclusterhostsize string, clusterhostha string) string {
 
-	r := int(math.Ceil(functions.StrtoFloat64(host.GetHostCount(vmcount, hostsocketcount, hostsocketcorescount, vmpercorecount, hostcoresoverhead)) / functions.StrtoFloat64(virtualizationclusterhostsize)))
+	r := int(math.Ceil(functions.StrtoFloat64(host.GetHostCount(vmcount, hostsocketcount, hostsocketcorescount, vmpercorecount, hostcoresoverhead, clusterhostha)) / functions.StrtoFloat64(virtualizationclusterhostsize)))
 
 	return functions.InttoStr(r)
 

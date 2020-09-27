@@ -38,7 +38,7 @@ func GetHostVMCount(vmcount string, hostsocketcount string, hostsocketcorescount
 
 // GetHostCount function
 /* This public function calculates the number of host */
-func GetHostCount(vmcount string, hostsocketcount string, hostsocketcorescount string, vmspercore string, hostcoresoverhead string) string {
+func GetHostCount(vmcount string, hostsocketcount string, hostsocketcorescount string, vmspercore string, hostcoresoverhead string, clusterhostha string) string {
 
 	defer func() {
 		if err := recover(); err != nil {
@@ -46,9 +46,14 @@ func GetHostCount(vmcount string, hostsocketcount string, hostsocketcorescount s
 		}
 	}()
 
-	r := f.StrtoInt(vmcount) / f.StrtoInt(GetHostVMCount(vmcount, hostsocketcount, hostsocketcorescount, vmspercore, hostcoresoverhead))
+	r := f.StrtoFloat64(vmcount) / f.StrtoFloat64(GetHostVMCount(vmcount, hostsocketcount, hostsocketcorescount, vmspercore, hostcoresoverhead))
 
-	return f.InttoStr(r)
+	/* Add cluster high availability overhead if clusterhostha true (false=0/true=1) */
+	if clusterhostha == "1" {
+		r *= 1.125
+	}
+
+	return f.Float64toStr(r, 0)
 }
 
 // GetHostClockUsed function
