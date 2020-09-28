@@ -199,38 +199,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 					/* This if function test if the savename provided is not empty and return a warning is it is */
 					if len(r.PostFormValue("savename")) != 0 {
 
-						/* This function build a SQL statement for inserting calculation data into vdicalc.vdicalc  */
-						sqlInsert, _ := mysql.SQLBuilderInsert("saves", map[string]interface{}{
-							"datetime":                                       time.Now(),
-							"guserid":                                        tokeninfo.UserId,
-							"savename":                                       strings.ToUpper((time.Now().Format("01-02-2006 15:04:05")) + " " + (r.PostFormValue("savename"))),
-							"vmcountselected":                                fmt.Sprint(FullData["vmcountselected"]),
-							"vmvcpucountselected":                            fmt.Sprint(FullData["vmvcpucountselected"]),
-							"vmvcpumhzselected":                              fmt.Sprint(FullData["vmvcpumhzselected"]),
-							"vmpercorecountselected":                         fmt.Sprint(FullData["vmpercorecountselected"]),
-							"vmdisplaycountselected":                         fmt.Sprint(FullData["vmdisplaycountselected"]),
-							"vmdisplayresolutionselected":                    fmt.Sprint(FullData["vmdisplayresolutionselected"]),
-							"vmmemorysizeselected":                           fmt.Sprint(FullData["vmmemorysizeselected"]),
-							"vmvideoramselected":                             fmt.Sprint(FullData["vmvideoramselected"]),
-							"vmdisksizeselected":                             fmt.Sprint(FullData["vmdisksizeselected"]),
-							"vmiopscountselected":                            fmt.Sprint(FullData["vmiopscountselected"]),
-							"vmiopsreadratioselected":                        fmt.Sprint(FullData["vmiopsreadratioselected"]),
-							"vmclonesizerefreshrateselected":                 fmt.Sprint(FullData["vmclonesizerefreshrateselected"]),
-							"hostsocketcountselected":                        fmt.Sprint(FullData["hostsocketcountselected"]),
-							"hostsocketcorescountselected":                   fmt.Sprint(FullData["hostsocketcorescountselected"]),
-							"hostmemoryoverheadselected":                     fmt.Sprint(FullData["hostmemoryoverheadselected"]),
-							"hostcoresoverheadselected":                      fmt.Sprint(FullData["hostcoresoverheadselected"]),
-							"storagecapacityoverheadselected":                fmt.Sprint(FullData["storagecapacityoverheadselected"]),
-							"storagedatastorevmcountselected":                fmt.Sprint(FullData["storagedatastorevmcountselected"]),
-							"storagededuperatioselected":                     fmt.Sprint(FullData["storagededuperatioselected"]),
-							"storageraidtypeselected":                        fmt.Sprint(FullData["storageraidtypeselected"]),
-							"virtualizationclusterhostsizeselected":          fmt.Sprint(FullData["virtualizationclusterhostsizeselected"]),
-							"virtualizationmanagementservertvmcountselected": fmt.Sprint(FullData["virtualizationmanagementservertvmcountselected"]),
-							"virtualizationclusterhosthaselected":            fmt.Sprint(FullData["virtualizationclusterhosthaselected"]),
-						})
-
-						/* This function execues the SQL estatement on Google SQL Run database */
-						mysql.Insert(db, sqlInsert)
+						/* This function save a configurationto into the database*/
+						mysql.SaveConfiguration(db, tokeninfo.UserId, r.PostFormValue("savename"), FullData)
 
 					} else {
 

@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
+	"time"
 	"vdicalc/functions"
 
 	"github.com/doug-martin/goqu"
@@ -197,6 +199,39 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 	}
 
 	return result
+
+}
+
+// SaveConfiguration exported
+/* This public function save a configurationto into vdicalc.saves*/
+func SaveConfiguration(db *sql.DB, UserID string, savename string, data map[string]interface{}) {
+	
+	db.Query("call vdicalc.SaveConfiguration(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		UserID,
+		strings.ToUpper(time.Now().Format("01-02-2006 15:04:05"))+" "+savename,
+		fmt.Sprint(data["vmcountselected"]),
+		fmt.Sprint(data["vmvcpucountselected"]),
+		fmt.Sprint(data["vmvcpumhzselected"]),
+		fmt.Sprint(data["vmpercorecountselected"]),
+		fmt.Sprint(data["vmdisplaycountselected"]),
+		fmt.Sprint(data["vmdisplayresolutionselected"]),
+		fmt.Sprint(data["vmmemorysizeselected"]),
+		fmt.Sprint(data["vmvideoramselected"]),
+		fmt.Sprint(data["vmdisksizeselected"]),
+		fmt.Sprint(data["vmiopscountselected"]),
+		fmt.Sprint(data["vmiopsreadratioselected"]),
+		fmt.Sprint(data["vmclonesizerefreshrateselected"]),
+		fmt.Sprint(data["hostsocketcountselected"]),
+		fmt.Sprint(data["hostsocketcorescountselected"]),
+		fmt.Sprint(data["hostmemoryoverheadselected"]),
+		fmt.Sprint(data["hostcoresoverheadselected"]),
+		fmt.Sprint(data["storagecapacityoverheadselected"]),
+		fmt.Sprint(data["storagedatastorevmcountselected"]),
+		fmt.Sprint(data["storagededuperatioselected"]),
+		fmt.Sprint(data["storageraidtypeselected"]),
+		fmt.Sprint(data["virtualizationclusterhostsizeselected"]),
+		fmt.Sprint(data["virtualizationmanagementservertvmcountselected"]),
+		fmt.Sprint(data["virtualizationclusterhosthaselected"]))
 
 }
 
