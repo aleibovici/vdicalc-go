@@ -207,7 +207,7 @@ func SaveConfiguration(db *sql.DB, UserID string, savename string, data map[stri
 
 	db.Query("call vdicalc.SaveConfiguration(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		UserID,
-		strings.ToUpper(time.Now().Format("01-02-2006 15:04:05"))+" "+savename,
+		strings.ToUpper(time.Now().Format("01-02-2006 15:04:05"))+" "+strings.ToUpper(savename),
 		fmt.Sprint(data["vmcountselected"]),
 		fmt.Sprint(data["vmvcpucountselected"]),
 		fmt.Sprint(data["vmvcpumhzselected"]),
