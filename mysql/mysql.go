@@ -59,17 +59,6 @@ func Insert(db *sql.DB, sqlInsert string) error {
 /* This public function retrieve a single user from vdicalc.users */
 func QueryUser(db *sql.DB, UserID string) bool {
 
-	type myStruct struct {
-		id       string
-		datetime string
-		guserid  string
-		email    string
-	}
-
-	sqlSelect, _ := sqlBuilderSelectWhere("vdicalc.users", "*", map[string]interface{}{
-		"guserid": UserID,
-	})
-
 	var (
 		id       int
 		datetime string
@@ -77,7 +66,9 @@ func QueryUser(db *sql.DB, UserID string) bool {
 		email    string
 	)
 
-	rows, err := db.Query(sqlSelect)
+	/* Call stored procedure LoadUserByID */
+	rows, err := db.Query("call vdicalc.LoadUserByID(?)", UserID)
+
 	if err != nil {
 		log.Fatal(err)
 	}
