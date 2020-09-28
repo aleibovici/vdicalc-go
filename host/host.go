@@ -4,7 +4,7 @@ package host
 It must be imported using "vdicalc/host" */
 
 import (
-	"log"
+	// "log"
 	f "vdicalc/functions"
 	vm "vdicalc/vm"
 )
@@ -39,12 +39,6 @@ func GetHostVMCount(vmcount string, hostsocketcount string, hostsocketcorescount
 // GetHostCount function
 /* This public function calculates the number of host */
 func GetHostCount(vmcount string, hostsocketcount string, hostsocketcorescount string, vmspercore string, hostcoresoverhead string, clusterhostha string) string {
-
-	defer func() {
-		if err := recover(); err != nil {
-			log.Println("panic occurred:", err)
-		}
-	}()
 
 	r := f.StrtoFloat64(vmcount) / f.StrtoFloat64(GetHostVMCount(vmcount, hostsocketcount, hostsocketcorescount, vmspercore, hostcoresoverhead))
 

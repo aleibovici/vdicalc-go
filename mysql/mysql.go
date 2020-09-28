@@ -54,7 +54,6 @@ func QueryUser(db *sql.DB, UserID string) bool {
 
 	/* Call stored procedure LoadUserByID */
 	rows, err := db.Query("call vdicalc.LoadUserByID(?)", UserID)
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -86,7 +85,7 @@ func LoadUserSaves(db *sql.DB, UserID string) map[string]interface{} {
 	/* Call stored procedure LoadUserSavesbyUserID */
 	rows, err := db.Query("call vdicalc.LoadUserSavesbyUserID(?)", UserID)
 	if err != nil {
-		fmt.Println("no result")
+		log.Fatal(err)
 	}
 
 	defer rows.Close()
@@ -100,7 +99,7 @@ func LoadUserSaves(db *sql.DB, UserID string) map[string]interface{} {
 	for rows.Next() {
 		err = rows.Scan(&ID, &Savename)
 		if err != nil {
-			// handle it
+			log.Fatal(err)
 		}
 		newKey := ID
 		allSaves[Savename] = newKey
@@ -144,7 +143,7 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 	/* Call stored procedure LoadSaveByID */
 	rows, err := db.Query("call vdicalc.LoadSaveByID(?)", ID)
 	if err != nil {
-		fmt.Println("no result")
+		log.Fatal(err)
 	}
 
 	defer rows.Close()
@@ -154,7 +153,7 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 	for rows.Next() {
 		err = rows.Scan(&vmcountselected, &vmvcpucountselected, &vmvcpumhzselected, &vmpercorecountselected, &vmdisplaycountselected, &vmdisplayresolutionselected, &vmmemorysizeselected, &vmvideoramselected, &vmdisksizeselected, &vmiopscountselected, &vmiopsreadratioselected, &vmclonesizerefreshrateselected, &hostsocketcountselected, &hostsocketcorescountselected, &hostmemoryoverheadselected, &hostcoresoverheadselected, &storagecapacityoverheadselected, &storagedatastorevmcountselected, &storagededuperatioselected, &storageraidtypeselected, &virtualizationclusterhostsizeselected, &virtualizationmanagementservertvmcountselected, &virtualizationclusterhosthaselected)
 		if err != nil {
-			// handle it
+			log.Fatal(err)
 		}
 
 		result["vmcountselected"] = vmcountselected

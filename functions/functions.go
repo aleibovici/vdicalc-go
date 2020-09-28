@@ -49,6 +49,7 @@ func ExecuteTemplate(wr io.Writer, name string, data interface{}) {
 func StrtoInt(value string) int {
 	r, err := strconv.Atoi(value)
 	if err != nil {
+		log.Fatal(err)
 	}
 	return r
 }
