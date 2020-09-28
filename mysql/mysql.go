@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 	"vdicalc/functions"
 
 	"github.com/doug-martin/goqu"
@@ -205,15 +204,8 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 /* This function inserts new user into vdicalc.users */
 func CreateUser(db *sql.DB, userid, email string) {
 
-	/* Build MySQL statement  */
-	sqlInsert, _ := SQLBuilderInsert("users", map[string]interface{}{
-		"datetime": time.Now(),
-		"guserid":  userid,
-		"email":    email,
-	})
-
 	/* This function execues the SQL estatement on Google SQL Run database */
-	Insert(db, sqlInsert)
+	db.Query("call vdicalc.CreateUser(?, ?)", userid, email)
 
 }
 
