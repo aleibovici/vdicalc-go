@@ -106,14 +106,10 @@ func LoadUserSaves(db *sql.DB, UserID string) map[string]interface{} {
 		Savename string
 	)
 
-	sqlSelect, _ := sqlBuilderSelectWhere("vdicalc.saves", "`id`, `savename` ",
-		map[string]interface{}{
-			"guserid": UserID,
-		})
-
-	rows, err := db.Query(sqlSelect)
+	/* Call stored procedure LoadUserSavesbyUserID */
+	rows, err := db.Query("call vdicalc.LoadUserSavesbyUserID(?)", UserID)
 	if err != nil {
-		// handle it
+		fmt.Println("no result")
 	}
 
 	defer rows.Close()
