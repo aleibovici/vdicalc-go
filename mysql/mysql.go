@@ -41,20 +41,6 @@ func DBInit() *sql.DB {
 
 }
 
-// Insert exported
-// This function executes a SQL Insert
-func Insert(db *sql.DB, sqlInsert string) error {
-
-	// [START cloud_sql_mysql_databasesql_connection]
-
-	if _, err := db.Exec(sqlInsert); err != nil {
-		return fmt.Errorf("DB.Exec: %v", err)
-	}
-
-	return nil
-	// [END cloud_sql_mysql_databasesql_connection]
-}
-
 // QueryUser exported
 /* This public function retrieve a single user from vdicalc.users */
 func QueryUser(db *sql.DB, UserID string) bool {
