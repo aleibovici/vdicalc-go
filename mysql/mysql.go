@@ -168,12 +168,8 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 		virtualizationclusterhosthaselected            string
 	)
 
-	sqlSelect, _ := sqlBuilderSelectWhere("vdicalc.saves", "`vmcountselected`, `vmvcpucountselected`, `vmvcpumhzselected`, `vmpercorecountselected`, `vmdisplaycountselected`, `vmdisplayresolutionselected`, `vmmemorysizeselected`, `vmvideoramselected`, `vmdisksizeselected`, `vmiopscountselected`, `vmiopsreadratioselected`, `vmclonesizerefreshrateselected`, `hostsocketcountselected`, `hostsocketcorescountselected`, `hostmemoryoverheadselected`, `hostcoresoverheadselected`, `storagecapacityoverheadselected`, `storagedatastorevmcountselected`, `storagededuperatioselected`, `storageraidtypeselected`, `virtualizationclusterhostsizeselected`, `virtualizationmanagementservertvmcountselected`, `virtualizationclusterhosthaselected`",
-		map[string]interface{}{
-			"id": ID,
-		})
-
-	rows, err := db.Query(sqlSelect)
+	/* Call stored procedure LoadSaveByID */
+	rows, err := db.Query("call vdicalc.LoadSaveByID(?)", ID)
 	if err != nil {
 		fmt.Println("no result")
 	}
