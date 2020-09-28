@@ -265,23 +265,6 @@ func CreateUser(db *sql.DB, userid, email string) {
 
 }
 
-// SQLBuilderInsert export
-// This functions uses goqu packages to create a mySQL compatible SQL
-// statement and require input as map[string]interface{}
-// github.com/doug-martin/goqu
-func SQLBuilderInsert(table string, s ...interface{}) (string, []interface{}) {
-
-	dialect := goqu.Dialect("mysql")
-	ds := dialect.Insert(table).Rows(s)
-
-	sql, args, err := ds.ToSQL()
-	if err != nil {
-		fmt.Println("An error occurred while generating the SQL", err.Error())
-	}
-
-	return sql, args
-}
-
 // InitSocketConnectionPool initializes a Unix socket connection pool for
 // a Cloud SQL instance of SQL Server.
 func InitSocketConnectionPool() (*sql.DB, error) {
