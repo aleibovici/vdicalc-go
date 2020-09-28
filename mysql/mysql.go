@@ -201,25 +201,6 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 
 }
 
-// sqlBuilderSelectWhere export
-// This functions uses goqu packages to create a mySQL compatible SQL statement
-// 'table' represent the table to be queried
-// 'fields' represent all the field to be retrieved with the query
-// 's' is a map interface with conditions (ex. guserid = 09808098908 )
-// github.com/doug-martin/goqu
-func sqlBuilderSelectWhere(table string, fields string, s map[string]interface{}) (string, []interface{}) {
-
-	dialect := goqu.Dialect("mysql")
-	ds := dialect.From(table).Select(goqu.L(fields)).Where(goqu.Ex(s))
-
-	sql, args, err := ds.ToSQL()
-	if err != nil {
-		fmt.Println("An error occurred while generating the SQL", err.Error())
-	}
-
-	return sql, args
-}
-
 // CreateUser export
 /* This function inserts new user into vdicalc.users */
 func CreateUser(db *sql.DB, userid, email string) {
