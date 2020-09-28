@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"time"
 
 	"vdicalc/auth"
 	"vdicalc/calculations"
@@ -279,26 +278,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 				/* This conditional does not allow profile changes to be recorded on the database */
 				if r.PostFormValue("submitselect") != "vmprofile" {
 
-					/* This function build a SQL statement for inserting calculation data into vdicalc.vdicalc  */
-					sqlInsert, _ := mysql.SQLBuilderInsert("transactions", map[string]interface{}{
-						"datetime":                      time.Now(),
-						"guserid":                       tokeninfo.UserId,
-						"ip":                            functions.GetIP(r),
-						"hostresultscount":              fmt.Sprint(FullData["hostresultscount"]),
-						"hostresultsclockused":          fmt.Sprint(FullData["hostresultsclockused"]),
-						"hostresultsmemory":             fmt.Sprint(FullData["hostresultsmemory"]),
-						"hostresultsvmcount":            fmt.Sprint(FullData["hostresultsvmcount"]),
-						"storageresultscapacity":        fmt.Sprint(FullData["storageresultscapacity"]),
-						"storageresultsdatastorecount":  fmt.Sprint(FullData["storageresultsdatastorecount"]),
-						"storageresultsdatastoresize":   fmt.Sprint(FullData["storageresultsdatastoresize"]),
-						"storagedatastorefroentendiops": fmt.Sprint(FullData["storagedatastorefroentendiops"]),
-						"storagedatastorebackendiops":   fmt.Sprint(FullData["storagedatastorebackendiops"]),
-						"storageresultsfrontendiops":    fmt.Sprint(FullData["storageresultsfrontendiops"]),
-						"storageresultsbackendiops":     fmt.Sprint(FullData["storageresultsbackendiops"]),
-					})
-
-					/* This function execues the SQL estatement on Google SQL Run database */
-					mysql.Insert(db, sqlInsert)
+					/* This function save the transaction into vdicalc.transactions */
+					mysql.SaveTransaction(db, tokeninfo.UserId, functions.GetIP(r), FullData)
 				}
 
 			}

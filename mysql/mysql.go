@@ -205,7 +205,7 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 // SaveConfiguration exported
 /* This public function save a configurationto into vdicalc.saves*/
 func SaveConfiguration(db *sql.DB, UserID string, savename string, data map[string]interface{}) {
-	
+
 	db.Query("call vdicalc.SaveConfiguration(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		UserID,
 		strings.ToUpper(time.Now().Format("01-02-2006 15:04:05"))+" "+savename,
@@ -232,6 +232,27 @@ func SaveConfiguration(db *sql.DB, UserID string, savename string, data map[stri
 		fmt.Sprint(data["virtualizationclusterhostsizeselected"]),
 		fmt.Sprint(data["virtualizationmanagementservertvmcountselected"]),
 		fmt.Sprint(data["virtualizationclusterhosthaselected"]))
+
+}
+
+// SaveTransaction exported
+/* This public function save transactions into vdicalc.transactions*/
+func SaveTransaction(db *sql.DB, UserID string, ip string, data map[string]interface{}) {
+
+	db.Query("call vdicalc.SaveTransaction(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		UserID,
+		ip,
+		fmt.Sprint(data["hostresultscount"]),
+		fmt.Sprint(data["hostresultsclockused"]),
+		fmt.Sprint(data["hostresultsmemory"]),
+		fmt.Sprint(data["hostresultsvmcount"]),
+		fmt.Sprint(data["storageresultscapacity"]),
+		fmt.Sprint(data["storageresultsdatastorecount"]),
+		fmt.Sprint(data["storageresultsdatastoresize"]),
+		fmt.Sprint(data["storagedatastorefroentendiops"]),
+		fmt.Sprint(data["storagedatastorebackendiops"]),
+		fmt.Sprint(data["storageresultsfrontendiops"]),
+		fmt.Sprint(data["storageresultsbackendiops"]))
 
 }
 
