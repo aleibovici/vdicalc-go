@@ -95,7 +95,7 @@
 
           <div class="row top-buffer">
             <div class="col">
-              <label class="col-form-label">{{ .vmcountlabel }}</label>
+              <label class="col-form-label" for="vmcount">{{ .vmcountlabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="vmcount" name="vmcount" maxlength="5"
@@ -115,7 +115,7 @@
               </select>
             </div>
             <div class="col">
-              <label class="col-form-label">{{ .vmvcpumhzlabel }}</label>
+              <label class="col-form-label" for="vmvcpumhz">{{ .vmvcpumhzlabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="vmvcpumhz" name="vmvcpumhz" data-toggle="tooltip"
@@ -149,7 +149,7 @@
               </select>
             </div>
             <div class="col">
-              <label class="col-form-label">{{ .vmdisksizelabel }}</label>
+              <label class="col-form-label" for="vmdisksize">{{ .vmdisksizelabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="vmdisksize" name="vmdisksize" maxlength="4"
@@ -159,7 +159,7 @@
 
           <div class="row top-buffer">
             <div class="col">
-              <label class="col-form-label">{{ .vmmemorysizelabel }}</label>
+              <label class="col-form-label" for="vmmemorysize">{{ .vmmemorysizelabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="vmmemorysize" name="vmmemorysize" maxlength="7"
@@ -194,14 +194,14 @@
 
           <div class="row top-buffer bottom-buffer">
             <div class="col">
-              <label class="col-form-label">{{ .vmiopscountlabel }}</label>
+              <label class="col-form-label" for="vmiopscount">{{ .vmiopscountlabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="vmiopscount" name="vmiopscount" data-toggle="tooltip"
                 title='{{ .vmiopscounttooltip }}' maxlength="3" value="{{ .vmiopscountselected }}" />
             </div>
             <div class="col">
-              <label class="col-form-label">{{ .vmiopsreadratiolabel }}</label>
+              <label class="col-form-label" for="vmiopsreadratio">{{ .vmiopsreadratiolabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="vmiopsreadratio" name="vmiopsreadratio" data-toggle="tooltip"
@@ -240,7 +240,7 @@
               </select>
             </div>
             <div class="col">
-              <label class="col-form-label">{{ .hostmemoryoverheadlabel }}</label>
+              <label class="col-form-label" for="hostmemoryoverhead">{{ .hostmemoryoverheadlabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="hostmemoryoverhead" name="hostmemoryoverhead"
@@ -264,7 +264,7 @@
               </select>
             </div>
             <div class="col">
-              <label class="col-form-label">{{ .hostcoresoverheadlabel }}</label>
+              <label class="col-form-label" for="hostcoresoverhead">{{ .hostcoresoverheadlabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="hostcoresoverhead" name="hostcoresoverhead"
@@ -292,7 +292,7 @@
               </select>
             </div>
             <div class="col">
-              <label class="col-form-label">{{ .storagedatastorevmcountlabel }}</label>
+              <label class="col-form-label" for="storagedatastorevmcount">{{ .storagedatastorevmcountlabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="storagedatastorevmcount" name="storagedatastorevmcount"
@@ -303,7 +303,7 @@
 
           <div class="row top-buffer bottom-buffer">
             <div class="col">
-              <label class="col-form-label">{{ .storagededuperatiolabel }}</label>
+              <label class="col-form-label" for="storagededuperatio">{{ .storagededuperatiolabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="storagededuperatio" name="storagededuperatio"
@@ -363,7 +363,7 @@
             </div>              
 
             <div class="col">
-              <label class="col-form-label">{{ .virtualizationmanagementservertvmcountlabel }}</label>
+              <label class="col-form-label" for="virtualizationmanagementservertvmcount">{{ .virtualizationmanagementservertvmcountlabel }}</label>
             </div>
             <div class="col input-group input-group-sm">
               <input type="text" class="form-control" id="virtualizationmanagementservertvmcount"
