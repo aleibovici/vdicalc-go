@@ -101,7 +101,7 @@ type HostConfigurations struct {
 	Memoryoverheadselected   int
 	Memoryoverheadlabel      string
 	Memoryoverheadtooltip    string
-	Coresoverhead            int
+	Coresoverhead            map[int]interface{}
 	Coresoverheadselected    string
 	Coresoverheadlabel       string
 	Coresoverheadtooltip     string

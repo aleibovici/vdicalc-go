@@ -266,10 +266,15 @@
             <div class="col">
               <label class="col-form-label" for="hostcoresoverhead">{{ .hostcoresoverheadlabel }}</label>
             </div>
-            <div class="col input-group input-group-sm">
-              <input type="text" class="form-control" id="hostcoresoverhead" name="hostcoresoverhead"
-                data-toggle="tooltip" title='{{ .hostcoresoverheadtooltip }}' maxlength="2"
-                value="{{ .hostcoresoverheadselected }}" />
+            <div class="col">
+              <select class="form-control form-control-sm dropdown-addon" id="hostcoresoverhead"
+              name="hostcoresoverhead">
+              {{range $key, $value := .hostcoresoverhead}}
+              <option value="{{ $value }}" {{ if (eq $value $.hostcoresoverheadselected) }}selected{{ end }}>
+                {{ $key }}
+              </option>
+              {{end}}
+            </select>
             </div>
           </div>
         </div>

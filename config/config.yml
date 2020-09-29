@@ -175,10 +175,10 @@ host:
   memoryoverheadselected: 1
   memoryoverheadlabel: "Memory Overhead (GB)"
   memoryoverheadtooltip: "Memory used by other host processes"
-  coresoverhead: 0
-  coresoverheadselected: 0
+  coresoverhead: { "0": "0", "1": "1", "2": "2", "3": "3", "4": "4", "5": "5", "6": "6" }
+  coresoverheadselected: "0"
   coresoverheadlabel: "Cores Overhead"
-  coresoverheadtooltip: "Cores used by other host processes"
+  coresoverheadtooltip: "Number of cores used by other host processes"
 
 # These are the StorageConfigurations struct values
 storage:
