@@ -64,6 +64,7 @@ type VMConfigurations struct {
 	Displayresolutionlabel       string
 	Displayresolution            map[string]interface{}
 	Displayresolutionselected    string
+	Displayresolutiontooltip	 string
 	Memorysizelabel              string
 	Memorysize                   string
 	Memorysizelimit              string

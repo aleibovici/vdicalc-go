@@ -182,7 +182,7 @@
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon" id="vmdisplayresolution"
-                name="vmdisplayresolution">
+                name="vmdisplayresolution" data-toggle="tooltip" title='{{ .vmdisplayresolutiontooltip }}'>
                 {{range $key, $value := .vmdisplayresolution}}
                 <option value="{{ $value }}" {{ if (eq $value $.vmdisplayresolutionselected) }}selected{{ end }}>
                   {{ $key }}
@@ -268,7 +268,7 @@
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon" id="hostcoresoverhead"
-              name="hostcoresoverhead">
+              name="hostcoresoverhead" data-toggle="tooltip" title='{{ .hostcoresoverheadtooltip }}'>
               {{range $key, $value := .hostcoresoverhead}}
               <option value="{{ $value }}" {{ if (eq $value $.hostcoresoverheadselected) }}selected{{ end }}>
                 {{ $key }}
@@ -312,7 +312,7 @@
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon" id="storagededuperatio"
-              name="storagededuperatio">
+              name="storagededuperatio" data-toggle="tooltip" title='{{ .storagededuperatiotooltip }}'>
               {{range $key, $value := .storagededuperatio}}
               <option value="{{ $value }}" {{ if (eq $value $.storagededuperatioselected) }}selected{{ end }}>
                 {{ $key }}

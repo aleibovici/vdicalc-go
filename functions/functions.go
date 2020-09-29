@@ -137,6 +137,7 @@ func DataLoad(class config.Configurations) map[string]interface{} {
 		"vmdisplayresolutionlabel":       class.VM.Displayresolutionlabel,
 		"vmdisplayresolution":            class.VM.Displayresolution,
 		"vmdisplayresolutionselected":    class.VM.Displayresolutionselected,
+		"vmdisplayresolutiontooltip":     class.VM.Displayresolutiontooltip,
 		"vmmemorysizelabel":              class.VM.Memorysizelabel,
 		"vmmemorysize":                   class.VM.Memorysize,
 		"vmmemorysizeselected":           class.VM.Memorysizeselected,
