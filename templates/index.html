@@ -34,9 +34,9 @@
 
     <div class="container-fluid">
       <!-- Google Sign-in -->
-      <div align="right" class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" data-longtitle="true"></div>
+      <div align="right" class="g-signin2 d-print-none" data-onsuccess="onSignIn" data-theme="dark" data-longtitle="true"></div>
       <!-- Google Sign-out -->
-      <div align="right"><a href="#" onclick="signOut();">Sign out</a></div>
+      <div align="right" class="d-print-none"><a href="#" onclick="signOut();">Sign out</a></div>
     </div>
     <script>
       function onSignIn(googleUser) {
@@ -483,7 +483,7 @@
         <br>
 
         <!-- Load and save -->
-        <div class="container">
+        <div class="container d-print-none">
           <div class="row">
             <div class="col-md-auto">
               <select class="form-control form-control-sm" style="width: 250px;" id="usersaves" name="usersaves"
@@ -510,7 +510,7 @@
         <br><br>
 
         <!-- Buttons -->
-        <div class="container-fluid">
+        <div class="container-fluid d-print-none">
           <div class="row">
             <button type="button" class="btn btn-primary btn-primary-addon" id="update" name="update"
               onclick="document.getElementById('submitselect').value='update';this.form.submit()">{{ .update }}</button>
@@ -530,7 +530,7 @@
       </form>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid d-print-none">
       <div class="row">
         <div class="col" style="text-align: right;">
           <a href="mailto:ableibovici@gmail.com?&subject=Bug%20Report">Report a Bug</a>
