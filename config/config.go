@@ -117,7 +117,7 @@ type StorageConfigurations struct {
 	Datastorevmcountlabel    string
 	Datastorevmcountselected string
 	Datastorevmcounttooltip  string
-	Deduperatio              int
+	Deduperatio              map[int]interface{}
 	Deduperatiolabel         string
 	Deduperatioselected      string
 	Deduperatiotooltip       string

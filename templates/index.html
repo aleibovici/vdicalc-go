@@ -305,10 +305,15 @@
             <div class="col">
               <label class="col-form-label" for="storagededuperatio">{{ .storagededuperatiolabel }}</label>
             </div>
-            <div class="col input-group input-group-sm">
-              <input type="text" class="form-control" id="storagededuperatio" name="storagededuperatio"
-                data-toggle="tooltip" title='{{ .storagededuperatiotooltip }}' maxlength="2"
-                value="{{ .storagededuperatioselected }}" />
+            <div class="col">
+              <select class="form-control form-control-sm dropdown-addon" id="storagededuperatio"
+              name="storagededuperatio">
+              {{range $key, $value := .storagededuperatio}}
+              <option value="{{ $value }}" {{ if (eq $value $.storagededuperatioselected) }}selected{{ end }}>
+                {{ $key }}
+              </option>
+              {{end}}
+            </select>
             </div>
             <div class="col">
               <label class="col-form-label">{{ .storageraidtypelabel }}</label>
