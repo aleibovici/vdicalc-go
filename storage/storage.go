@@ -67,26 +67,35 @@ func GetStorageDatastoreSize(vmcount string, datastorevmcount string, vmdisksize
 // GetStorageDatastoreIops function
 /* This public function calculates the amount of frontend and backend IOPs per datastore and for the full storage.
 For write IOps the function calculate the write amplification based on raid levels. */
-func GetStorageDatastoreIops(vmiopscount string, vmiopsreadratio string, storagedatastorevmcount string, storageraidtype string, vmcount string, datastorevmcount string) (string, string, string, string) {
+func GetStorageDatastoreIops(vmiopscount string, vmiopsreadratio string, vmiopsbootcount string, vmiopsbootreadratio string, storagedatastorevmcount string, storageconcurrentbootvmcount string, storageraidtype string, vmcount string, datastorevmcount string) (string, string, string, string) {
 
+	/* Boot */
+	datastoreFrontendBootIops := f.StrtoInt(vmiopsbootcount) * f.StrtoInt(storageconcurrentbootvmcount)
+	datastoreBackendBootReadIops := int(((f.StrtoFloat64(vmiopsbootreadratio) / 100) * f.StrtoFloat64(vmiopsbootcount)) * f.StrtoFloat64(storageconcurrentbootvmcount))
+	datastoreBackendBootWriteIops := int(((1 - (f.StrtoFloat64(vmiopsbootreadratio) / 100)) * f.StrtoFloat64(vmiopsbootcount)) * f.StrtoFloat64(storageconcurrentbootvmcount))
+	/* Steady */
 	datastoreFrontendIops := f.StrtoInt(vmiopscount) * f.StrtoInt(storagedatastorevmcount)
 	datastoreBackendReadIops := int(((f.StrtoFloat64(vmiopsreadratio) / 100) * f.StrtoFloat64(vmiopscount)) * f.StrtoFloat64(storagedatastorevmcount))
 	datastoreBackendWriteIops := int(((1 - (f.StrtoFloat64(vmiopsreadratio) / 100)) * f.StrtoFloat64(vmiopscount)) * f.StrtoFloat64(storagedatastorevmcount))
 
 	switch storageraidtype {
 	case "5":
+		datastoreBackendBootWriteIops *= 4
 		datastoreBackendWriteIops *= 4
 	case "6":
+		datastoreBackendBootWriteIops *= 6
 		datastoreBackendWriteIops *= 6
 	case "10":
+		datastoreBackendBootWriteIops *= 2
 		datastoreBackendWriteIops *= 2
 	}
 
+	datastoreBackendBootIops := datastoreBackendBootReadIops + datastoreBackendBootWriteIops
 	datastoreBackendIops := datastoreBackendReadIops + datastoreBackendWriteIops
 
 	datastoreCount := GetStorageDatastoreCount(vmcount, datastorevmcount)
-	storageFrontendIops := datastoreFrontendIops * f.StrtoInt(datastoreCount)
-	storageBackendIops := datastoreBackendIops * f.StrtoInt(datastoreCount)
+	storageFrontendIops := (datastoreFrontendBootIops + datastoreFrontendIops) * f.StrtoInt(datastoreCount)
+	storageBackendIops := (datastoreBackendBootIops + datastoreBackendIops) * f.StrtoInt(datastoreCount)
 
-	return f.InttoStr(datastoreFrontendIops), f.InttoStr(datastoreBackendIops), f.InttoStr(storageFrontendIops), f.InttoStr(storageBackendIops)
+	return f.InttoStr(datastoreFrontendBootIops + datastoreFrontendIops), f.InttoStr(datastoreBackendBootIops + datastoreBackendIops), f.InttoStr(storageFrontendIops), f.InttoStr(storageBackendIops)
 }

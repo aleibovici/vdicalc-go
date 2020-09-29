@@ -221,6 +221,26 @@
               </select>
             </div>
           </div>
+
+          <div class="row top-buffer bottom-buffer">
+            <div class="col">
+              <label class="col-form-label" for="vmiopsbootcount">{{ .vmiopsbootcountlabel }}</label>
+            </div>
+            <div class="col input-group input-group-sm">
+              <input type="text" class="form-control" id="vmiopsbootcount" name="vmiopsbootcount" data-toggle="tooltip"
+                title='{{ .vmiopsbootcounttooltip }}' maxlength="3" value="{{ .vmiopsbootcountselected }}" />
+            </div>
+            <div class="col">
+              <label class="col-form-label" for="vmiopsbootreadratio">{{ .vmiopsbootreadratiolabel }}</label>
+            </div>
+            <div class="col input-group input-group-sm">
+              <input type="text" class="form-control" id="vmiopsbootreadratio" name="vmiopsbootreadratio" data-toggle="tooltip"
+                title='{{ .vmiopsbootreadratiotooltip }}' maxlength="3" value="{{ .vmiopsbootreadratioselected }}" />
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+          </div>
+
         </div>
 
         <p style="display:inline" class="lead">Host</p>
@@ -306,7 +326,7 @@
             </div>
           </div>
 
-          <div class="row top-buffer bottom-buffer">
+          <div class="row top-buffer">
             <div class="col">
               <label class="col-form-label" for="storagededuperatio">{{ .storagededuperatiolabel }}</label>
             </div>
@@ -333,6 +353,24 @@
                 {{end}}
               </select>
             </div>
+          </div>
+
+          <div class="row top-buffer bottom-buffer">
+            <div class="col">
+              <label class="col-form-label" for="storageconcurrentbootvmcount">{{ .storageconcurrentbootvmcountlabel }}</label>
+            </div>            
+            <div class="col">
+              <select class="form-control form-control-sm dropdown-addon" id="storageconcurrentbootvmcount"
+                name="storageconcurrentbootvmcount">
+                {{range $key, $value := .storageconcurrentbootvmcount}}
+                <option value="{{ $value }}" {{ if (eq $value $.storageconcurrentbootvmcountselected) }}selected{{ end }}>
+                  {{ $key }}
+                </option>
+                {{end}}
+              </select>
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
           </div>
         </div>
 

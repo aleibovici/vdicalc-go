@@ -75,7 +75,15 @@ vm:
   iopsreadratio: 20
   iopsreadratioselected: 20
   iopsreadratiolabel: "IOps Read Ratio (%)"
-  iopsreadratiotooltip: "Percentual of IO reads during steady state"
+  iopsreadratiotooltip: "Percentual of IOps reads during steady state"
+  iopsbootcount: 600
+  iopsbootcountselected: 600
+  iopsbootcountlabel: "Boot IOps"
+  iopsbootcounttooltip: "Number of IOps during boot"
+  iopsbootreadratio: 20
+  iopsbootreadratioselected: 20
+  iopsbootreadratiolabel: "Boot IOps Read Ratio (%)"
+  iopsbootreadratiotooltip: "Percentual of IOps reads during boot"
   clonesizerefreshrate:
     {
       "Off": "0",
@@ -105,6 +113,8 @@ vmprofile01:
   disksizeselected: 100
   iopscountselected: 6
   iopsreadratioselected: 20
+  iopsbootcountselected: 600
+  iopsbootreadratioselected: 20
   clonesizerefreshrateselected: "0"
 
 # This is the profile for Office user
@@ -119,6 +129,8 @@ vmprofile02:
   disksizeselected: 100
   iopscountselected: 8
   iopsreadratioselected: 20
+  iopsbootcountselected: 600
+  iopsbootreadratioselected: 20
   clonesizerefreshrateselected: "0"
 
 # This is the profile for Knowledge user
@@ -133,6 +145,8 @@ vmprofile03:
   disksizeselected: 100
   iopscountselected: 9
   iopsreadratioselected: 20
+  iopsbootcountselected: 600
+  iopsbootreadratioselected: 20
   clonesizerefreshrateselected: "0"
 
 # This is the profile for Power user
@@ -147,6 +161,8 @@ vmprofile04:
   disksizeselected: 100
   iopscountselected: 11
   iopsreadratioselected: 20
+  iopsbootcountselected: 600
+  iopsbootreadratioselected: 20
   clonesizerefreshrateselected: "0"
 
 # These are the HostConfigurations struct values
@@ -212,6 +228,21 @@ storage:
   raidtype: { "5": "5", "6": "6", "10": "10" }
   raidtypelabel: "Raid Level"
   raidtypeselected: "6"
+  concurrentbootvmcount:
+    {
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "10": "10",
+      "15": "15",
+      "20": "20",
+    }
+  concurrentbootvmcountlabel: "Concurrent boot"
+  concurrentbootvmcountselected: "2"
+  concurrentbootvmcounttooltip: "Number of VMs booting concurrently"
 
 # These are the VirtualizationConfigurations struct values
 virtualization:

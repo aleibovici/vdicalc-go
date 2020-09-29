@@ -126,6 +126,8 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 		vmdisksizeselected                             int
 		vmiopscountselected                            string
 		vmiopsreadratioselected                        string
+		vmiopsbootcountselected                        string
+		vmiopsbootreadratioselected                    string
 		vmclonesizerefreshrateselected                 string
 		hostsocketcountselected                        string
 		hostsocketcorescountselected                   string
@@ -135,6 +137,7 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 		storagedatastorevmcountselected                string
 		storagededuperatioselected                     string
 		storageraidtypeselected                        string
+		storageconcurrentbootvmcountselected           string
 		virtualizationclusterhostsizeselected          string
 		virtualizationmanagementservertvmcountselected string
 		virtualizationclusterhosthaselected            string
@@ -151,7 +154,7 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 	result := make(map[string]interface{})
 
 	for rows.Next() {
-		err = rows.Scan(&vmcountselected, &vmvcpucountselected, &vmvcpumhzselected, &vmpercorecountselected, &vmdisplaycountselected, &vmdisplayresolutionselected, &vmmemorysizeselected, &vmvideoramselected, &vmdisksizeselected, &vmiopscountselected, &vmiopsreadratioselected, &vmclonesizerefreshrateselected, &hostsocketcountselected, &hostsocketcorescountselected, &hostmemoryoverheadselected, &hostcoresoverheadselected, &storagecapacityoverheadselected, &storagedatastorevmcountselected, &storagededuperatioselected, &storageraidtypeselected, &virtualizationclusterhostsizeselected, &virtualizationmanagementservertvmcountselected, &virtualizationclusterhosthaselected)
+		err = rows.Scan(&vmcountselected, &vmvcpucountselected, &vmvcpumhzselected, &vmpercorecountselected, &vmdisplaycountselected, &vmdisplayresolutionselected, &vmmemorysizeselected, &vmvideoramselected, &vmdisksizeselected, &vmiopscountselected, &vmiopsreadratioselected, &vmiopsbootcountselected, &vmiopsbootreadratioselected, &vmclonesizerefreshrateselected, &hostsocketcountselected, &hostsocketcorescountselected, &hostmemoryoverheadselected, &hostcoresoverheadselected, &storagecapacityoverheadselected, &storagedatastorevmcountselected, &storagededuperatioselected, &storageraidtypeselected, &storageconcurrentbootvmcountselected, &virtualizationclusterhostsizeselected, &virtualizationmanagementservertvmcountselected, &virtualizationclusterhosthaselected)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -167,6 +170,8 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 		result["vmdisksizeselected"] = vmdisksizeselected
 		result["vmiopscountselected"] = vmiopscountselected
 		result["vmiopsreadratioselected"] = vmiopsreadratioselected
+		result["vmiopsbootcountselected"] = vmiopsbootcountselected
+		result["vmiopsbootreadratioselected"] = vmiopsbootreadratioselected
 		result["vmclonesizerefreshrateselected"] = vmclonesizerefreshrateselected
 		result["hostsocketcountselected"] = hostsocketcountselected
 		result["hostsocketcorescountselected"] = hostsocketcorescountselected
@@ -176,6 +181,7 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 		result["storagedatastorevmcountselected"] = storagedatastorevmcountselected
 		result["storagededuperatioselected"] = storagededuperatioselected
 		result["storageraidtypeselected"] = storageraidtypeselected
+		result["storageconcurrentbootvmcountselected"] = storageconcurrentbootvmcountselected
 		result["virtualizationclusterhostsizeselected"] = virtualizationclusterhostsizeselected
 		result["virtualizationmanagementservertvmcountselected"] = virtualizationmanagementservertvmcountselected
 		result["virtualizationclusterhosthaselected"] = virtualizationclusterhosthaselected
@@ -190,7 +196,7 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 /* This public function save a configurationto into vdicalc.saves*/
 func SaveConfiguration(db *sql.DB, UserID string, savename string, data map[string]interface{}) {
 
-	db.Query("call vdicalc.SaveConfiguration(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+	db.Query("call vdicalc.SaveConfiguration(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)",
 		UserID,
 		strings.ToUpper(time.Now().Format("01-02-2006 15:04:05"))+" "+strings.ToUpper(savename),
 		fmt.Sprint(data["vmcountselected"]),
@@ -204,6 +210,8 @@ func SaveConfiguration(db *sql.DB, UserID string, savename string, data map[stri
 		fmt.Sprint(data["vmdisksizeselected"]),
 		fmt.Sprint(data["vmiopscountselected"]),
 		fmt.Sprint(data["vmiopsreadratioselected"]),
+		fmt.Sprint(data["vmiopsbootcountselected"]),
+		fmt.Sprint(data["vmiopsbootreadratioselected"]),
 		fmt.Sprint(data["vmclonesizerefreshrateselected"]),
 		fmt.Sprint(data["hostsocketcountselected"]),
 		fmt.Sprint(data["hostsocketcorescountselected"]),
@@ -213,6 +221,7 @@ func SaveConfiguration(db *sql.DB, UserID string, savename string, data map[stri
 		fmt.Sprint(data["storagedatastorevmcountselected"]),
 		fmt.Sprint(data["storagededuperatioselected"]),
 		fmt.Sprint(data["storageraidtypeselected"]),
+		fmt.Sprint(data["storageconcurrentbootvmcountselected"]),
 		fmt.Sprint(data["virtualizationclusterhostsizeselected"]),
 		fmt.Sprint(data["virtualizationmanagementservertvmcountselected"]),
 		fmt.Sprint(data["virtualizationclusterhosthaselected"]))

@@ -249,6 +249,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 				FullData["vmdisksizeselected"] = key.Disksizeselected
 				FullData["vmiopscountselected"] = key.Iopscountselected
 				FullData["vmiopsreadratioselected"] = key.Iopsreadratioselected
+				FullData["vmiopsbootcountselected"] = key.Iopsbootcountselected
+				FullData["vmiopsbootreadratioselected"] = key.Iopsbootreadratioselected
 				FullData["vmclonesizerefreshrateselected"] = key.Clonesizerefreshrateselected
 
 				/* Fallthrough ensures 'update' is always executed after 'vmprofile' */

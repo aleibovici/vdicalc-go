@@ -64,7 +64,7 @@ type VMConfigurations struct {
 	Displayresolutionlabel       string
 	Displayresolution            map[string]interface{}
 	Displayresolutionselected    string
-	Displayresolutiontooltip	 string
+	Displayresolutiontooltip     string
 	Memorysizelabel              string
 	Memorysize                   string
 	Memorysizelimit              string
@@ -84,6 +84,14 @@ type VMConfigurations struct {
 	Iopsreadratiolabel           string
 	Iopsreadratiotooltip         string
 	Iopswriteratio               int
+	Iopsbootcount                int
+	Iopsbootcountselected        string
+	Iopsbootcountlabel           string
+	Iopsbootcounttooltip         string
+	Iopsbootreadratio            int
+	Iopsbootreadratioselected    string
+	Iopsbootreadratiolabel       string
+	Iopsbootreadratiotooltip     string
 	Clonesizerefreshrate         map[string]interface{}
 	Clonesizerefreshratelabel    string
 	Clonesizerefreshrateselected string
@@ -110,21 +118,25 @@ type HostConfigurations struct {
 
 // StorageConfigurations exported
 type StorageConfigurations struct {
-	Capacityoverhead         map[int]interface{}
-	Capacityoverheadlabel    string
-	Capacityoverheadselected string
-	Capacityoverheadtooltip  string
-	Datastorevmcount         int
-	Datastorevmcountlabel    string
-	Datastorevmcountselected string
-	Datastorevmcounttooltip  string
-	Deduperatio              map[int]interface{}
-	Deduperatiolabel         string
-	Deduperatioselected      string
-	Deduperatiotooltip       string
-	Raidtype                 map[int]interface{}
-	Raidtypelabel            string
-	Raidtypeselected         string
+	Capacityoverhead              map[int]interface{}
+	Capacityoverheadlabel         string
+	Capacityoverheadselected      string
+	Capacityoverheadtooltip       string
+	Datastorevmcount              int
+	Datastorevmcountlabel         string
+	Datastorevmcountselected      string
+	Datastorevmcounttooltip       string
+	Deduperatio                   map[int]interface{}
+	Deduperatiolabel              string
+	Deduperatioselected           string
+	Deduperatiotooltip            string
+	Raidtype                      map[int]interface{}
+	Raidtypelabel                 string
+	Raidtypeselected              string
+	Concurrentbootvmcount         map[int]interface{}
+	Concurrentbootvmcountlabel    string
+	Concurrentbootvmcountselected string
+	Concurrentbootvmcounttooltip  string
 }
 
 // VirtualizationConfigurations exported
