@@ -495,7 +495,7 @@
         <!-- Load and save -->
         <div class="container d-print-none">
           <div class="row">
-            <div class="col-md-auto">
+            <div class="col input-group input-group-sm">
               <select class="form-control form-control-sm" style="width: 250px;" id="usersaves" name="usersaves"
                 onchange="document.getElementById('submitselect').value='usersaves';this.form.submit()">
                 {{range $key, $value := .usersaves}}
@@ -508,7 +508,7 @@
                 onclick="document.getElementById('submitselect').value='load';this.form.submit()">{{ .load }}</button>
             </div>
             <div class="col input-group input-group-sm">
-              <input type="text" class="form-control" id="savename" name="savename" maxlength="30" value="" />
+              <input type="text" class="form-control" id="savename" name="savename" maxlength="30" value="" placeholder="Your save name"/>
             </div>
             <div class="col-md-auto">
               <button type="button" class="btn btn-primary btn-primary-addon" id="save" name="save"
