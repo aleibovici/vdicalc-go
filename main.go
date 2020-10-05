@@ -137,6 +137,21 @@ func handler(w http.ResponseWriter, r *http.Request) {
 				/* This is the template execution for 'about' */
 				functions.ExecuteTemplate(w, "about.html", FullData)
 
+			case "statistics":
+
+				/* This function execute statistcs stored procedure */
+				var data map[string]interface{} = mysql.LoadStatistics(db)
+
+				/* This map variable stored results from LoadStatistics.*/
+				for key := range data {
+
+					FullData[key] = data[key]
+
+				}
+
+				/* This is the template execution for 'statistics' */
+				functions.ExecuteTemplate(w, "statistics.html", FullData)
+
 			case "back", "guide":
 
 				/* This is the template execution for 'index' */

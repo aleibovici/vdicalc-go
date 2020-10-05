@@ -103,15 +103,16 @@ It expect type 'Configurations' as defined in 'config.go' */
 func DataLoad(class config.Configurations) map[string]interface{} {
 
 	data := map[string]interface{}{
-		"title":     class.Variable.Title,
-		"titlesub":  class.Variable.Titlesub,
-		"update":    class.Variable.Update,
-		"about":     class.Variable.About,
-		"print":     class.Variable.Print,
-		"guide":     class.Variable.Guide,
-		"load":      class.Variable.Load,
-		"save":      class.Variable.Save,
-		"usersaves": class.Variable.Usersaves,
+		"title":      class.Variable.Title,
+		"titlesub":   class.Variable.Titlesub,
+		"update":     class.Variable.Update,
+		"about":      class.Variable.About,
+		"print":      class.Variable.Print,
+		"guide":      class.Variable.Guide,
+		"load":       class.Variable.Load,
+		"save":       class.Variable.Save,
+		"statistics": class.Variable.Statistics,
+		"usersaves":  class.Variable.Usersaves,
 		/* server is used for internal and backend variables interaction with client */
 		"authaddress": class.Server.AuthAddress,
 		/* vm are used to display form items for hosts */

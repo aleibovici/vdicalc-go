@@ -73,6 +73,50 @@ func QueryUser(db *sql.DB, UserID string) bool {
 
 }
 
+// LoadStatistics exported
+/* This public function is responsible for loading statistics */
+func LoadStatistics(db *sql.DB) map[string]interface{} {
+
+	var (
+		hostresultscount           float64
+		hostresultsclockused       float64
+		hostresultsmemory          float64
+		storageresultscapacity     float64
+		hostresultsvmcount         float64
+		storageresultsfrontendiops float64
+		storageresultsbackendiops  float64
+	)
+
+	/* Call stored procedure LoadUserSavesbyUserID */
+	rows, err := db.Query("call vdicalc.LoadStatistics()")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer rows.Close()
+
+	result := make(map[string]interface{})
+
+	for rows.Next() {
+		err = rows.Scan(&hostresultscount, &hostresultsclockused, &hostresultsmemory, &storageresultscapacity, &hostresultsvmcount, &storageresultsfrontendiops, &storageresultsbackendiops)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		result["hostresultscount"] = functions.Float64toStr(hostresultscount,2)
+		result["hostresultsclockused"] = functions.Float64toStr(hostresultsclockused,2)
+		result["hostresultsmemory"] = functions.Float64toStr(hostresultsmemory,2)
+		result["storageresultscapacity"] = functions.Float64toStr(storageresultscapacity,2)
+		result["hostresultsvmcount"] = functions.Float64toStr(hostresultsvmcount,2)
+		result["storageresultsfrontendiops"] = functions.Float64toStr(storageresultsfrontendiops,2)
+		result["storageresultsbackendiops"] = functions.Float64toStr(storageresultsbackendiops,2)
+
+	}
+
+	return result
+
+}
+
 // LoadUserSaves exported
 /* This public function is responsible for loading save entires for a user */
 func LoadUserSaves(db *sql.DB, UserID string) map[string]interface{} {

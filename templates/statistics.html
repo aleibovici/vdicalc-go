@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DNDQC1YRBV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'G-DNDQC1YRBV');
+    </script>
+
+    <!-- Google Sign-in -->
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id"
+      content="893974452758-3kri5mk29j09q273ftqs0r1kdoh8gifi.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <title>{{ .title }}</title>
+    <link href="../static/stylesheets/vdicalc.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body class="html">
+
+    <div class="container-fluid">
+      <!-- Google Sign-in -->
+      <div align="right" class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" data-longtitle="true"></div>
+      <!-- Google Sign-out -->
+      <div align="right"><a href="#" onclick="signOut();">Sign out</a></div>
+    </div>
+    <script>
+      function onSignIn(googleUser) {
+
+        var id_token = googleUser.getAuthResponse().id_token;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', "{{ .authaddress }}" + '/tokensignin?id_token=' + id_token);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send('idtoken=' + id_token + "&method=google");
+      }
+    </script>
+    <!-- Google Sign-out -->
+    <script>
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut();
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', "{{ .authaddress }}" + '/tokensignoff');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send();
+      }
+    </script>
+
+    <div class="container-fluid">
+      <p class="display-4" style="text-align: center;">{{ .title }}</p>
+      <p class="lead" style="text-align: center;">{{ .titlesub }}</p>
+    </div>
+
+    <br>
+
+    <div class="container-fluid">
+      <form method="POST" action="/">
+
+        <input type="hidden" name="submitselect" value="" id="submitselect" />
+
+        <br></br>
+
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col text-right lead">
+              Average number of hosts
+            </div>
+            <div class="col lead">
+              {{ .hostresultscount }}
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col text-right lead">
+              Average vCPU clock
+            </div>
+            <div class="col lead">
+              {{ .hostresultsclockused }} &nbsp; GHz
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col text-right lead">
+              Average host memory
+            </div>
+            <div class="col lead">
+              {{ .hostresultsmemory }} &nbsp; GB
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col text-right lead">
+              Average storage capacity
+            </div>
+            <div class="col lead">
+              {{ .storageresultscapacity }} &nbsp; TB
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col text-right lead">
+              Average VMs per host
+            </div>
+            <div class="col lead">
+              {{ .hostresultsvmcount }}
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col text-right lead">
+              Average storage frontend
+            </div>
+            <div class="col lead">
+              {{ .storageresultsfrontendiops }} &nbsp; IOps
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col text-right lead">
+              Average storage backend
+            </div>
+            <div class="col lead">
+              {{ .storageresultsbackendiops }} &nbsp; IOps
+            </div>
+          </div>
+        </div>
+
+        <br><br><br>
+
+        <div class="container-fluid">
+          <div class="row justify-content-md-center">
+            <p class="lead">The calculation uses mean averages and remove outliers.</p>
+          </div>
+        </div>
+
+        <br><br><br>
+
+        <div class="container-fluid">
+          <div class="row">
+            <button type="button" class="btn btn-primary btn-primary-addon" id="back" name="back"
+              onclick="document.getElementById('submitselect').value='back';this.form.submit()">
+              Back
+            </button>
+          </div>
+        </div>
+
+        <br><br><br>
+
+        <div class="container-fluid">
+          <p class="text-center">(myvirtualcloud.net) 2020. All Rights Reserved.</p>
+        </div>
+
+      </form>
+    </div>
+  </body>
+
+</html>
