@@ -10,7 +10,10 @@ import (
 
 // Calculate export
 /* This public function is reponsible for executing all necessary calculations to obtain results */
-func Calculate(fullData map[string]interface{}, r *http.Request) {
+/* bool tracks if there was any error during validation process */
+func Calculate(fullData map[string]interface{}, r *http.Request) bool {
+
+	var err bool
 
 	fullData["hostresultscount"] = host.GetHostCount(r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"), r.FormValue("virtualizationclusterhostha"))
 	fullData["hostresultsclockused"] = host.GetHostClockUsed(r.FormValue("vmvcpucount"), r.FormValue("vmvcpumhz"), r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"))
@@ -22,6 +25,8 @@ func Calculate(fullData map[string]interface{}, r *http.Request) {
 	fullData["storagedatastorefroentendiops"], fullData["storagedatastorebackendiops"], fullData["storageresultsfrontendiops"], fullData["storageresultsbackendiops"] = storage.GetStorageDatastoreIops(r.FormValue("vmiopscount"), r.FormValue("vmiopsreadratio"), r.FormValue("vmiopsbootcount"), r.FormValue("vmiopsbootreadratio"), r.FormValue("storagedatastorevmcount"), r.FormValue("storageconcurrentbootvmcount"), r.FormValue("storageraidtype"), r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"))
 	fullData["virtualizationresultsclustercount"] = virtualization.GetClusterSize(r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"), r.FormValue("virtualizationclusterhostsize"), r.FormValue("virtualizationclusterhostha"))
 	fullData["virtualizationresultsmanagementservercount"] = virtualization.GetManagementServerCount(r.FormValue("vmcount"), r.FormValue("virtualizationmanagementservertvmcount"))
-	fullData["errorresults"] = validation.ValidateResults(fullData)
+	fullData["errorresults"], err = validation.ValidateResults(fullData)
+
+	return err
 
 }

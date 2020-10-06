@@ -286,18 +286,21 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 				} else {
 
-					calculations.Calculate(FullData, r)
+					/* Execute all calculations and returns err if validation fails */
+					var err = calculations.Calculate(FullData, r)
+
+					/* This conditional does not allow transactions to be ecorded on the
+					database when there is a validation error or profile change*/
+					if err == false && r.PostFormValue("submitselect") != "vmprofile" {
+
+						/* This function save the transaction into vdicalc.transactions */
+						mysql.SaveTransaction(db, tokeninfo.UserId, functions.GetIP(r), FullData)
+
+					}
 				}
 
 				/* This is the template execution for 'index' */
 				functions.ExecuteTemplate(w, "index.html", FullData)
-
-				/* This conditional does not allow profile changes to be recorded on the database */
-				if r.PostFormValue("submitselect") != "vmprofile" {
-
-					/* This function save the transaction into vdicalc.transactions */
-					mysql.SaveTransaction(db, tokeninfo.UserId, functions.GetIP(r), FullData)
-				}
 
 			}
 

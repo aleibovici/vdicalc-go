@@ -24,7 +24,8 @@ func init() {
 
 // ValidateResults export
 /* This public function validate inputs and results, raising errors using ErrorResultsConfiguration */
-func ValidateResults(fullData map[string]interface{}) config.ErrorResultsConfiguration {
+/* bool tracks if there was any error during validation process */
+func ValidateResults(fullData map[string]interface{}) (config.ErrorResultsConfiguration, bool) {
 
 	var errorList config.ErrorResultsConfiguration
 
@@ -36,7 +37,7 @@ func ValidateResults(fullData map[string]interface{}) config.ErrorResultsConfigu
 			if functions.StrtoFloat64(values.(string)) > functions.StrtoFloat64(vmResults.Memorysizelimit) {
 				error := config.ErrorConfiguration{Code: "Warning: ", Description: "VM memory size above limit."}
 				errorList.Error = append(errorList.Error, error)
-				return errorList
+				return errorList, true
 			}
 
 		case "hostresultsclockused":
@@ -44,7 +45,7 @@ func ValidateResults(fullData map[string]interface{}) config.ErrorResultsConfigu
 			if functions.StrtoFloat64(values.(string)) > functions.StrtoFloat64(hostResults.Hostclockusedlimit) {
 				error := config.ErrorConfiguration{Code: "Warning: ", Description: "Host CPU (GHz) above limit. (max=4.2)"}
 				errorList.Error = append(errorList.Error, error)
-				return errorList
+				return errorList, true
 			}
 
 		case "hostresultsvmcount":
@@ -52,7 +53,7 @@ func ValidateResults(fullData map[string]interface{}) config.ErrorResultsConfigu
 			if functions.StrtoFloat64(values.(string)) > functions.StrtoFloat64(hostResults.Hostvmcountlimit) {
 				error := config.ErrorConfiguration{Code: "Warning: ", Description: "Number os VMs per host avobe limit. (max=200)"}
 				errorList.Error = append(errorList.Error, error)
-				return errorList
+				return errorList, true
 			}
 
 		case "storageresultsdatastorecount":
@@ -60,12 +61,12 @@ func ValidateResults(fullData map[string]interface{}) config.ErrorResultsConfigu
 			if functions.StrtoFloat64(values.(string)) > functions.StrtoFloat64(storageResults.Storagedatastorecountlimit) {
 				error := config.ErrorConfiguration{Code: "Warning: ", Description: "Number os datastores above limit (max=500)."}
 				errorList.Error = append(errorList.Error, error)
-				return errorList
+				return errorList, true
 			}
 		}
 
 	}
 
-	return errorList
+	return errorList, false
 
 }
