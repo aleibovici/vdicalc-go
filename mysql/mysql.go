@@ -105,13 +105,13 @@ func LoadStatistics(db *sql.DB) map[string]interface{} {
 		}
 
 		result["transactionscountid"] = functions.Float64toStr(transactionscountid,0)
-		result["hostresultscount"] = functions.Float64toStr(hostresultscount,2)
+		result["hostresultscount"] = functions.Float64toStr(hostresultscount,0)
 		result["hostresultsclockused"] = functions.Float64toStr(hostresultsclockused,2)
-		result["hostresultsmemory"] = functions.Float64toStr(hostresultsmemory,2)
-		result["storageresultscapacity"] = functions.Float64toStr(storageresultscapacity,2)
-		result["hostresultsvmcount"] = functions.Float64toStr(hostresultsvmcount,2)
-		result["storageresultsfrontendiops"] = functions.Float64toStr(storageresultsfrontendiops,2)
-		result["storageresultsbackendiops"] = functions.Float64toStr(storageresultsbackendiops,2)
+		result["hostresultsmemory"] = functions.Float64toStr(hostresultsmemory,0)
+		result["storageresultscapacity"] = functions.Float64toStr(storageresultscapacity,0)
+		result["hostresultsvmcount"] = functions.Float64toStr(hostresultsvmcount,0)
+		result["storageresultsfrontendiops"] = functions.Float64toStr(storageresultsfrontendiops,0)
+		result["storageresultsbackendiops"] = functions.Float64toStr(storageresultsbackendiops,0)
 
 	}
 
