@@ -78,6 +78,7 @@ func QueryUser(db *sql.DB, UserID string) bool {
 func LoadStatistics(db *sql.DB) map[string]interface{} {
 
 	var (
+		transactionscountid        float64
 		hostresultscount           float64
 		hostresultsclockused       float64
 		hostresultsmemory          float64
@@ -98,11 +99,12 @@ func LoadStatistics(db *sql.DB) map[string]interface{} {
 	result := make(map[string]interface{})
 
 	for rows.Next() {
-		err = rows.Scan(&hostresultscount, &hostresultsclockused, &hostresultsmemory, &storageresultscapacity, &hostresultsvmcount, &storageresultsfrontendiops, &storageresultsbackendiops)
+		err = rows.Scan(&transactionscountid, &hostresultscount, &hostresultsclockused, &hostresultsmemory, &storageresultscapacity, &hostresultsvmcount, &storageresultsfrontendiops, &storageresultsbackendiops)
 		if err != nil {
 			log.Fatal(err)
 		}
 
+		result["transactionscountid"] = functions.Float64toStr(transactionscountid,0)
 		result["hostresultscount"] = functions.Float64toStr(hostresultscount,2)
 		result["hostresultsclockused"] = functions.Float64toStr(hostresultsclockused,2)
 		result["hostresultsmemory"] = functions.Float64toStr(hostresultsmemory,2)
