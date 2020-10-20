@@ -245,6 +245,9 @@ func DataLoad(class config.Configurations) map[string]interface{} {
 		"virtualizationresultsclustercountlabel":          class.VirtualizationResults.Clustercountlabel,
 		"virtualizationresultsmanagementservercount":      class.VirtualizationResults.Managementservercount,
 		"virtualizationresultsmanagementservercountlabel": class.VirtualizationResults.Managementservercountlabel,
+		/* azureresults are used to display resulting definition for Azure VM inatance type */
+		"azureresultsinstancetype":      class.AzureResults.Instancetype,
+		"azureresultsinstancetypelabel": class.AzureResults.Instancetypelabel,
 		/* errorresults are used to display error and limits */
 		"errorresults": class.ErrorResults,
 	}

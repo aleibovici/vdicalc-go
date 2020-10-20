@@ -290,3 +290,8 @@ storageresults:
 virtualizationresults:
   clustercountlabel: "Number of Clusters"
   managementservercountlabel: "Number of Management Servers"
+
+# These are the AzureResultsConfiguration struct values
+azureresults:
+  instancetype: ""
+  instancetypelabel: "Recommended Azure Instance Type"

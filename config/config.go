@@ -18,6 +18,7 @@ type Configurations struct {
 	HostResults           HostResultsConfiguration
 	StorageResults        StorageResultsConfiguration
 	VirtualizationResults VirtualizationResultsConfiguration
+	AzureResults          AzureResultsConfiguration
 	ErrorResults          ErrorResultsConfiguration
 }
 
@@ -198,6 +199,12 @@ type VirtualizationResultsConfiguration struct {
 	Managementservercount      string
 	Managementservercountlabel string
 	Managementservercountlimit string
+}
+
+// AzureResultsConfiguration esported
+type AzureResultsConfiguration struct {
+	Instancetype      string
+	Instancetypelabel string
 }
 
 // ErrorResultsConfiguration exported
