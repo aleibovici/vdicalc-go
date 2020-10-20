@@ -63,7 +63,8 @@ vm:
   memorysizelabel: "Memory Size (MB)"
   memorysize: "1536"
   memorysizeselected: "1536"
-  videoram: { "Off": "0", "64": "64", "128": "128", "256": "256", "512": "512" }
+  videoram: { "Off": "0", "GPU": "1", "64": "64", "128": "128", "256": "256", "512": "512" }
+  videoramtooltip: "Memory assigned to software GPU. GPU=Hardware GPU"
   videoramlabel: "3D Graphics (MB)"
   videoramselected: "0"
   disksizelabel: "Disk Size (GB)"

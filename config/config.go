@@ -72,6 +72,7 @@ type VMConfigurations struct {
 	Memorysizeselected           string
 	Videoram                     map[string]interface{}
 	Videoramselected             string
+	Videoramtooltip              string
 	Videoramlabel                string
 	Disksizelabel                string
 	Disksize                     int

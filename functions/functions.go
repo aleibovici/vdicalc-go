@@ -145,6 +145,7 @@ func DataLoad(class config.Configurations) map[string]interface{} {
 		"vmvideoram":                     class.VM.Videoram,
 		"vmvideoramlabel":                class.VM.Videoramlabel,
 		"vmvideoramselected":             class.VM.Videoramselected,
+		"vmvideoramtooltip":              class.VM.Videoramtooltip,
 		"vmdisksizelabel":                class.VM.Disksizelabel,
 		"vmdisksize":                     class.VM.Disksize,
 		"vmdisksizeselected":             class.VM.Disksizeselected,

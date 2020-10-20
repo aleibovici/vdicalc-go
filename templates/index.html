@@ -137,11 +137,11 @@
               </select>
             </div>
             <div class="col">
-              <label class="col-form-label">{{ .vmvideoramlabel }}</label>
+              <label class="col-form-label" for="vmvideoram">{{ .vmvideoramlabel }}</label>
             </div>
             <div class="col">
               <select class="form-control form-control-sm dropdown-addon" id="vmvideoram"
-                name="vmvideoram">
+                name="vmvideoram" data-toggle="tooltip" title='{{ .vmvideoramtooltip }}'>
                 {{range $key, $value := .vmvideoram}}
                 <option value="{{ $value }}" {{ if (eq $value $.vmvideoramselected) }}selected{{ end }}>{{ $key }}
                 </option>
@@ -517,8 +517,10 @@
 
           <div class="row align-items-center top-buffer bottom-buffer">
             <div class="col">
+              <label class="col-form-label">Recommended Azure Instance Type</label>
             </div>
-            <div class="col">
+            <div class="col div-results">
+              <label class="col-form-label label-azureinstancetype">{{ .azureinstancetype }}</label>
             </div>
             <div class="col">
               <label class="col-form-label">{{ .storageresultsbackendiopslabel }}</label>

@@ -82,7 +82,11 @@ func GetVMDisplayOverhead(vmdisplaycount string, vmdisplayresolution string, vmv
 				s = 589
 			}
 		}
-
+	} else if vmvideoram == "1" {
+		/* "1" is used for GPU use cases */
+		/* https://docs.vmware.com/en/VMware-Horizon-6/6.2/com.vmware.horizon-view.planning.doc/GUID-10ED49A9-56B6-4BD7-8425-94900F53AB02.html */
+		m = 96
+		s = 0
 	} else {
 
 		switch vmvideoram {

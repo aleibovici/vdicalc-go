@@ -2,6 +2,7 @@ package calculations
 
 import (
 	"net/http"
+	"vdicalc/azure"
 	"vdicalc/host"
 	"vdicalc/storage"
 	"vdicalc/validation"
@@ -25,6 +26,7 @@ func Calculate(fullData map[string]interface{}, r *http.Request) bool {
 	fullData["storagedatastorefroentendiops"], fullData["storagedatastorebackendiops"], fullData["storageresultsfrontendiops"], fullData["storageresultsbackendiops"] = storage.GetStorageDatastoreIops(r.FormValue("vmiopscount"), r.FormValue("vmiopsreadratio"), r.FormValue("vmiopsbootcount"), r.FormValue("vmiopsbootreadratio"), r.FormValue("storagedatastorevmcount"), r.FormValue("storageconcurrentbootvmcount"), r.FormValue("storageraidtype"), r.FormValue("vmcount"), r.FormValue("storagedatastorevmcount"))
 	fullData["virtualizationresultsclustercount"] = virtualization.GetClusterSize(r.FormValue("vmcount"), r.FormValue("hostsocketcount"), r.FormValue("hostsocketcorescount"), r.FormValue("vmpercorecount"), r.FormValue("hostcoresoverhead"), r.FormValue("virtualizationclusterhostsize"), r.FormValue("virtualizationclusterhostha"))
 	fullData["virtualizationresultsmanagementservercount"] = virtualization.GetManagementServerCount(r.FormValue("vmcount"), r.FormValue("virtualizationmanagementservertvmcount"))
+	fullData["azureinstancetype"] = azure.GetAzureInstanceType(r.FormValue("vmvcpucount"), r.FormValue("vmdisksize"), r.FormValue("vmvideoram"))
 	fullData["errorresults"], err = validation.ValidateResults(fullData)
 
 	return err
