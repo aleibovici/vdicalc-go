@@ -64,10 +64,10 @@ func GetAzureInstanceType(vmvcpucount string, vmmemorysize string, vmdisksize st
 	}
 
 	/* This function select the VM instance type based on GPU requirement */
-	/* The calculator only support calculations up to 8 cores due to vSphere calculations. N6 has 6 cores */
+	/* The calculator only support calculations up to 8 cores due to vSphere calculations. NV12s has 12 cores */
 	switch f.StrtoInt(vmvideoram) {
 	case 1:
-		result = "N6"
+		result = "NV12s v3"
 	}
 
 	/* This function select the disk instance */
