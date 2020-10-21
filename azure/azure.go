@@ -63,30 +63,49 @@ func GetAzureInstanceType(vmvcpucount string, vmmemorysize string, vmdisksize st
 		}
 	}
 
-	/* This function select the VM instance type based on GPU requirement */
-	/* The calculator only support calculations up to 8 cores due to vSphere calculations. NV12s has 12 cores */
+	/* This function select the VM instance type based on GPU requirement (vmvideoram=1 equals GPU required)*/
+	/* The calculator only support calculations up to 8 cores due to vSphere calculations.*/
+	/* We use float and .1 decimal to ensure that a smaller VM instance type is selected if memory is close enough */
 	switch f.StrtoInt(vmvideoram) {
 	case 1:
-		result = "NV12s v3"
+		switch f.StrtoInt(vmvcpucount) {
+		case 1, 2, 4:
+			switch {
+			case memory <= 14.1:
+				result = "NV4as"
+			case memory <= 28.1:
+				result = "NV8as"
+			}
+		case 8:
+			switch {
+			case memory <= 28.1:
+				result = "NV8as"
+			case memory <= 56.1:
+				result = "NV16as"
+			case memory > 56.1:
+				result = "NV32as"
+			}
+		}
+
 	}
 
 	/* This function select the disk instance */
 	c := (f.StrtoInt(vmdisksize))
 	switch {
 	case c <= 32:
-		result += " | P4"
+		result += " P4"
 	case c <= 64:
-		result += " | P6"
+		result += " P6"
 	case c <= 128:
-		result += " | P10"
+		result += " P10"
 	case c <= 256:
-		result += " | P15"
+		result += " P15"
 	case c <= 512:
-		result += " | P20"
+		result += " P20"
 	case c <= 1024:
-		result += " | P30"
+		result += " P30"
 	case c >= 1024:
-		result += " | P40"
+		result += " P40"
 	}
 
 	return result
