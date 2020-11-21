@@ -104,14 +104,14 @@ func LoadStatistics(db *sql.DB) map[string]interface{} {
 			log.Fatal(err)
 		}
 
-		result["transactionscountid"] = functions.Float64toStr(transactionscountid,0)
-		result["hostresultscount"] = functions.Float64toStr(hostresultscount,0)
-		result["hostresultsclockused"] = functions.Float64toStr(hostresultsclockused,2)
-		result["hostresultsmemory"] = functions.Float64toStr(hostresultsmemory,0)
-		result["storageresultscapacity"] = functions.Float64toStr(storageresultscapacity,0)
-		result["hostresultsvmcount"] = functions.Float64toStr(hostresultsvmcount,0)
-		result["storageresultsfrontendiops"] = functions.Float64toStr(storageresultsfrontendiops,0)
-		result["storageresultsbackendiops"] = functions.Float64toStr(storageresultsbackendiops,0)
+		result["transactionscountid"] = functions.Float64toStr(transactionscountid, 0)
+		result["hostresultscount"] = functions.Float64toStr(hostresultscount, 0)
+		result["hostresultsclockused"] = functions.Float64toStr(hostresultsclockused, 2)
+		result["hostresultsmemory"] = functions.Float64toStr(hostresultsmemory, 0)
+		result["storageresultscapacity"] = functions.Float64toStr(storageresultscapacity, 0)
+		result["hostresultsvmcount"] = functions.Float64toStr(hostresultsvmcount, 0)
+		result["storageresultsfrontendiops"] = functions.Float64toStr(storageresultsfrontendiops, 0)
+		result["storageresultsbackendiops"] = functions.Float64toStr(storageresultsbackendiops, 0)
 
 	}
 
@@ -302,6 +302,88 @@ func CreateUser(db *sql.DB, userid, email string) {
 	/* This function execues the SQL estatement on Google SQL Run database */
 	db.Query("call vdicalc.CreateUser(?, ?)", userid, email)
 
+}
+
+// SaveCCMetrixTransaction exported
+/* This public function save Citrix Cloud Benchmark Transaction */
+func SaveCCMetrixTransaction(db *sql.DB, UserID string, ip string, score int) {
+
+	db.Query("call vdicalc.SaveCCMetrixTransaction(?, ?, ?)",
+		UserID,
+		ip,
+		score)
+
+}
+
+// UpdateCCMetrixTransaction exported
+/* This public function update Citrix Cloud Benchmark Transaction */
+func UpdateCCMetrixTransaction(db *sql.DB, UserID string, ip string, score int) {
+
+	db.Query("call vdicalc.UpdateCCMetrixTransaction(?, ?, ?)",
+		UserID,
+		ip,
+		score)
+
+}
+
+// QueryCCMetrixUser exported
+/* This public function retrieve a single user from Citrix Cloud Benchmark Transaction */
+func QueryCCMetrixUser(db *sql.DB, UserID string) bool {
+
+	var (
+		guserid string
+	)
+
+	/* Call stored procedure LoadCCMetrixUserbyID */
+	rows, err := db.Query("call vdicalc.LoadCCMetrixUserbyID(?)", UserID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		err := rows.Scan(&guserid)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if guserid == UserID {
+			return true
+		}
+	}
+
+	return false
+
+}
+
+// LoadScoreRanking exported
+/* This public function load the score ranking */
+func LoadScoreRanking(db *sql.DB, UserID string) map[string]interface{} {
+
+	var (
+		pos   int
+		score int
+	)
+
+	/* Call stored procedure LoadScoreRanking */
+	rows, err := db.Query("call vdicalc.LoadScoreRanking(?)", UserID)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	result := make(map[string]interface{})
+
+	for rows.Next() {
+		err := rows.Scan(&pos, &score)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	result["pos"] = pos
+
+	return result
 }
 
 // InitSocketConnectionPool initializes a Unix socket connection pool for

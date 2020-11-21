@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+
+    <!-- Google Sign-in -->
+    <meta name="google-signin-scope" content="profile email" />
+    <meta name="google-signin-client_id"
+      content="893974452758-3kri5mk29j09q273ftqs0r1kdoh8gifi.apps.googleusercontent.com" />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <!-- CCMetrix JS -->
+    <script src="/static/js/ccmetrix.js"></script>
+
+    <title>CCMetric SignUp</title>
+  </head>
+
+  <body class="html">
+    <div class="container-fluid">
+      <!-- Google Sign-in -->
+      <div align="right" class="g-signin2 d-print-none" data-onsuccess="onSignIn" data-theme="dark"
+        data-longtitle="true"></div>
+      <!-- Google Sign-out -->
+      <div align="right" class="d-print-none">
+        <a href="#" onclick="signOut();">Sign out</a>
+      </div>
+    </div>
+    <script>
+      function onSignIn(googleUser) {
+        var id_token = googleUser.getAuthResponse().id_token;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open(
+          "POST",
+          "{{ .authaddress }}" + "/tokensignin?id_token=" + id_token
+        );
+        xhr.setRequestHeader(
+          "Content-Type",
+          "application/x-www-form-urlencoded"
+        );
+        xhr.send("idtoken=" + id_token + "&method=google");
+      }
+    </script>
+    <!-- Google Sign-out -->
+    <script>
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut();
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "{{ .authaddress }}" + "/tokensignoff");
+        xhr.setRequestHeader(
+          "Content-Type",
+          "application/x-www-form-urlencoded"
+        );
+        xhr.send();
+      }
+    </script>
+
+    <div class="container-fluid">
+      <p class="display-4" style="text-align: center">CCMetrix SignUp</p>
+    </div>
+
+    <br><br>
+
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <p class="lead" style="text-align: center">CCMetrix measures your Citrix Virtual Apps and Desktops deployment
+            and ranks your deployment performance anonymously against others. Then, CCMetrix provides you with tips to increase your
+            score, beat everyone, and make your users happy!! All this while being agentless - only using Citrix Cloud
+            API.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <br><br>
+
+    <div class="container-fluid">
+      <form method="POST" action="/">
+        <input type="hidden" name="submitselect" value="" id="submitselect" />
+
+        <div class="container container-input form-group">
+          <div class="row top-buffer d-print-none">
+            <div class="col">
+              <label class="col-form-label">customerID</label>
+            </div>
+            <div class="col input-group input-group-sm">
+              <input type="text" class="form-control" id="customerID" name="customerID" maxlength="100" value="" />
+            </div>
+          </div>
+
+          <div class="row top-buffer d-print-none">
+            <div class="col">
+              <label class="col-form-label">clientID</label>
+            </div>
+            <div class="col input-group input-group-sm">
+              <input type="text" class="form-control" id="clientID" name="clientID" maxlength="100" value="" />
+            </div>
+          </div>
+
+          <div class="row top-buffer d-print-none">
+            <div class="col">
+              <label class="col-form-label">clientSecret</label>
+            </div>
+            <div class="col input-group input-group-sm">
+              <input type="text" class="form-control" id="clientSecret" name="clientSecret" maxlength="100" value="" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="container-fluid d-print-none">
+          <div class="row">
+            <button type="button" class="btn btn-primary btn-primary-addon" id="back" name="back"
+              onclick="document.getElementById('submitselect').value='back';this.form.submit()">
+              Back
+            </button>
+            <button type="button" class="btn btn-primary btn-primary-addon" id="ccmetrixsignupsubmit"
+              name="ccmetrixsignupsubmit"
+              onclick="document.getElementById('submitselect').value='ccmetrixsignupsubmit';this.form.submit()">
+              Save
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <br><br>
+
+      <div class="container-fluid">
+        <p class="lead" style="text-align: left;">- This release of CCMetrix requires Citrix Analytics for Performance
+          service.</p>
+        <p class="lead" style="text-align: left;">- Connect to Citrix Cloud and create a Secure Client
+        </p>
+        <p class="lead" style="text-align: left;">- CCMetrix only request performance data from Citrix Cloud</p>
+        <p class="lead" style="text-align: left;">- Your Secure Client is securely stored in Google Secret Manager and only
+          accessible by CCMetrics</p>
+        <p class="lead" style="text-align: left;">- You can delete your Secure Client anytime from CCMetrix or Citrix
+          Cloud</p>
+        <br><br>
+        <img src="../static/files/identity_01.jpg" class="rounded mx-auto d-block" width="238" height="371">
+        <br><br>
+        <img src="../static/files/identity_02.jpg" class="rounded mx-auto d-block" width="952" height="417">
+      </div>
+
+      <br>
+
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"></script>
+  </body>
+
+</html>

@@ -7,12 +7,16 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"vdicalc/auth"
 	"vdicalc/calculations"
+	"vdicalc/citrixcloud/trust"
+	"vdicalc/citrixcloud/was"
 	c "vdicalc/config"
 	"vdicalc/functions"
 	"vdicalc/mysql"
+	"vdicalc/secretmanager"
 
 	"github.com/spf13/viper"
 	"google.golang.org/api/oauth2/v2"
@@ -81,6 +85,111 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			/* This is the template execution for 'index' */
 			functions.ExecuteTemplate(w, "index.html", FullData)
 
+		case "/ccmetrix":
+
+			/* If not valid tokenID is present a error is raised requesting user to signin, else execute calculations */
+			if tokeninfo == nil {
+
+				/* This  function return error codes to html */
+				FullData["errorresults"] = functions.ReturnError("Warning", "You must be Signed In")
+
+				/* Determine the backend service address to be passsed to index.html js for authentication.
+				AUTH_ADDRESS is an environment variable and must be defined at the container execution level */
+				FullData["authaddress"] = os.Getenv("AUTH_ADDRESS")
+
+				/* This is the template execution for 'index' */
+				functions.ExecuteTemplate(w, "index.html", FullData)
+
+				break
+
+			} else {
+
+				/* Retrieve Citrix clientSecret from Google Secret Manager */
+				secret := secretmanager.GetSecret("893974452758", tokeninfo.UserId)
+
+				switch secret {
+				case nil:
+
+					/* Determine the backend service address to be passsed to index.html js for authentication.
+					AUTH_ADDRESS is an environment variable and must be defined at the container execution level */
+					FullData["authaddress"] = os.Getenv("AUTH_ADDRESS")
+
+					/* This is the template execution for 'index' */
+					functions.ExecuteTemplate(w, "ccmetrix_signup.html", FullData)
+
+				default:
+
+					var score int                      /* variable for score */
+					var ranking map[string]interface{} /* variable for ranking */
+					var startTime int64                /* variable for RequestUserExperienceTrend startTime */
+					var endTime int64                  /* variable RequestUserExperienceTrend endTime */
+					var clients trust.Clients          /* variable for Citrix Cloud bearer token */
+
+					/* Request token from Citrix Cloud with credentials obtained from Google Secrets Manager */
+					if clients.Token == "" {
+						clients = trust.RequestToken(secret["customerID"], secret["clientID"], secret["clientSecret"])
+					}
+
+					// If IS_PROD environment variable is set, it contains
+					// True or False. If IS_PROD is not set, DEV URI is used.
+					var isProd bool
+					if os.Getenv("IS_PROD") == "true" {
+						isProd = true
+					}
+
+					/* Retrieve agregate data for last 12 hours. */
+					startTime = functions.TimetoEpoch(time.Now(), -720)
+					endTime = functions.TimetoEpoch(time.Now(), 0)
+					data := was.RequestUserExperienceTrend(clients, secret["customerID"], 30, startTime, endTime, "12h", "ALL", false, isProd)
+
+					/* If data.TotalUsers == 0 results, try agregate data for last 1 week */
+					if data.TotalUsers == 0 {
+						startTime = functions.TimetoEpoch(time.Now(), -10080)
+						endTime = functions.TimetoEpoch(time.Now(), 0)
+						data = was.RequestUserExperienceTrend(clients, secret["customerID"], 360, startTime, endTime, "1w", "ALL", false, isProd)
+					}
+
+					/* If data.TotalUsers == 0 results, try agregate data for last 1 month */
+					if data.TotalUsers == 0 {
+						startTime = functions.TimetoEpoch(time.Now(), -43800)
+						endTime = functions.TimetoEpoch(time.Now(), 0)
+						data = was.RequestUserExperienceTrend(clients, secret["customerID"], 1440, startTime, endTime, "1m", "ALL", false, isProd)
+					}
+
+					/* Cleanup Citrix clientSecret */
+					secret = nil    /* Cleanup Goole Secret */
+					clients.Reset() /* Cleanup Citrix Cloud tokens */
+
+					/* If data.TotalUsers == 0 results, assign score 0 or calculate score and ranking */
+					if data.TotalUsers == 0 {
+						/* Assign Ranking and Score 0 */
+						score = 0
+					} else {
+						/* Calculate score and ranking */
+						score = was.CalculateScore(data.TotalUsers, data.Items[0].Value, data.Items[1].Value, data.Items[2].Value)
+						ranking = mysql.LoadScoreRanking(db, tokeninfo.UserId)
+					}
+
+					/* Test if user already exist and if not add to the table or update*/
+					if mysql.QueryCCMetrixUser(db, tokeninfo.UserId) == false {
+						mysql.SaveCCMetrixTransaction(db, tokeninfo.UserId, functions.GetIP(r), score)
+					} else {
+						mysql.UpdateCCMetrixTransaction(db, tokeninfo.UserId, functions.GetIP(r), score)
+					}
+
+					/* Determine the backend service address to be passsed to index.html js for authentication.
+					AUTH_ADDRESS is an environment variable and must be defined at the container execution level */
+					FullData["authaddress"] = os.Getenv("AUTH_ADDRESS")
+					FullData["score"] = score
+					FullData["ranking"] = ranking["pos"]
+
+					/* This is the template execution for 'index' */
+					functions.ExecuteTemplate(w, "ccmetrix.html", FullData)
+
+				}
+
+			}
+
 		}
 
 	case "POST":
@@ -90,8 +199,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 		case "/tokensignoff":
 
-			/* The index.html signoff JS triggers a http POST on /tokensignoff and the user's token id is removed*/
-			tokeninfo = nil
+			/* The index.html signoff JS triggers a http POST on /tokensignoff */
+			tokeninfo = nil /* Clean up Google tokens */
 
 		case "/tokensignin":
 
@@ -151,6 +260,73 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 				/* This is the template execution for 'statistics' */
 				functions.ExecuteTemplate(w, "statistics.html", FullData)
+
+			case "ccmetrix":
+
+				/* If not valid tokenID is present a error is raised requesting user to signin, else execute calculations */
+				if tokeninfo == nil {
+
+					/* This  function return error codes to html */
+					FullData["errorresults"] = functions.ReturnError("Warning", "You must be Signed In")
+
+					/* Determine the backend service address to be passsed to index.html js for authentication.
+					AUTH_ADDRESS is an environment variable and must be defined at the container execution level */
+					FullData["authaddress"] = os.Getenv("AUTH_ADDRESS")
+
+					/* This is the template execution for 'index' */
+					functions.ExecuteTemplate(w, "index.html", FullData)
+
+					break
+
+				} else {
+
+					data := r.Header.Get("Origin") + "/ccmetrix"
+					FullData["url"] = data
+					/* This is the template execution for 'index' */
+					functions.ExecuteTemplate(w, "ccmetrix_load.html", FullData)
+				}
+
+			case "ccmetrixsignupsubmit":
+
+				/* If not valid tokenID is present a error is raised requesting user to signin, else execute calculations */
+				if tokeninfo == nil {
+
+					/* This  function return error codes to html */
+					FullData["errorresults"] = functions.ReturnError("Warning", "You must be Signed In")
+
+					/* Determine the backend service address to be passsed to index.html js for authentication.
+					AUTH_ADDRESS is an environment variable and must be defined at the container execution level */
+					FullData["authaddress"] = os.Getenv("AUTH_ADDRESS")
+
+					/* This is the template execution for 'index' */
+					functions.ExecuteTemplate(w, "ccmetrix_signup.html", FullData)
+
+					break
+
+				} else {
+
+					/* This function reads and parse the html form */
+					if err := r.ParseForm(); err != nil {
+						fmt.Fprintf(w, "ParseForm() err: %v", err)
+						return
+					}
+					r.ParseForm()
+
+					/* Create Secret with Citrix Cloud API authorization */
+					secretmanager.CreateSecret("893974452758", tokeninfo.UserId, r.PostFormValue("customerID"), r.PostFormValue("clientID"), r.PostFormValue("clientSecret"))
+
+					/* Redirect to / */
+					http.Redirect(w, r, "/ccmetrix", http.StatusSeeOther)
+
+				}
+
+			case "ccmetrixreset":
+
+				/* Retrieve Citrix clientSecret from Google Secret Manager */
+				secretmanager.DeleteSecret("893974452758", tokeninfo.UserId)
+
+				/* Redirect to / */
+				http.Redirect(w, r, "/ccmetrix", http.StatusSeeOther)
 
 			case "back", "guide":
 
@@ -310,6 +486,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	db.Close()
+	// db.Close()
 
 }

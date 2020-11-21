@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+
+    <!-- Google Sign-in -->
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id"
+      content="893974452758-3kri5mk29j09q273ftqs0r1kdoh8gifi.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <!-- CCMetrix JS -->
+    <script src="/static/js/ccmetrix.js"></script>
+
+    <title>CCMetrix</title>
+    <link href="../static/stylesheets/vdicalc.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body class="html">
+    <div class="container-fluid">
+      <!-- Google Sign-in -->
+      <div align="right" class="g-signin2 d-print-none" data-onsuccess="onSignIn" data-theme="dark"
+        data-longtitle="true"></div>
+      <!-- Google Sign-out -->
+      <div align="right" class="d-print-none"><a href="#" onclick="signOut();">Sign out</a></div>
+    </div>
+    <script>
+      function onSignIn(googleUser) {
+
+        var id_token = googleUser.getAuthResponse().id_token;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', "{{ .authaddress }}" + '/tokensignin?id_token=' + id_token);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send('idtoken=' + id_token + "&method=google");
+      }
+    </script>
+    <!-- Google Sign-out -->
+    <script>
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut();
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', "{{ .authaddress }}" + '/tokensignoff');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send();
+      }
+    </script>
+
+    <div class="container-fluid">
+      <p class="display-3" style="text-align: center">CCMetrix Benchmark</p>
+    </div>
+
+    <br><br><br><br>
+
+    <div class="container-fluid">
+      <form method="POST" action="/">
+        <input type="hidden" name="submitselect" value="" id="submitselect">
+
+        <p class="lead" style="text-align: center">We analyzed your deployment for <mark>User Experience (UX)</mark>,
+          <mark>Session Responsiveness</mark> and <mark>Session Logon Duration</mark></p>
+          <p class="lead" style="text-align: center">CCMetrix will soon let you know how to improve your score.</p>
+        <br>
+        <div class="container-md alert alert-success" role="alert">
+          <p class="display-4" style="text-align: center">Score: {{.score}}</p>
+        </div>
+        <div class="container-md alert alert-info" role="alert">
+          <p class="display-4" style="text-align: center">Ranking Position: {{ .ranking }}</p>
+        </div>
+        <br><br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col text-center">
+              <p class="lead" style="text-align: center;">Share CCMetrix with the world!</p>
+              <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="I just benchmarked my Citrix Virtual Apps and Desktops with CCMetrix. Find your ranking score!" data-url="http://vdicalc.myvirtualcloud.net" data-lang="en" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+          </div>
+        </div>
+        <br><br>
+
+        <!-- Buttons -->
+        <div class="container-fluid d-print-none">
+          <div class="row">
+            <button type="button" class="btn btn-primary btn-primary-addon" id="back" name="back"
+              onclick="document.getElementById('submitselect').value='back';this.form.submit()">
+              Back
+            </button>
+            <button target="_blank" type="button" class="btn btn-primary btn-primary-addon" id="refresh" name="refresh"
+              onClick="window.location.reload(),document.getElementById('submitselect').value='ccmetrix';this.form.submit()">Refresh</button>
+            <button type="button" class="btn btn-primary btn-primary-addon pull-right" id="ccmetrixreset" name="ccmetrixreset"
+              onclick="document.getElementById('submitselect').value='ccmetrixreset';this.form.submit()">Reset Secure
+              Client</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <br>
+
+    <p>Status: <span id="datetime"></span></p>
+
+    <script>
+      var dt = new Date();
+      document.getElementById("datetime").innerHTML = dt.toLocaleString();
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"></script>
+
+  </body>
+
+</html>

@@ -1,0 +1,15 @@
+POST https://trust.citrixworkspacesapi.net/7hbovtfe2p4b/tokens/clients  HTTP/1.1
+Content-Type: application/json
+
+{
+    "ClientId":"3e23aa7f-5491-4009-906a-8d940aa678cf", 
+    "ClientSecret": "kywFkmR7R6PNc5kUSljSuA==" 
+}
+
+# POST https://trust.citrixworkspacesapi.net/44bvu8230jrt/tokens/clients  HTTP/1.1
+# Content-Type: application/json
+
+# {
+#     "ClientId":"173dc544-4a90-4874-ae80-bd72af71a012", 
+#     "ClientSecret": "LjHGUp7CSMcZRRhQpCQIDA==" 
+# }

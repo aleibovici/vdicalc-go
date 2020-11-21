@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 	"vdicalc/config"
 )
 
@@ -61,6 +62,13 @@ func InttoStr(value int) string {
 	return r
 }
 
+// Int64toStr function
+/* This public function convert int to string */
+func Int64toStr(value int64) string {
+	r := strconv.FormatInt(value, 10)
+	return r
+}
+
 // StrtoFloat64 function
 /* This public function convert string to float64 */
 func StrtoFloat64(value string) float64 {
@@ -73,6 +81,17 @@ func StrtoFloat64(value string) float64 {
 func Float64toStr(value float64, prec int) string {
 
 	return strconv.FormatFloat(value, 'f', prec, 64)
+}
+
+// TimetoEpoch function
+/* This public function convert time.time to Epoch
+offset allow to add or remove minutes */
+func TimetoEpoch(myTime time.Time, offset int) int64 {
+
+	a := myTime.Add(time.Duration(offset) * time.Minute)
+	b := a.UnixNano() / int64(time.Millisecond)
+
+	return int64(b)
 }
 
 // MustGetenv is a helper function for getting environment variables.
@@ -95,6 +114,12 @@ func GetIP(r *http.Request) string {
 	}
 
 	return r.RemoteAddr
+}
+
+// EpochtoHuman export
+/* This public function convert epoch time to human readable */
+func EpochtoHuman(epoch int64) string {
+	return time.Unix(epoch, 0).Format(time.RFC822Z)
 }
 
 // DataLoad fuction
