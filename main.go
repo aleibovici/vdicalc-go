@@ -132,28 +132,28 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 					// If IS_PROD environment variable is set, it contains
 					// True or False. If IS_PROD is not set, DEV URI is used.
-					var isProd bool
-					if os.Getenv("IS_PROD") == "true" {
-						isProd = true
+					var isDev bool
+					if os.Getenv("IS_DEV") == "true" {
+						isDev = true
 					}
 
 					/* Retrieve agregate data for last 12 hours. */
 					startTime = functions.TimetoEpoch(time.Now(), -720)
 					endTime = functions.TimetoEpoch(time.Now(), 0)
-					data := was.RequestUserExperienceTrend(clients, secret["customerID"], 30, startTime, endTime, "12h", "ALL", false, isProd)
+					data := was.RequestUserExperienceTrend(clients, secret["customerID"], 30, startTime, endTime, "12h", "ALL", false, isDev)
 
 					/* If data.TotalUsers == 0 results, try agregate data for last 1 week */
 					if data.TotalUsers == 0 {
 						startTime = functions.TimetoEpoch(time.Now(), -10080)
 						endTime = functions.TimetoEpoch(time.Now(), 0)
-						data = was.RequestUserExperienceTrend(clients, secret["customerID"], 360, startTime, endTime, "1w", "ALL", false, isProd)
+						data = was.RequestUserExperienceTrend(clients, secret["customerID"], 360, startTime, endTime, "1w", "ALL", false, isDev)
 					}
 
 					/* If data.TotalUsers == 0 results, try agregate data for last 1 month */
 					if data.TotalUsers == 0 {
 						startTime = functions.TimetoEpoch(time.Now(), -43800)
 						endTime = functions.TimetoEpoch(time.Now(), 0)
-						data = was.RequestUserExperienceTrend(clients, secret["customerID"], 1440, startTime, endTime, "1m", "ALL", false, isProd)
+						data = was.RequestUserExperienceTrend(clients, secret["customerID"], 1440, startTime, endTime, "1m", "ALL", false, isDev)
 					}
 
 					/* Cleanup Citrix clientSecret */

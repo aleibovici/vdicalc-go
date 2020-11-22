@@ -41,14 +41,12 @@ type userExperienceAggregateDetails struct {
 }
 
 // RequestUserExperienceTrend export
-func RequestUserExperienceTrend(clients trust.Clients, customerID string, interval int, startTime int64, endTime int64, timerange string, siteID string, isUpdate bool, isProd bool) userExperienceSummary {
+func RequestUserExperienceTrend(clients trust.Clients, customerID string, interval int, startTime int64, endTime int64, timerange string, siteID string, isUpdate bool, isDev bool) userExperienceSummary {
 
 	bearer := "CwsAuth bearer=" + clients.Token
 	baseURL, err := url.Parse("https://api-b.was.cloud.com/wsanalytics/api/v1/" + customerID + "/userexperiencetrend")
-	if isProd == false {
+	if isDev == true {
 		baseURL, err = url.Parse("https://api-b.was.cloudnacho.com/wsanalytics/api/v1/" + customerID + "/userexperiencetrend")
-	} else {
-
 	}
 
 	params := url.Values{}
