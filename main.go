@@ -130,10 +130,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 						clients = trust.RequestToken(secret["customerID"], secret["clientID"], secret["clientSecret"])
 					}
 
-					// If IS_PROD environment variable is set, it contains
-					// True or False. If IS_PROD is not set, DEV URI is used.
+					/* If IS_PROD environment variable is set, it contains
+					True or False. If IS_PROD is not set, DEV URI is used. */
 					var isDev bool
 					if os.Getenv("IS_DEV") == "true" {
+						isDev = true
+						/* If "/ccmetrix?dev" used enters dev mode */
+					} else if r.URL.RawQuery == "dev" {
 						isDev = true
 					}
 
