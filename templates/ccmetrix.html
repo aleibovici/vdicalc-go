@@ -67,7 +67,7 @@
 
         <p class="lead" style="text-align: center">We analyzed your deployment for <mark>User Experience (UX)</mark>,
           <mark>Session Responsiveness</mark> and <mark>Session Logon Duration</mark></p>
-          <p class="lead" style="text-align: center">CCMetrix will soon let you know how to improve your score.</p>
+        <p class="lead" style="text-align: center">CCMetrix will soon let you know how to improve your score.</p>
         <br>
         <div class="container-md alert alert-success" role="alert">
           <p class="display-4" style="text-align: center">Score: {{.score}}</p>
@@ -80,7 +80,10 @@
           <div class="row">
             <div class="col text-center">
               <p class="lead" style="text-align: center;">Share CCMetrix with the world!</p>
-              <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="I just benchmarked my Citrix Virtual Apps and Desktops with CCMetrix. Find your ranking score! #ccmetrix" data-url="http://vdicalc.myvirtualcloud.net" data-lang="en" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+              <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large"
+                data-text="I just benchmarked my Citrix Virtual Apps and Desktops with CCMetrix. Find your ranking score! #ccmetrix"
+                data-url="http://vdicalc.myvirtualcloud.net" data-lang="en" data-show-count="false">Tweet</a>
+              <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
             </div>
           </div>
         </div>
@@ -95,7 +98,8 @@
             </button>
             <button target="_blank" type="button" class="btn btn-primary btn-primary-addon" id="refresh" name="refresh"
               onClick="window.location.reload(),document.getElementById('submitselect').value='ccmetrix';this.form.submit()">Refresh</button>
-            <button type="button" class="btn btn-primary btn-primary-addon pull-right" id="ccmetrixreset" name="ccmetrixreset"
+            <button type="button" class="btn btn-primary btn-primary-addon pull-right" id="ccmetrixreset"
+              name="ccmetrixreset"
               onclick="document.getElementById('submitselect').value='ccmetrixreset';this.form.submit()">Delete Secure
               Client</button>
           </div>
@@ -111,6 +115,14 @@
       var dt = new Date();
       document.getElementById("datetime").innerHTML = dt.toLocaleString();
     </script>
+
+    <div class="container-fluid d-print-none">
+      <div class="row">
+        <div class="col" style="text-align: right;">
+          <a href="mailto:ableibovici@gmail.com?&subject=Bug%20Report">Report a Bug</a>
+        </div>
+      </div>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
