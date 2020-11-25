@@ -127,7 +127,17 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 					/* Request token from Citrix Cloud with credentials obtained from Google Secrets Manager */
 					if clients.Token == "" {
-						clients = trust.RequestToken(secret["customerID"], secret["clientID"], secret["clientSecret"])
+						var err error
+						clients, err = trust.RequestToken(secret["customerID"], secret["clientID"], secret["clientSecret"])
+
+						/* Delete clientSecret and redirect if token is not valid */
+						if err != nil {
+							/* Delete Citrix clientSecret from Google Secret Manager */
+							secretmanager.DeleteSecret("893974452758", tokeninfo.UserId)
+
+							/* Redirect to / */
+							http.Redirect(w, r, "/ccmetrix", http.StatusSeeOther)
+						}
 					}
 
 					/* If IS_PROD environment variable is set, it contains
@@ -325,7 +335,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 			case "ccmetrixreset":
 
-				/* Retrieve Citrix clientSecret from Google Secret Manager */
+				/* Delete Citrix clientSecret from Google Secret Manager */
 				secretmanager.DeleteSecret("893974452758", tokeninfo.UserId)
 
 				/* Redirect to / */

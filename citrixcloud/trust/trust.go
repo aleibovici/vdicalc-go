@@ -27,8 +27,7 @@ func (re *Clients) Reset() {
 	*re = *zeroA
 }
 
-// RequestToken exported
-func RequestToken(customerID string, clientID string, clientSecret string) Clients {
+// RequestToken exportedfunc RequestToken(customerID string, clientID string, clientSecret string) (Clients, error) {
 
 	url := "https://trust.citrixworkspacesapi.net/" + customerID + "/tokens/clients"
 
@@ -52,9 +51,6 @@ func RequestToken(customerID string, clientID string, clientSecret string) Clien
 
 	clients1 := Clients{}
 	err = json.Unmarshal(body, &clients1)
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	return clients1
+	return clients1, err
 }
