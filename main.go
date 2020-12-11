@@ -63,6 +63,8 @@ func main() {
 func handler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/html")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.Header().Add("Strict-Transport-Security", "max-age=63072000; includeSubDomains")
 
 	/* Inititalize DB connection */
 	db = mysql.DBInit()
