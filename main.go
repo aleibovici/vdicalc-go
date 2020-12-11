@@ -63,8 +63,9 @@ func main() {
 func handler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/html")
-	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.Header().Set("X-Content-Type-Options", "nosniff") // Add X-Content-Type-Options header
 	w.Header().Add("Strict-Transport-Security", "max-age=63072000; includeSubDomains")
+	w.Header().Add("X-Frame-Options", "DENY") // Prevent page from being displayed in an iframe
 
 	/* Inititalize DB connection */
 	db = mysql.DBInit()
