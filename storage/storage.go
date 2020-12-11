@@ -9,10 +9,6 @@ import (
 	vm "vdicalc/vm"
 )
 
-func main() {
-
-}
-
 // GetStorageCapacity function
 /* This public function calculates the storage capacity.
 It returns result in terabytes. */

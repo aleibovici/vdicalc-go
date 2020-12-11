@@ -111,7 +111,10 @@ func CreateSecret(projectID string, guserid string, customerID string, clientID 
 	}
 
 	// Call the API.
-	client.AddSecretVersion(ctx, addSecretVersionReq)
+	_, err = client.AddSecretVersion(ctx, addSecretVersionReq)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	return nil
 }

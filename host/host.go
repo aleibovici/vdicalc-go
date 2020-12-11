@@ -9,10 +9,6 @@ import (
 	vm "vdicalc/vm"
 )
 
-func main() {
-
-}
-
 /* This private function calculates the number of cores per host */
 func getHostCoresCount(hostsocketcount string, hostsocketcorescount string, hostcoresoverhead string) string {
 

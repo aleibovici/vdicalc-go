@@ -242,7 +242,7 @@ func LoadSaveByID(db *sql.DB, ID string) map[string]interface{} {
 /* This public function save a configurationto into vdicalc.saves*/
 func SaveConfiguration(db *sql.DB, UserID string, savename string, data map[string]interface{}) {
 
-	db.Query("call vdicalc.SaveConfiguration(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)",
+	_, err := db.Query("call vdicalc.SaveConfiguration(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)",
 		UserID,
 		strings.ToUpper(time.Now().Format("01-02-2006 15:04:05"))+" "+strings.ToUpper(savename),
 		fmt.Sprint(data["vmcountselected"]),
@@ -272,13 +272,17 @@ func SaveConfiguration(db *sql.DB, UserID string, savename string, data map[stri
 		fmt.Sprint(data["virtualizationmanagementservertvmcountselected"]),
 		fmt.Sprint(data["virtualizationclusterhosthaselected"]))
 
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
 
 // SaveTransaction exported
 /* This public function save transactions into vdicalc.transactions*/
 func SaveTransaction(db *sql.DB, UserID string, ip string, data map[string]interface{}) {
 
-	db.Query("call vdicalc.SaveTransaction(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+	_, err := db.Query("call vdicalc.SaveTransaction(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		UserID,
 		ip,
 		fmt.Sprint(data["hostresultscount"]),
@@ -293,6 +297,10 @@ func SaveTransaction(db *sql.DB, UserID string, ip string, data map[string]inter
 		fmt.Sprint(data["storageresultsfrontendiops"]),
 		fmt.Sprint(data["storageresultsbackendiops"]))
 
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
 
 // CreateUser export
@@ -300,7 +308,11 @@ func SaveTransaction(db *sql.DB, UserID string, ip string, data map[string]inter
 func CreateUser(db *sql.DB, userid, email string) {
 
 	/* This function execues the SQL estatement on Google SQL Run database */
-	db.Query("call vdicalc.CreateUser(?, ?)", userid, email)
+	_, err := db.Query("call vdicalc.CreateUser(?, ?)", userid, email)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 }
 
@@ -308,21 +320,28 @@ func CreateUser(db *sql.DB, userid, email string) {
 /* This public function save Citrix Cloud Benchmark Transaction */
 func SaveCCMetrixTransaction(db *sql.DB, UserID string, ip string, score int) {
 
-	db.Query("call vdicalc.SaveCCMetrixTransaction(?, ?, ?)",
+	_, err := db.Query("call vdicalc.SaveCCMetrixTransaction(?, ?, ?)",
 		UserID,
 		ip,
 		score)
 
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 // UpdateCCMetrixTransaction exported
 /* This public function update Citrix Cloud Benchmark Transaction */
 func UpdateCCMetrixTransaction(db *sql.DB, UserID string, ip string, score int) {
 
-	db.Query("call vdicalc.UpdateCCMetrixTransaction(?, ?, ?)",
+	_, err := db.Query("call vdicalc.UpdateCCMetrixTransaction(?, ?, ?)",
 		UserID,
 		ip,
 		score)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 }
 
@@ -402,8 +421,7 @@ func InitSocketConnectionPool() (*sql.DB, error) {
 		socketDir = "/cloudsql"
 	}
 
-	var dbURI string
-	dbURI = fmt.Sprintf("%s:%s@unix(/%s/%s)/%s?parseTime=true", dbUser, dbPwd, socketDir, instanceConnectionName, dbName)
+	var dbURI = fmt.Sprintf("%s:%s@unix(/%s/%s)/%s?parseTime=true", dbUser, dbPwd, socketDir, instanceConnectionName, dbName)
 
 	// dbPool is the pool of database connections.
 	dbPool, err := sql.Open("mysql", dbURI)
@@ -452,8 +470,7 @@ func InitTCPConnectionPool() (*sql.DB, error) {
 		dbName    = functions.MustGetenv("DB_NAME")
 	)
 
-	var dbURI string
-	dbURI = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUser, dbPwd, dbTcpHost, dbPort, dbName)
+	var dbURI = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUser, dbPwd, dbTcpHost, dbPort, dbName)
 
 	// dbPool is the pool of database connections.
 	dbPool, err := sql.Open("mysql", dbURI)

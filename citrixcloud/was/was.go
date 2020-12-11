@@ -45,7 +45,7 @@ func RequestUserExperienceTrend(clients trust.Clients, customerID string, interv
 
 	bearer := "CwsAuth bearer=" + clients.Token
 	baseURL, err := url.Parse("https://api-b.was.cloud.com/wsanalytics/api/v1/" + customerID + "/userexperiencetrend")
-	if isDev == true {
+	if isDev {
 		baseURL, err = url.Parse("https://api-b.was.cloudnacho.com/wsanalytics/api/v1/" + customerID + "/userexperiencetrend")
 	}
 
