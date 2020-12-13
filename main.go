@@ -65,8 +65,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	w.Header().Set("X-Content-Type-Options", "nosniff") // Add X-Content-Type-Options header
 	w.Header().Add("Strict-Transport-Security", "max-age=63072000; includeSubDomains")
-	w.Header().Add("X-Frame-Options", "DENY")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   // Prevent page from being displayed in an iframe
-	w.Header().Set("Content-Security-Policy", "default-src 'self'; style-src 'self' https://stackpath.bootstrapcdn.com 'unsafe-inline'; script-src 'self' https://code.jquery.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com https://apis.google.com https://ssl.gstatic.com https://www.google-analytics.com https://googletagmanager.com https://platform.twitter.com https://syndication.twitter.com 'unsafe-inline'; img-src 'self' https://www.googletagmanager.com; frame-src 'self' https://platform.twitter.com https://accounts.google.com https://ssl.gstatic.com;") //Content Security Policy (CSP) is a computer security standard that provides an added layer of protection against Cross-Site Scripting (XSS)
+	w.Header().Add("X-Frame-Options", "DENY") // Prevent page from being displayed in an iframe
 
 	/* Inititalize DB connection */
 	db = mysql.DBInit()
