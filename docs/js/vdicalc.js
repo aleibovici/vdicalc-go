@@ -177,7 +177,7 @@ function getStorageCapacity(vmCount, diskSize, capacityOverhead, dedupeRatio, di
     effectiveDiskSize = toFloat(diskSize);
   }
 
-  // memorySize is for swap, displayOverhead.storage converted MB→GB
+  // memorySize is for swap, displayOverhead.storage converted MB->GB
   var r = toFloat(vmCount) * (effectiveDiskSize + (toFloat(memorySize) / 1000) + (toFloat(displayOverhead.storage) / 1000));
 
   if (String(capacityOverhead) !== "0") {
@@ -368,7 +368,10 @@ function validateResults(data) {
 
 function calculate() {
   // Clear previous errors
-  setResult("errorresults", "");
+  var errorBanner = document.getElementById("errorBanner");
+  var errorText = document.getElementById("errorText");
+  if (errorBanner) errorBanner.classList.remove("visible");
+  if (errorText) errorText.textContent = "";
 
   // Read all form values
   var vmCount = val("vmcount");
@@ -428,8 +431,9 @@ function calculate() {
     datastoreCount: datastoreCount
   });
 
-  if (errors.length > 0) {
-    setResult("errorresults", errors[0]);
+  if (errors.length > 0 && errorBanner && errorText) {
+    errorText.textContent = errors[0];
+    errorBanner.classList.add("visible");
   }
 
   // Display results
@@ -480,8 +484,7 @@ var profiles = {
   }
 };
 
-function loadProfile() {
-  var profileId = val("vmprofile");
+function loadProfileById(profileId) {
   var p = profiles[profileId];
   if (!p) return;
 
@@ -498,12 +501,73 @@ function loadProfile() {
   document.getElementById("vmiopsbootcount").value = p.iopsbootcount;
   document.getElementById("vmiopsbootreadratio").value = p.iopsbootreadratio;
   document.getElementById("vmclonesizerefreshrate").value = p.clonesizerefreshrate;
+
+  calculate();
 }
 
 // ============================================================
-// About Modal
+// UI Interactions (vanilla JS - no jQuery)
 // ============================================================
 
+// Section collapse/expand
+function toggleSection(sectionId) {
+  var section = document.getElementById(sectionId);
+  if (section) {
+    section.classList.toggle("collapsed");
+  }
+}
+
+// About modal
 function showAbout() {
-  $('#aboutModal').modal('show');
+  document.getElementById("aboutModal").classList.add("visible");
+  document.body.style.overflow = "hidden";
 }
+
+function hideAbout() {
+  document.getElementById("aboutModal").classList.remove("visible");
+  document.body.style.overflow = "";
+}
+
+// ============================================================
+// Initialize on DOM ready
+// ============================================================
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Profile tab click handlers
+  var tabs = document.querySelectorAll(".profile-tab");
+  tabs.forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      tabs.forEach(function (t) { t.classList.remove("active"); });
+      tab.classList.add("active");
+      loadProfileById(tab.getAttribute("data-profile"));
+    });
+  });
+
+  // Auto-calculate on any form input change
+  var form = document.getElementById("vdiform");
+  if (form) {
+    form.addEventListener("input", function () {
+      calculate();
+    });
+    form.addEventListener("change", function () {
+      calculate();
+    });
+  }
+
+  // Close modal on overlay click
+  var modalOverlay = document.getElementById("aboutModal");
+  if (modalOverlay) {
+    modalOverlay.addEventListener("click", function (e) {
+      if (e.target === modalOverlay) {
+        hideAbout();
+      }
+    });
+  }
+
+  // Close modal on Escape key
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      hideAbout();
+    }
+  });
+});
