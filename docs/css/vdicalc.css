@@ -1,0 +1,96 @@
+.container-input {
+  border-style:solid;
+  border-width:4px !important;
+  border-color: #1c6ea4;
+  background-color: #eeeeee;
+}
+
+.container-result {
+  border-style:solid;
+  border-width:4px !important;
+  border-color: #1c6ea4;
+  background-color: #a5a5a5;
+}
+
+.div-results {
+  text-align: right;
+}
+
+.label-hostresults {
+  background-color: #d6bfa0;
+  width: 80px;
+  text-align: left;
+  padding-left: 5px;
+  border-radius: 8%;
+}
+
+.label-storageresults {
+  background-color: #a0b2d6;
+  width: 80px;
+  text-align: left;
+  padding-left: 5px;
+  border-radius: 8%;
+}
+
+.label-virtualizationresults {
+  background-color: #8cad92;
+  width: 80px;
+  text-align: left;
+  padding-left: 5px;
+  border-radius: 8%;
+}
+
+.label-azureinstancetyperesults {
+  background-color: #7d9eac;
+  width: 80px;
+  text-align: left;
+  padding-left: 5px;
+  border-radius: 8%;
+}
+
+.top-buffer { margin-top:3px; }
+
+.bottom-buffer { margin-bottom:3px; }
+
+.html {
+  font-size: 14px;
+}
+
+.badge-danger-addon {
+  color:white;
+  background-color: #dc3545;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.dropdown-addon {
+  width: fit-content;
+  height: 30px;
+}
+
+.btn-primary-addon {
+  box-shadow: inset 0px 1px 0px 0px #54a3f7;
+  background: linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
+  background-color: #007dc1;
+  border-radius: 3px;
+  border: 1px solid #124d77;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 6px 24px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #154682;
+  margin-right: 5px;
+}
+
+.btn-primary-addon:hover {
+  background: linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
+  background-color: #0061a7;
+  color: #ffffff;
+}
+
+.btn-primary-addon:active {
+  position: relative;
+  top: 1px;
+}
