@@ -1,9 +1,34 @@
-# VDI Calculator-Go
+# VDI Calculator
 
 ## Synopsis
 
-The myvirtucalcloud.net VDI Calculator has been used over the years to size VDI deployments.
-This is a newgen release using GoLang, HTML and CSS.
+The myvirtualcloud.net VDI Calculator is a free tool for sizing Virtual Desktop Infrastructure deployments. It calculates host, storage, virtualization, and Azure instance requirements based on your VM specifications.
+
+This version runs entirely in the browser as a static site hosted on GitHub Pages — no server or database required.
+
+## Features
+
+- VM sizing with multiple worker profiles (Task, Office, Knowledge, Power)
+- Host CPU, memory, and capacity calculations
+- Storage capacity, datastore, and IOps calculations
+- Virtualization cluster and management server sizing
+- Azure instance type recommendations
+- Input validation with warning messages
+- Print-friendly output
+
+## Usage
+
+Visit the GitHub Pages deployment or open `docs/index.html` in your browser. Configure your VDI parameters and click **Calculate** to see the results.
+
+## Project Structure
+
+- `docs/` — Static GitHub Pages site (client-side JavaScript)
+  - `index.html` — Main calculator interface
+  - `js/vdicalc.js` — Calculation engine (ported from Go)
+  - `css/vdicalc.css` — Styling
+- `main.go` — Original Go HTTP server (legacy)
+- `config/` — Server-side configuration (legacy)
+- `templates/` — Server-side Go HTML templates (legacy)
 
 ## Author
 

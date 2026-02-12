@@ -504,27 +504,7 @@
       </div>
       <br>
 
-      <!-- Save/Load with localStorage -->
-      <div class="container d-print-none">
-        <div class="row">
-          <div class="col input-group input-group-sm">
-            <select class="form-control form-control-sm" style="width: 250px;" id="usersaves">
-            </select>
-          </div>
-          <div class="col-md-auto">
-            <button type="button" class="btn btn-primary btn-primary-addon" onclick="loadConfig()">Load</button>
-          </div>
-          <div class="col input-group input-group-sm">
-            <input type="text" class="form-control" id="savename" maxlength="30" value=""
-              placeholder="Your save name" />
-          </div>
-          <div class="col-md-auto">
-            <button type="button" class="btn btn-primary btn-primary-addon" onclick="saveConfig()">Save</button>
-          </div>
-        </div>
-      </div>
-
-      <br><br>
+      <br>
 
       <!-- Buttons -->
       <div class="container-fluid d-print-none">
@@ -544,7 +524,7 @@
   <br>
 
   <div class="container-fluid d-print-none">
-    <p class="text-center">(myvirtualcloud.net) 2020. All Rights Reserved.</p>
+    <p class="text-center">(myvirtualcloud.net) <script>document.write(new Date().getFullYear())</script>. All Rights Reserved.</p>
   </div>
 
   <!-- About Modal -->
@@ -560,8 +540,7 @@
           <p>It calculates host, storage, virtualization, and Azure instance requirements based on your VM
             specifications.</p>
           <p>Originally created by Andr&eacute; Leibovici at myvirtualcloud.net.</p>
-          <p>This static version runs entirely in your browser &mdash; no server required. Configurations are saved
-            locally using your browser's storage.</p>
+          <p>This static version runs entirely in your browser &mdash; no server required.</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -581,8 +560,8 @@
     crossorigin="anonymous"></script>
   <script src="js/vdicalc.js"></script>
   <script>
-    // Load saved configurations list on page load
-    refreshSavesList();
+    // Auto-calculate on page load
+    calculate();
   </script>
 
 </body>
