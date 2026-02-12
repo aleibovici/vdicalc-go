@@ -3,561 +3,524 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <link href="css/vdicalc.css" rel="stylesheet" type="text/css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Free VDI sizing calculator for virtual desktop infrastructure deployments. Calculate host, storage, virtualization, and Azure instance requirements.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <link href="css/vdicalc.css" rel="stylesheet">
   <title>VDI Calculator</title>
 </head>
 
-<body class="html">
+<body>
+  <div class="app-container">
 
-  <div class="container-fluid">
-    <p class="display-4" style="text-align: center;">VDI Calculator</p>
-    <p class="lead" style="text-align: center;">by Andr&eacute; Leibovici</p>
-  </div>
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h1 class="app-header__title">VDI Calculator</h1>
+      <p class="app-header__subtitle">by Andr&eacute; Leibovici</p>
+    </header>
 
-  <br>
+    <form id="vdiform" onsubmit="return false;" autocomplete="off">
 
-  <div class="container-fluid">
-    <form id="vdiform" onsubmit="return false;">
-
-      <div class="container-fluid container-input form-group">
-
-        <!-- Profile selector -->
-        <div class="row top-buffer d-print-none">
-          <div class="col">
-            <label class="col-form-label">Profile</label>
-            <select class="form-control form-control-sm dropdown-addon" id="vmprofile" onchange="loadProfile()">
-              <option value="1">Task</option>
-              <option value="2">Office</option>
-              <option value="3">Knowledge</option>
-              <option value="4">Power</option>
-            </select>
-          </div>
-          <div class="col"></div>
-          <div class="col"></div>
+      <!-- Profile Selector -->
+      <div class="profile-bar d-print-none">
+        <span class="profile-bar__label">Profile</span>
+        <div class="profile-bar__tabs" id="profileTabs">
+          <button type="button" class="profile-tab active" data-profile="1">Task</button>
+          <button type="button" class="profile-tab" data-profile="2">Office</button>
+          <button type="button" class="profile-tab" data-profile="3">Knowledge</button>
+          <button type="button" class="profile-tab" data-profile="4">Power</button>
         </div>
-        <br>
-
-        <!-- VM Row 1: Desktops, vCPU count, vCPU MHz -->
-        <div class="row top-buffer">
-          <div class="col">
-            <label class="col-form-label" for="vmcount">Number of Desktops</label>
-          </div>
-          <div class="col input-group input-group-sm">
-            <input type="text" class="form-control" id="vmcount" maxlength="5" value="2000" />
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="vmvcpucount">Number of vCPU</label>
-          </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="vmvcpucount">
-              <option value="1" selected>1</option>
-              <option value="2">2</option>
-              <option value="4">4</option>
-              <option value="8">8</option>
-            </select>
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="vmvcpumhz">Average vCPU MHz</label>
-          </div>
-          <div class="col input-group input-group-sm">
-            <input type="text" class="form-control" id="vmvcpumhz" maxlength="5" value="500"
-              title="Average MHz used by each vCPU in a VM" />
-          </div>
-        </div>
-
-        <!-- VM Row 2: VMs per Core, 3D Graphics, Disk Size -->
-        <div class="row top-buffer">
-          <div class="col">
-            <label class="col-form-label" for="vmpercorecount">Number of VMs per Core</label>
-          </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="vmpercorecount">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5" selected>5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-              <option value="13">13</option>
-              <option value="14">14</option>
-              <option value="15">15</option>
-              <option value="16">16</option>
-              <option value="17">17</option>
-              <option value="18">18</option>
-              <option value="19">19</option>
-              <option value="20">20</option>
-            </select>
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="vmvideoram">3D Graphics (MB)</label>
-          </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="vmvideoram"
-              title="Memory assigned to software GPU. GPU=Hardware GPU">
-              <option value="0" selected>Off</option>
-              <option value="1">GPU</option>
-              <option value="64">64</option>
-              <option value="128">128</option>
-              <option value="256">256</option>
-              <option value="512">512</option>
-            </select>
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="vmdisksize">Disk Size (GB)</label>
-          </div>
-          <div class="col input-group input-group-sm">
-            <input type="text" class="form-control" id="vmdisksize" maxlength="4" value="100" />
-          </div>
-        </div>
-
-        <!-- VM Row 3: Memory, Displays, Resolution -->
-        <div class="row top-buffer">
-          <div class="col">
-            <label class="col-form-label" for="vmmemorysize">Memory Size (MB)</label>
-          </div>
-          <div class="col input-group input-group-sm">
-            <input type="text" class="form-control" id="vmmemorysize" maxlength="7" value="1536" />
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="vmdisplaycount">Number of Displays</label>
-          </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="vmdisplaycount">
-              <option value="1" selected>1</option>
-              <option value="2">2</option>
-              <option value="4">4</option>
-            </select>
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="vmdisplayresolution">Display Resolution</label>
-          </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="vmdisplayresolution"
-              title="Maximum display resolution">
-              <option value="1">1280x800</option>
-              <option value="2" selected>1920x1200</option>
-              <option value="3">2560x1600</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- VM Row 4: IOps, Read Ratio, Refresh Rate -->
-        <div class="row top-buffer bottom-buffer">
-          <div class="col">
-            <label class="col-form-label" for="vmiopscount">Steady State IOps</label>
-          </div>
-          <div class="col input-group input-group-sm">
-            <input type="text" class="form-control" id="vmiopscount" maxlength="3" value="6"
-              title="Number of IOps during steady state" />
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="vmiopsreadratio">IOps Read Ratio (%)</label>
-          </div>
-          <div class="col input-group input-group-sm">
-            <input type="text" class="form-control" id="vmiopsreadratio" maxlength="3" value="20"
-              title="Percentual of IOps reads during steady state" />
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="vmclonesizerefreshrate">Refresh Rate (%)</label>
-          </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="vmclonesizerefreshrate"
-              title="Linked clone disk capacity utilized. Off=Full Clone">
-              <option value="0" selected>Off</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="40">40</option>
-              <option value="50">50</option>
-              <option value="60">60</option>
-              <option value="70">70</option>
-              <option value="80">80</option>
-              <option value="90">90</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- VM Row 5: Boot IOps -->
-        <div class="row top-buffer bottom-buffer">
-          <div class="col">
-            <label class="col-form-label" for="vmiopsbootcount">Boot IOps</label>
-          </div>
-          <div class="col input-group input-group-sm">
-            <input type="text" class="form-control" id="vmiopsbootcount" maxlength="3" value="600"
-              title="Number of IOps during boot" />
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="vmiopsbootreadratio">Boot IOps Read Ratio (%)</label>
-          </div>
-          <div class="col input-group input-group-sm">
-            <input type="text" class="form-control" id="vmiopsbootreadratio" maxlength="3" value="20"
-              title="Percentual of IOps reads during boot" />
-          </div>
-          <div class="col"></div>
-          <div class="col"></div>
-        </div>
-
       </div>
 
-      <!-- Host Section -->
-      <p style="display:inline" class="lead">Host</p>
+      <!-- Error Banner -->
+      <div class="error-banner" id="errorBanner">
+        <div class="error-banner__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <span class="error-banner__text" id="errorText"></span>
+      </div>
 
-      <div class="container-fluid container-input form-group">
-        <div class="row top-buffer">
-          <div class="col">
-            <label class="col-form-label" for="hostsocketcount">Sockets per Host</label>
+      <!-- VM Configuration -->
+      <div class="section-card" id="sectionVM">
+        <div class="section-card__header" onclick="toggleSection('sectionVM')">
+          <div class="section-card__icon section-card__icon--vm">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="hostsocketcount">
-              <option value="1">1</option>
-              <option value="2" selected>2</option>
-              <option value="4">4</option>
-              <option value="6">6</option>
-              <option value="8">8</option>
-              <option value="10">10</option>
-            </select>
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="hostmemoryoverhead">Memory Overhead (GB)</label>
-          </div>
-          <div class="col input-group input-group-sm">
-            <input type="text" class="form-control" id="hostmemoryoverhead" maxlength="3" value="1"
-              title="Amount of memory used by other host processes" />
+          <span class="section-card__title">Virtual Machine</span>
+          <div class="section-card__chevron">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
         </div>
-
-        <div class="row top-buffer bottom-buffer">
-          <div class="col">
-            <label class="col-form-label" for="hostsocketcorescount">Cores per Socket</label>
-          </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="hostsocketcorescount">
-              <option value="2">2</option>
-              <option value="4">4</option>
-              <option value="6">6</option>
-              <option value="8">8</option>
-              <option value="10">10</option>
-              <option value="12" selected>12</option>
-              <option value="14">14</option>
-              <option value="16">16</option>
-              <option value="18">18</option>
-              <option value="20">20</option>
-              <option value="24">24</option>
-              <option value="32">32</option>
-              <option value="64">64</option>
-            </select>
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="hostcoresoverhead">Cores Overhead</label>
-          </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="hostcoresoverhead"
-              title="Number of cores used by other host processes">
-              <option value="0" selected>0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-            </select>
+        <div class="section-card__body">
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="form-field__label" for="vmcount">Number of Desktops</label>
+              <input type="text" id="vmcount" maxlength="5" value="2000">
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="vmvcpucount">Number of vCPU</label>
+              <select id="vmvcpucount">
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="4">4</option>
+                <option value="8">8</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="vmvcpumhz">Average vCPU MHz</label>
+              <input type="text" id="vmvcpumhz" maxlength="5" value="500">
+              <span class="form-field__help">Avg MHz per vCPU in a VM</span>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="vmpercorecount">VMs per Core</label>
+              <select id="vmpercorecount">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5" selected>5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="vmvideoram">3D Graphics (MB)</label>
+              <select id="vmvideoram">
+                <option value="0" selected>Off</option>
+                <option value="1">GPU</option>
+                <option value="64">64</option>
+                <option value="128">128</option>
+                <option value="256">256</option>
+                <option value="512">512</option>
+              </select>
+              <span class="form-field__help">GPU = Hardware GPU</span>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="vmdisksize">Disk Size (GB)</label>
+              <input type="text" id="vmdisksize" maxlength="4" value="100">
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="vmmemorysize">Memory Size (MB)</label>
+              <input type="text" id="vmmemorysize" maxlength="7" value="1536">
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="vmdisplaycount">Number of Displays</label>
+              <select id="vmdisplaycount">
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="4">4</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="vmdisplayresolution">Display Resolution</label>
+              <select id="vmdisplayresolution">
+                <option value="1">1280 &times; 800</option>
+                <option value="2" selected>1920 &times; 1200</option>
+                <option value="3">2560 &times; 1600</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="vmiopscount">Steady State IOps</label>
+              <input type="text" id="vmiopscount" maxlength="3" value="6">
+              <span class="form-field__help">IOps during steady state</span>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="vmiopsreadratio">IOps Read Ratio (%)</label>
+              <input type="text" id="vmiopsreadratio" maxlength="3" value="20">
+              <span class="form-field__help">% of reads during steady state</span>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="vmclonesizerefreshrate">Refresh Rate (%)</label>
+              <select id="vmclonesizerefreshrate">
+                <option value="0" selected>Off</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+                <option value="60">60</option>
+                <option value="70">70</option>
+                <option value="80">80</option>
+                <option value="90">90</option>
+              </select>
+              <span class="form-field__help">Linked clone capacity. Off = Full Clone</span>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="vmiopsbootcount">Boot IOps</label>
+              <input type="text" id="vmiopsbootcount" maxlength="3" value="600">
+              <span class="form-field__help">IOps during boot</span>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="vmiopsbootreadratio">Boot IOps Read Ratio (%)</label>
+              <input type="text" id="vmiopsbootreadratio" maxlength="3" value="20">
+              <span class="form-field__help">% of reads during boot</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Storage Section -->
-      <p style="display:inline" class="lead">Storage</p>
-
-      <div class="container-fluid container-input form-group">
-        <div class="row top-buffer">
-          <div class="col">
-            <label class="col-form-label" for="storagecapacityoverhead">Capacity Overhead (%)</label>
+      <!-- Host Configuration -->
+      <div class="section-card" id="sectionHost">
+        <div class="section-card__header" onclick="toggleSection('sectionHost')">
+          <div class="section-card__icon section-card__icon--host">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
           </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="storagecapacityoverhead"
-              title="Additional storage capacity">
-              <option value="0">0</option>
-              <option value="5" selected>5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-            </select>
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="storagedatastorevmcount">VMs per Datastore</label>
-          </div>
-          <div class="col input-group input-group-sm">
-            <input type="text" class="form-control" id="storagedatastorevmcount" maxlength="4" value="100"
-              title="Number of VMs per datastore" />
+          <span class="section-card__title">Host</span>
+          <div class="section-card__chevron">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
         </div>
-
-        <div class="row top-buffer">
-          <div class="col">
-            <label class="col-form-label" for="storagededuperatio">Deduplication Ratio (%)</label>
-          </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="storagededuperatio"
-              title="Storage deduplication ratio across all VMs">
-              <option value="0" selected>0</option>
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="40">40</option>
-              <option value="50">50</option>
-              <option value="60">60</option>
-              <option value="70">70</option>
-              <option value="80">80</option>
-              <option value="90">90</option>
-            </select>
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="storageraidtype">Raid Level</label>
-          </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="storageraidtype">
-              <option value="5">5</option>
-              <option value="6" selected>6</option>
-              <option value="10">10</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="row top-buffer bottom-buffer">
-          <div class="col">
-            <label class="col-form-label" for="storageconcurrentbootvmcount">Concurrent Boot</label>
-          </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="storageconcurrentbootvmcount"
-              title="Number of VMs allowed to boot concurrently">
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2" selected>2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="20">20</option>
-            </select>
-          </div>
-          <div class="col"></div>
-          <div class="col"></div>
-        </div>
-      </div>
-
-      <!-- Virtualization Section -->
-      <p style="display:inline" class="lead">Virtualization</p>
-
-      <div class="container-fluid container-input form-group">
-        <div class="row top-buffer bottom-buffer">
-          <div class="col">
-            <label class="col-form-label" for="virtualizationclusterhostsize">Cluster Size</label>
-          </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="virtualizationclusterhostsize"
-              title="Number of hosts per cluster">
-              <option value="8" selected>8</option>
-              <option value="16">16</option>
-              <option value="32">32</option>
-            </select>
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="virtualizationclusterhostha">Cluster HA</label>
-          </div>
-          <div class="col">
-            <select class="form-control form-control-sm dropdown-addon" id="virtualizationclusterhostha"
-              title="Enable cluster high availability calculation">
-              <option value="0" selected>No</option>
-              <option value="1">Yes</option>
-            </select>
-          </div>
-          <div class="col">
-            <label class="col-form-label" for="virtualizationmanagementservertvmcount">VM Maximum</label>
-          </div>
-          <div class="col input-group input-group-sm">
-            <input type="text" class="form-control" id="virtualizationmanagementservertvmcount" maxlength="5"
-              value="2000" title="Maximum number of VMs per management server (e.g. vCenter)" />
+        <div class="section-card__body">
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="form-field__label" for="hostsocketcount">Sockets per Host</label>
+              <select id="hostsocketcount">
+                <option value="1">1</option>
+                <option value="2" selected>2</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="hostsocketcorescount">Cores per Socket</label>
+              <select id="hostsocketcorescount">
+                <option value="2">2</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="12" selected>12</option>
+                <option value="14">14</option>
+                <option value="16">16</option>
+                <option value="18">18</option>
+                <option value="20">20</option>
+                <option value="24">24</option>
+                <option value="32">32</option>
+                <option value="64">64</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="hostmemoryoverhead">Memory Overhead (GB)</label>
+              <input type="text" id="hostmemoryoverhead" maxlength="3" value="1">
+              <span class="form-field__help">Memory used by other host processes</span>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="hostcoresoverhead">Cores Overhead</label>
+              <select id="hostcoresoverhead">
+                <option value="0" selected>0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+              </select>
+              <span class="form-field__help">Cores used by other host processes</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Results Section -->
-      <p style="display:inline" class="lead">Results</p>
-
-      <div class="container-fluid container-result">
-        <div class="row align-items-center top-buffer">
-          <div class="col">
-            <label class="col-form-label">Number of Hosts</label>
+      <!-- Storage Configuration -->
+      <div class="section-card" id="sectionStorage">
+        <div class="section-card__header" onclick="toggleSection('sectionStorage')">
+          <div class="section-card__icon section-card__icon--storage">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
           </div>
-          <div class="col div-results">
-            <label class="col-form-label label-hostresults" id="hostresultscount"></label>
-          </div>
-          <div class="col">
-            <label class="col-form-label">Storage Capacity (TB)</label>
-          </div>
-          <div class="col div-results">
-            <label class="col-form-label label-storageresults" id="storageresultscapacity"></label>
+          <span class="section-card__title">Storage</span>
+          <div class="section-card__chevron">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
         </div>
-
-        <div class="row align-items-center top-buffer">
-          <div class="col">
-            <label class="col-form-label">Host CPU (GHz)</label>
-          </div>
-          <div class="col div-results">
-            <label class="col-form-label label-hostresults" id="hostresultsclockused"></label>
-          </div>
-          <div class="col">
-            <label class="col-form-label">Datastore Size (TB)</label>
-          </div>
-          <div class="col div-results">
-            <label class="col-form-label label-storageresults" id="storageresultsdatastoresize"></label>
-          </div>
-        </div>
-
-        <div class="row align-items-center top-buffer">
-          <div class="col">
-            <label class="col-form-label">VMs per Host</label>
-          </div>
-          <div class="col div-results">
-            <label class="col-form-label label-hostresults" id="hostresultsvmcount"></label>
-          </div>
-          <div class="col">
-            <label class="col-form-label">Number of Datastores</label>
-          </div>
-          <div class="col div-results">
-            <label class="col-form-label label-storageresults" id="storageresultsdatastorecount"></label>
-          </div>
-        </div>
-
-        <div class="row align-items-center top-buffer">
-          <div class="col">
-            <label class="col-form-label">Host Memory (GB)</label>
-          </div>
-          <div class="col div-results">
-            <label class="col-form-label label-hostresults" id="hostresultsmemory"></label>
-          </div>
-          <div class="col">
-            <label class="col-form-label">Datastore Frontend IOps</label>
-          </div>
-          <div class="col div-results">
-            <label class="col-form-label label-storageresults" id="storagedatastorefroentendiops"></label>
-          </div>
-        </div>
-
-        <div class="row align-items-center top-buffer">
-          <div class="col">
-            <label class="col-form-label">Number of Clusters</label>
-          </div>
-          <div class="col div-results">
-            <label class="col-form-label label-virtualizationresults" id="virtualizationresultsclustercount"></label>
-          </div>
-          <div class="col">
-            <label class="col-form-label">Datastore Backend IOps</label>
-          </div>
-          <div class="col div-results">
-            <label class="col-form-label label-storageresults" id="storagedatastorebackendiops"></label>
-          </div>
-        </div>
-
-        <div class="row align-items-center top-buffer">
-          <div class="col">
-            <label class="col-form-label">Number of Management Servers</label>
-          </div>
-          <div class="col div-results">
-            <label class="col-form-label label-virtualizationresults"
-              id="virtualizationresultsmanagementservercount"></label>
-          </div>
-          <div class="col">
-            <label class="col-form-label">Storage Frontend IOps</label>
-          </div>
-          <div class="col div-results">
-            <label class="col-form-label label-storageresults" id="storageresultsfrontendiops"></label>
-          </div>
-        </div>
-
-        <div class="row align-items-center top-buffer bottom-buffer">
-          <div class="col">
-            <label class="col-form-label">Recommended Azure Instance Type</label>
-          </div>
-          <div class="col div-results">
-            <label class="col-form-label label-azureinstancetyperesults" id="azureresultsinstancetype"></label>
-          </div>
-          <div class="col">
-            <label class="col-form-label">Storage Backend IOps</label>
-          </div>
-          <div class="col div-results">
-            <label class="col-form-label label-storageresults" id="storageresultsbackendiops"></label>
+        <div class="section-card__body">
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="form-field__label" for="storagecapacityoverhead">Capacity Overhead (%)</label>
+              <select id="storagecapacityoverhead">
+                <option value="0">0</option>
+                <option value="5" selected>5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+              </select>
+              <span class="form-field__help">Additional storage capacity</span>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="storagedatastorevmcount">VMs per Datastore</label>
+              <input type="text" id="storagedatastorevmcount" maxlength="4" value="100">
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="storagededuperatio">Deduplication Ratio (%)</label>
+              <select id="storagededuperatio">
+                <option value="0" selected>0</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+                <option value="60">60</option>
+                <option value="70">70</option>
+                <option value="80">80</option>
+                <option value="90">90</option>
+              </select>
+              <span class="form-field__help">Dedup ratio across all VMs</span>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="storageraidtype">RAID Level</label>
+              <select id="storageraidtype">
+                <option value="5">5</option>
+                <option value="6" selected>6</option>
+                <option value="10">10</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="storageconcurrentbootvmcount">Concurrent Boot VMs</label>
+              <select id="storageconcurrentbootvmcount">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2" selected>2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+              </select>
+              <span class="form-field__help">VMs allowed to boot concurrently</span>
+            </div>
           </div>
         </div>
       </div>
-      <br>
 
-      <br>
-
-      <!-- Buttons -->
-      <div class="container-fluid d-print-none">
-        <div class="row">
-          <button type="button" class="btn btn-primary btn-primary-addon" onclick="calculate()">Calculate</button>
-          <button type="button" class="btn btn-primary btn-primary-addon"
-            onclick="window.print();return false;">Print</button>
-          <button type="button" class="btn btn-primary btn-primary-addon" onclick="showAbout()">About</button>
-          <div class="col-md-auto">
-            <label class="bbadge badge-danger badge-danger-addon" id="errorresults"></label>
+      <!-- Virtualization Configuration -->
+      <div class="section-card" id="sectionVirt">
+        <div class="section-card__header" onclick="toggleSection('sectionVirt')">
+          <div class="section-card__icon section-card__icon--virt">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></svg>
+          </div>
+          <span class="section-card__title">Virtualization</span>
+          <div class="section-card__chevron">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="section-card__body">
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="form-field__label" for="virtualizationclusterhostsize">Cluster Size</label>
+              <select id="virtualizationclusterhostsize">
+                <option value="8" selected>8</option>
+                <option value="16">16</option>
+                <option value="32">32</option>
+              </select>
+              <span class="form-field__help">Hosts per cluster</span>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="virtualizationclusterhostha">Cluster HA</label>
+              <select id="virtualizationclusterhostha">
+                <option value="0" selected>No</option>
+                <option value="1">Yes</option>
+              </select>
+              <span class="form-field__help">High availability calculation</span>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="virtualizationmanagementservertvmcount">VM Maximum</label>
+              <input type="text" id="virtualizationmanagementservertvmcount" maxlength="5" value="2000">
+              <span class="form-field__help">Max VMs per management server (e.g. vCenter)</span>
+            </div>
           </div>
         </div>
       </div>
+
     </form>
-  </div>
 
-  <br>
+    <!-- Results Dashboard -->
+    <div class="results-section">
+      <h2 class="results-section__title">Results</h2>
+      <div class="results-grid">
 
-  <div class="container-fluid d-print-none">
-    <p class="text-center">(myvirtualcloud.net) <script>document.write(new Date().getFullYear())</script>. All Rights Reserved.</p>
+        <!-- Host Results -->
+        <div class="results-category results-category--host">
+          <span class="results-category__label">Host</span>
+          <div class="results-category__line"></div>
+        </div>
+        <div class="result-card result-card--host">
+          <div class="result-card__dot"></div>
+          <div class="result-card__content">
+            <div class="result-card__label">Number of Hosts</div>
+            <div class="result-card__value" id="hostresultscount">--</div>
+          </div>
+        </div>
+        <div class="result-card result-card--host">
+          <div class="result-card__dot"></div>
+          <div class="result-card__content">
+            <div class="result-card__label">Host CPU (GHz)</div>
+            <div class="result-card__value" id="hostresultsclockused">--</div>
+          </div>
+        </div>
+        <div class="result-card result-card--host">
+          <div class="result-card__dot"></div>
+          <div class="result-card__content">
+            <div class="result-card__label">VMs per Host</div>
+            <div class="result-card__value" id="hostresultsvmcount">--</div>
+          </div>
+        </div>
+        <div class="result-card result-card--host">
+          <div class="result-card__dot"></div>
+          <div class="result-card__content">
+            <div class="result-card__label">Host Memory (GB)</div>
+            <div class="result-card__value" id="hostresultsmemory">--</div>
+          </div>
+        </div>
+
+        <!-- Storage Results -->
+        <div class="results-category results-category--storage">
+          <span class="results-category__label">Storage</span>
+          <div class="results-category__line"></div>
+        </div>
+        <div class="result-card result-card--storage">
+          <div class="result-card__dot"></div>
+          <div class="result-card__content">
+            <div class="result-card__label">Storage Capacity (TB)</div>
+            <div class="result-card__value" id="storageresultscapacity">--</div>
+          </div>
+        </div>
+        <div class="result-card result-card--storage">
+          <div class="result-card__dot"></div>
+          <div class="result-card__content">
+            <div class="result-card__label">Datastore Size (TB)</div>
+            <div class="result-card__value" id="storageresultsdatastoresize">--</div>
+          </div>
+        </div>
+        <div class="result-card result-card--storage">
+          <div class="result-card__dot"></div>
+          <div class="result-card__content">
+            <div class="result-card__label">Number of Datastores</div>
+            <div class="result-card__value" id="storageresultsdatastorecount">--</div>
+          </div>
+        </div>
+        <div class="result-card result-card--storage">
+          <div class="result-card__dot"></div>
+          <div class="result-card__content">
+            <div class="result-card__label">Datastore Frontend IOps</div>
+            <div class="result-card__value" id="storagedatastorefroentendiops">--</div>
+          </div>
+        </div>
+        <div class="result-card result-card--storage">
+          <div class="result-card__dot"></div>
+          <div class="result-card__content">
+            <div class="result-card__label">Datastore Backend IOps</div>
+            <div class="result-card__value" id="storagedatastorebackendiops">--</div>
+          </div>
+        </div>
+        <div class="result-card result-card--storage">
+          <div class="result-card__dot"></div>
+          <div class="result-card__content">
+            <div class="result-card__label">Storage Frontend IOps</div>
+            <div class="result-card__value" id="storageresultsfrontendiops">--</div>
+          </div>
+        </div>
+        <div class="result-card result-card--storage">
+          <div class="result-card__dot"></div>
+          <div class="result-card__content">
+            <div class="result-card__label">Storage Backend IOps</div>
+            <div class="result-card__value" id="storageresultsbackendiops">--</div>
+          </div>
+        </div>
+
+        <!-- Virtualization Results -->
+        <div class="results-category results-category--virt">
+          <span class="results-category__label">Virtualization</span>
+          <div class="results-category__line"></div>
+        </div>
+        <div class="result-card result-card--virt">
+          <div class="result-card__dot"></div>
+          <div class="result-card__content">
+            <div class="result-card__label">Number of Clusters</div>
+            <div class="result-card__value" id="virtualizationresultsclustercount">--</div>
+          </div>
+        </div>
+        <div class="result-card result-card--virt">
+          <div class="result-card__dot"></div>
+          <div class="result-card__content">
+            <div class="result-card__label">Management Servers</div>
+            <div class="result-card__value" id="virtualizationresultsmanagementservercount">--</div>
+          </div>
+        </div>
+
+        <!-- Azure Results -->
+        <div class="results-category results-category--azure">
+          <span class="results-category__label">Azure</span>
+          <div class="results-category__line"></div>
+        </div>
+        <div class="result-card result-card--azure">
+          <div class="result-card__dot"></div>
+          <div class="result-card__content">
+            <div class="result-card__label">Recommended Instance Type</div>
+            <div class="result-card__value" id="azureresultsinstancetype">--</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div class="action-bar d-print-none">
+      <button type="button" class="btn" onclick="window.print();return false;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print
+      </button>
+      <button type="button" class="btn" onclick="showAbout()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        About
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer d-print-none">
+      <p class="app-footer__text">(myvirtualcloud.net) <script>document.write(new Date().getFullYear())</script>. All Rights Reserved.</p>
+    </footer>
+
   </div>
 
   <!-- About Modal -->
-  <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">About VDI Calculator</h5>
-          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-        </div>
-        <div class="modal-body">
-          <p>The VDI Calculator is a free tool for sizing Virtual Desktop Infrastructure deployments.</p>
-          <p>It calculates host, storage, virtualization, and Azure instance requirements based on your VM
-            specifications.</p>
-          <p>Originally created by Andr&eacute; Leibovici at myvirtualcloud.net.</p>
-          <p>This static version runs entirely in your browser &mdash; no server required.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+  <div class="modal-overlay" id="aboutModal">
+    <div class="modal-content">
+      <div class="modal-content__header">
+        <h3 class="modal-content__title">About VDI Calculator</h3>
+        <button class="modal-content__close" onclick="hideAbout()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-content__body">
+        <p>The VDI Calculator is a free tool for sizing Virtual Desktop Infrastructure deployments.</p>
+        <p>It calculates host, storage, virtualization, and Azure instance requirements based on your VM specifications.</p>
+        <p>Originally created by Andr&eacute; Leibovici at myvirtualcloud.net.</p>
+        <p>This static version runs entirely in your browser &mdash; no server required.</p>
       </div>
     </div>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-    crossorigin="anonymous"></script>
   <script src="js/vdicalc.js"></script>
   <script>
     // Auto-calculate on page load
