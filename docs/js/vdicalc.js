@@ -14,6 +14,23 @@ function toFloat(value) {
   return parseFloat(value) || 0;
 }
 
+// Non-negative helpers for counts / sizes that must not go below zero
+function toNonNegInt(value) {
+  return Math.max(0, toInt(value));
+}
+
+function toNonNegFloat(value) {
+  return Math.max(0, toFloat(value));
+}
+
+// Clamp a percentage-like input into [0, 100]
+function clampPercent(value) {
+  var n = toFloat(value);
+  if (n < 0) return 0;
+  if (n > 100) return 100;
+  return n;
+}
+
 function val(id) {
   return document.getElementById(id).value;
 }
@@ -123,20 +140,22 @@ function getVMVcpuMemoryOverhead(vcpuCount, memorySize) {
 // ============================================================
 
 function getHostCoresCount(socketCount, coresPerSocket, coresOverhead) {
-  return (toInt(socketCount) * toInt(coresPerSocket)) - toInt(coresOverhead);
+  // Cores overhead must not produce a negative usable core count
+  return Math.max(0, (toNonNegInt(socketCount) * toNonNegInt(coresPerSocket)) - toNonNegInt(coresOverhead));
 }
 
 // GetHostVMCount - number of VMs per host
 function getHostVMCount(vmCount, socketCount, coresPerSocket, vmsPerCore, coresOverhead) {
-  var capacity = getHostCoresCount(socketCount, coresPerSocket, coresOverhead) * toInt(vmsPerCore);
-  return Math.min(toInt(vmCount), capacity);
+  var capacity = getHostCoresCount(socketCount, coresPerSocket, coresOverhead) * toNonNegInt(vmsPerCore);
+  if (capacity <= 0) return 0;
+  return Math.min(toNonNegInt(vmCount), capacity);
 }
 
 // GetHostCount - number of hosts needed
 function getHostCount(vmCount, socketCount, coresPerSocket, vmsPerCore, coresOverhead, clusterHA) {
   var hostVMCount = getHostVMCount(vmCount, socketCount, coresPerSocket, vmsPerCore, coresOverhead);
-  if (hostVMCount === 0) return 0;
-  var r = toFloat(vmCount) / toFloat(hostVMCount);
+  if (hostVMCount <= 0) return 0;
+  var r = toNonNegFloat(vmCount) / toFloat(hostVMCount);
   if (String(clusterHA) === "1") {
     r *= 1.125;
   }
@@ -148,17 +167,18 @@ function getHostCount(vmCount, socketCount, coresPerSocket, vmsPerCore, coresOve
 function getHostClockUsed(vcpuCount, vcpuMHz, vmCount, socketCount, coresPerSocket, vmsPerCore, coresOverhead) {
   var hostVMCount = getHostVMCount(vmCount, socketCount, coresPerSocket, vmsPerCore, coresOverhead);
   var hostCores = getHostCoresCount(socketCount, coresPerSocket, coresOverhead);
-  if (hostCores === 0) return "0.0";
-  var r = (toFloat(vcpuCount) * toFloat(vcpuMHz) * toFloat(hostVMCount) / toFloat(hostCores)) / 1000;
+  if (hostCores <= 0 || hostVMCount <= 0) return "0.0";
+  var r = (toNonNegFloat(vcpuCount) * toNonNegFloat(vcpuMHz) * toFloat(hostVMCount) / toFloat(hostCores)) / 1000;
   return r.toFixed(1);
 }
 
 // GetHostMemory - host memory in GB
 function getHostMemory(vmCount, socketCount, coresPerSocket, coresOverhead, vmsPerCore, memorySize, memoryOverhead, displayCount, displayResolution, vcpuCount, videoRAM) {
   var hostVMCount = getHostVMCount(vmCount, socketCount, coresPerSocket, vmsPerCore, coresOverhead);
+  if (hostVMCount <= 0) return toNonNegInt(memoryOverhead);
   var displayOverhead = getVMDisplayOverhead(displayCount, displayResolution, videoRAM);
   var vcpuMemOverhead = getVMVcpuMemoryOverhead(vcpuCount, memorySize);
-  var r = Math.floor((hostVMCount * (toInt(memorySize) + displayOverhead.memory + vcpuMemOverhead)) / 1024) + toInt(memoryOverhead);
+  var r = Math.floor((hostVMCount * (toNonNegInt(memorySize) + displayOverhead.memory + vcpuMemOverhead)) / 1024) + toNonNegInt(memoryOverhead);
   return r;
 }
 
@@ -178,14 +198,14 @@ function getStorageCapacity(vmCount, diskSize, capacityOverhead, dedupeRatio, di
   }
 
   // memorySize is for swap, displayOverhead.storage converted MB->GB
-  var r = toFloat(vmCount) * (effectiveDiskSize + (toFloat(memorySize) / 1000) + (toFloat(displayOverhead.storage) / 1000));
+  var r = toNonNegFloat(vmCount) * (effectiveDiskSize + (toNonNegFloat(memorySize) / 1000) + (toFloat(displayOverhead.storage) / 1000));
 
   if (String(capacityOverhead) !== "0") {
-    r += (toFloat(capacityOverhead) / 100) * r;
+    r += (clampPercent(capacityOverhead) / 100) * r;
   }
 
   if (String(dedupeRatio) !== "0") {
-    r -= (toFloat(dedupeRatio) / 100) * r;
+    r -= (clampPercent(dedupeRatio) / 100) * r;
   }
 
   // Convert GB to TB
@@ -194,29 +214,39 @@ function getStorageCapacity(vmCount, diskSize, capacityOverhead, dedupeRatio, di
 
 // GetStorageDatastoreCount - number of datastores
 function getStorageDatastoreCount(vmCount, datastoreVMCount) {
-  return Math.ceil(toFloat(vmCount) / toFloat(datastoreVMCount));
+  var perDatastore = toNonNegFloat(datastoreVMCount);
+  var vms = toNonNegFloat(vmCount);
+  if (perDatastore <= 0 || vms <= 0) return 0;
+  return Math.ceil(vms / perDatastore);
 }
 
 // GetStorageDatastoreSize - size per datastore in TB
 function getStorageDatastoreSize(vmCount, datastoreVMCount, diskSize, capacityOverhead, dedupeRatio, displayCount, displayResolution, videoRAM, memorySize, cloneRefreshRate) {
   var totalCapacity = toFloat(getStorageCapacity(vmCount, diskSize, capacityOverhead, dedupeRatio, displayCount, displayResolution, videoRAM, memorySize, cloneRefreshRate));
   var dsCount = getStorageDatastoreCount(vmCount, datastoreVMCount);
-  if (dsCount === 0) return "0.00";
+  if (dsCount <= 0) return "0.00";
   return (totalCapacity / dsCount).toFixed(2);
 }
 
 // GetStorageDatastoreIops - IOps calculations
 // Returns { dsFrontend, dsBackend, totalFrontend, totalBackend }
 function getStorageDatastoreIops(iopsCount, iopsReadRatio, iopsBootCount, iopsBootReadRatio, datastoreVMCount, concurrentBootVMs, raidType, vmCount, datastoreVMCountForDS) {
+  var readRatio = clampPercent(iopsReadRatio);
+  var bootReadRatio = clampPercent(iopsBootReadRatio);
+  var dsVMs = toNonNegInt(datastoreVMCount);
+  var bootVMs = toNonNegInt(concurrentBootVMs);
+  var steadyIops = toNonNegInt(iopsCount);
+  var bootIops = toNonNegInt(iopsBootCount);
+
   // Boot
-  var dsFrontendBootIops = toInt(iopsBootCount) * toInt(concurrentBootVMs);
-  var dsBackendBootReadIops = Math.floor(((toFloat(iopsBootReadRatio) / 100) * toFloat(iopsBootCount)) * toFloat(concurrentBootVMs));
-  var dsBackendBootWriteIops = Math.floor(((1 - (toFloat(iopsBootReadRatio) / 100)) * toFloat(iopsBootCount)) * toFloat(concurrentBootVMs));
+  var dsFrontendBootIops = bootIops * bootVMs;
+  var dsBackendBootReadIops = Math.floor(((bootReadRatio / 100) * bootIops) * bootVMs);
+  var dsBackendBootWriteIops = Math.floor(((1 - (bootReadRatio / 100)) * bootIops) * bootVMs);
 
   // Steady state
-  var dsFrontendIops = toInt(iopsCount) * toInt(datastoreVMCount);
-  var dsBackendReadIops = Math.floor(((toFloat(iopsReadRatio) / 100) * toFloat(iopsCount)) * toFloat(datastoreVMCount));
-  var dsBackendWriteIops = Math.floor(((1 - (toFloat(iopsReadRatio) / 100)) * toFloat(iopsCount)) * toFloat(datastoreVMCount));
+  var dsFrontendIops = steadyIops * dsVMs;
+  var dsBackendReadIops = Math.floor(((readRatio / 100) * steadyIops) * dsVMs);
+  var dsBackendWriteIops = Math.floor(((1 - (readRatio / 100)) * steadyIops) * dsVMs);
 
   // RAID write amplification
   switch (String(raidType)) {
@@ -231,6 +261,8 @@ function getStorageDatastoreIops(iopsCount, iopsReadRatio, iopsBootCount, iopsBo
     case "10":
       dsBackendBootWriteIops *= 2;
       dsBackendWriteIops *= 2;
+      break;
+    default:
       break;
   }
 
@@ -255,11 +287,16 @@ function getStorageDatastoreIops(iopsCount, iopsReadRatio, iopsBootCount, iopsBo
 
 function getClusterSize(vmCount, socketCount, coresPerSocket, vmsPerCore, coresOverhead, clusterHostSize, clusterHA) {
   var hostCount = getHostCount(vmCount, socketCount, coresPerSocket, vmsPerCore, coresOverhead, clusterHA);
-  return Math.ceil(toFloat(hostCount) / toFloat(clusterHostSize));
+  var hostsPerCluster = toNonNegFloat(clusterHostSize);
+  if (hostsPerCluster <= 0 || hostCount <= 0) return 0;
+  return Math.ceil(toFloat(hostCount) / hostsPerCluster);
 }
 
 function getManagementServerCount(vmCount, maxVMsPerServer) {
-  return Math.ceil(toFloat(vmCount) / toFloat(maxVMsPerServer));
+  var maxVMs = toNonNegFloat(maxVMsPerServer);
+  var vms = toNonNegFloat(vmCount);
+  if (maxVMs <= 0 || vms <= 0) return 0;
+  return Math.ceil(vms / maxVMs);
 }
 
 // ============================================================
