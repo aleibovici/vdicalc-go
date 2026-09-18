@@ -585,11 +585,15 @@ function hideAbout() {
 
 document.addEventListener("DOMContentLoaded", function () {
   // Profile tab click handlers
-  var tabs = document.querySelectorAll(".profile-tab");
+  var tabs = document.querySelectorAll(".chip[data-profile], .profile-tab[data-profile]");
   tabs.forEach(function (tab) {
     tab.addEventListener("click", function () {
-      tabs.forEach(function (t) { t.classList.remove("active"); });
+      tabs.forEach(function (t) {
+        t.classList.remove("active");
+        t.setAttribute("aria-selected", "false");
+      });
       tab.classList.add("active");
+      tab.setAttribute("aria-selected", "true");
       loadProfileById(tab.getAttribute("data-profile"));
     });
   });
