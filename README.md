@@ -4,6 +4,8 @@ Free browser-based tool for sizing Virtual Desktop Infrastructure deployments. I
 
 The current app is a static site in `docs/` (GitHub Pages). Calculations run in the browser — no server or database required. A legacy Go server remains in the repo for reference.
 
+**Live app:** [https://aleibovici.github.io/vdicalc-go/](https://aleibovici.github.io/vdicalc-go/)
+
 ## Features
 
 - Worker profiles for Windows 11 single-session VDI: Task, Office, Knowledge, and Power
@@ -18,7 +20,7 @@ Profile and Azure defaults follow Microsoft AVD session-host guidance and publis
 
 ## Usage
 
-Open the GitHub Pages site, or open `docs/index.html` locally. Pick a profile or edit the inputs. Results update automatically.
+Open the [VDI Calculator](https://aleibovici.github.io/vdicalc-go/), or open `docs/index.html` locally. Pick a profile or edit the inputs. Results update automatically.
 
 ```bash
 node docs/js/vdicalc.test.js
