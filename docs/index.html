@@ -22,6 +22,7 @@
       </div>
       <h1 class="app-header__title">VDI Calculator</h1>
       <p class="app-header__subtitle">by Andr&eacute; Leibovici</p>
+      <p class="app-header__subtitle" style="margin-top:6px;font-size:0.9rem;opacity:0.85;">Windows 11 single-session baselines · modern dual-socket hosts · Azure Ds_v5</p>
     </header>
 
     <form id="vdiform" onsubmit="return false;" autocomplete="off">
@@ -65,16 +66,16 @@
             <div class="form-field">
               <label class="form-field__label" for="vmvcpucount">Number of vCPU</label>
               <select id="vmvcpucount">
-                <option value="1" selected>1</option>
-                <option value="2">2</option>
+                <option value="1">1</option>
+                <option value="2" selected>2</option>
                 <option value="4">4</option>
                 <option value="8">8</option>
               </select>
             </div>
             <div class="form-field">
               <label class="form-field__label" for="vmvcpumhz">Average vCPU MHz</label>
-              <input type="text" id="vmvcpumhz" maxlength="5" value="500">
-              <span class="form-field__help">Avg MHz per vCPU in a VM</span>
+              <input type="text" id="vmvcpumhz" maxlength="5" value="350">
+              <span class="form-field__help">Avg MHz consumed per vCPU (modern Xeon/EPYC hosts)</span>
             </div>
             <div class="form-field">
               <label class="form-field__label" for="vmpercorecount">VMs per Core</label>
@@ -82,8 +83,8 @@
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5" selected>5</option>
+                <option value="4" selected>4</option>
+                <option value="5">5</option>
                 <option value="6">6</option>
                 <option value="7">7</option>
                 <option value="8">8</option>
@@ -100,6 +101,7 @@
                 <option value="19">19</option>
                 <option value="20">20</option>
               </select>
+              <span class="form-field__help">Desktop density per physical core (~7–8 vCPU/core typical on modern hosts)</span>
             </div>
             <div class="form-field">
               <label class="form-field__label" for="vmvideoram">3D Graphics (MB)</label>
@@ -115,11 +117,13 @@
             </div>
             <div class="form-field">
               <label class="form-field__label" for="vmdisksize">Disk Size (GB)</label>
-              <input type="text" id="vmdisksize" maxlength="4" value="100">
+              <input type="text" id="vmdisksize" maxlength="5" value="128">
+              <span class="form-field__help">Windows 11 images typically need 128 GB+</span>
             </div>
             <div class="form-field">
               <label class="form-field__label" for="vmmemorysize">Memory Size (MB)</label>
-              <input type="text" id="vmmemorysize" maxlength="7" value="1536">
+              <input type="text" id="vmmemorysize" maxlength="7" value="4096">
+              <span class="form-field__help">Win11 task/knowledge often start at 4–8 GB</span>
             </div>
             <div class="form-field">
               <label class="form-field__label" for="vmdisplaycount">Number of Displays</label>
@@ -139,7 +143,7 @@
             </div>
             <div class="form-field">
               <label class="form-field__label" for="vmiopscount">Steady State IOps</label>
-              <input type="text" id="vmiopscount" maxlength="3" value="6">
+              <input type="text" id="vmiopscount" maxlength="4" value="8">
               <span class="form-field__help">IOps during steady state</span>
             </div>
             <div class="form-field">
@@ -165,8 +169,8 @@
             </div>
             <div class="form-field">
               <label class="form-field__label" for="vmiopsbootcount">Boot IOps</label>
-              <input type="text" id="vmiopsbootcount" maxlength="3" value="600">
-              <span class="form-field__help">IOps during boot</span>
+              <input type="text" id="vmiopsbootcount" maxlength="4" value="50">
+              <span class="form-field__help">IOps per VM during boot / logon peak</span>
             </div>
             <div class="form-field">
               <label class="form-field__label" for="vmiopsbootreadratio">Boot IOps Read Ratio (%)</label>
@@ -209,20 +213,22 @@
                 <option value="6">6</option>
                 <option value="8">8</option>
                 <option value="10">10</option>
-                <option value="12" selected>12</option>
+                <option value="12">12</option>
                 <option value="14">14</option>
-                <option value="16">16</option>
+                <option value="16" selected>16</option>
                 <option value="18">18</option>
                 <option value="20">20</option>
                 <option value="24">24</option>
                 <option value="32">32</option>
+                <option value="48">48</option>
                 <option value="64">64</option>
+                <option value="96">96</option>
               </select>
             </div>
             <div class="form-field">
               <label class="form-field__label" for="hostmemoryoverhead">Memory Overhead (GB)</label>
-              <input type="text" id="hostmemoryoverhead" maxlength="3" value="1">
-              <span class="form-field__help">Memory used by other host processes</span>
+              <input type="text" id="hostmemoryoverhead" maxlength="3" value="4">
+              <span class="form-field__help">Hypervisor + agents (ESXi/Hyper-V typically 2–8 GB)</span>
             </div>
             <div class="form-field">
               <label class="form-field__label" for="hostcoresoverhead">Cores Overhead</label>
@@ -514,7 +520,8 @@
       </div>
       <div class="modal-content__body">
         <p>The VDI Calculator is a free tool for sizing Virtual Desktop Infrastructure deployments.</p>
-        <p>It calculates host, storage, virtualization, and Azure instance requirements based on your VM specifications.</p>
+        <p>Defaults target <strong>Windows 11 single-session</strong> desktops on modern dual-socket hosts, with Azure recommendations on the <strong>Ds_v5</strong> / <strong>NVads_A10_v5</strong> families.</p>
+        <p>Profile baselines draw from Microsoft AVD session-host sizing, Omnissa/Dell Horizon Windows 11 24H2 guidance, and published density studies (~7 vCPU per physical core on current server CPUs). Always validate with a pilot or Login Enterprise–style load test—especially for Teams/Zoom and GPU pools.</p>
         <p>Originally created by Andr&eacute; Leibovici at myvirtualcloud.net.</p>
         <p>This static version runs entirely in your browser &mdash; no server required.</p>
       </div>

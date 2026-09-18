@@ -5,91 +5,84 @@ import (
 )
 
 // GetAzureInstanceType Export
-/* This public function is reponsible to recommend the correct Azure VM instance type */
-/* The source for definitions: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/windows/#n-series */
+/* Recommends Azure VM + Premium SSD for AVD single-session (Ds_v5 / NVads_A10_v5).
+   Source: https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/session-host-virtual-machine-sizing-guidelines */
 func GetAzureInstanceType(vmvcpucount string, vmmemorysize string, vmdisksize string, vmvideoram string) string {
-
-	/* 	F1 / 1 core / 2 GiB
-	   	F2 / 2 core / 4 GiB
-	   	F4 / 4 core / 8 GiB
-	   	F8 / 8 core / 16 GiB
-	   	F16 / 16 core / 32 GiB */
 
 	var result string
 	memory := (f.StrtoFloat64(vmmemorysize)) / 1024
 
-	/* This function select the VM instance type based on number of cores and memory */
-	/* We use float and .1 decimal to ensure that a smaller VM instance type is selected if memory is close enough */
 	switch f.StrtoInt(vmvcpucount) {
 	case 1:
 		switch {
-		case memory <= 2.1:
-			result = "F1"
-		case memory <= 4.1:
-			result = "F2"
 		case memory <= 8.1:
-			result = "F4"
+			result = "D2s_v5"
 		case memory <= 16.1:
-			result = "F8"
-		case memory > 16.1:
-			result = "F16"
+			result = "D4s_v5"
+		case memory <= 32.1:
+			result = "D8s_v5"
+		default:
+			result = "D16s_v5"
 		}
 	case 2:
 		switch {
-		case memory <= 4.1:
-			result = "F2"
 		case memory <= 8.1:
-			result = "F4"
+			result = "D2s_v5"
 		case memory <= 16.1:
-			result = "F8"
-		case memory > 16.1:
-			result = "F16"
+			result = "D4s_v5"
+		case memory <= 32.1:
+			result = "D8s_v5"
+		default:
+			result = "D16s_v5"
 		}
 	case 4:
 		switch {
-		case memory <= 8.1:
-			result = "F4"
 		case memory <= 16.1:
-			result = "F8"
-		case memory > 16.1:
-			result = "F16"
+			result = "D4s_v5"
+		case memory <= 32.1:
+			result = "D8s_v5"
+		case memory <= 64.1:
+			result = "D16s_v5"
+		default:
+			result = "D32s_v5"
 		}
 	case 8:
 		switch {
-		case memory <= 16:
-			result = "F8"
-		case memory > 16:
-			result = "F16"
+		case memory <= 32.1:
+			result = "D8s_v5"
+		case memory <= 64.1:
+			result = "D16s_v5"
+		default:
+			result = "D32s_v5"
 		}
+	default:
+		result = "D4s_v5"
 	}
 
-	/* This function select the VM instance type based on GPU requirement (vmvideoram=1 equals GPU required)*/
-	/* The calculator only support calculations up to 8 cores due to vSphere calculations.*/
-	/* We use float and .1 decimal to ensure that a smaller VM instance type is selected if memory is close enough */
 	switch f.StrtoInt(vmvideoram) {
 	case 1:
 		switch f.StrtoInt(vmvcpucount) {
 		case 1, 2, 4:
 			switch {
-			case memory <= 14.1:
-				result = "NV4as"
-			case memory <= 28.1:
-				result = "NV8as"
+			case memory <= 55.1:
+				result = "NV6ads_A10_v5"
+			case memory <= 110.1:
+				result = "NV12ads_A10_v5"
+			default:
+				result = "NV18ads_A10_v5"
 			}
 		case 8:
 			switch {
-			case memory <= 28.1:
-				result = "NV8as"
-			case memory <= 56.1:
-				result = "NV16as"
-			case memory > 56.1:
-				result = "NV32as"
+			case memory <= 110.1:
+				result = "NV12ads_A10_v5"
+			case memory <= 220.1:
+				result = "NV18ads_A10_v5"
+			default:
+				result = "NV36ads_A10_v5"
 			}
 		}
-
 	}
 
-	/* This function select the disk instance */
 	c := (f.StrtoInt(vmdisksize))
 	switch {
 	case c <= 32:
@@ -104,7 +97,7 @@ func GetAzureInstanceType(vmvcpucount string, vmmemorysize string, vmdisksize st
 		result += " P20"
 	case c <= 1024:
 		result += " P30"
-	case c >= 1024:
+	default:
 		result += " P40"
 	}
 
