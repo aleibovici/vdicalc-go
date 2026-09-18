@@ -300,7 +300,9 @@ function getManagementServerCount(vmCount, maxVMsPerServer) {
 }
 
 // ============================================================
-// Azure Instance Type (port of azure/azure.go)
+// Azure Instance Type
+// Updated for AVD single-session baselines (D*s_v5 / NVads_A10_v5)
+// Source: Microsoft session-host sizing guidelines (2024+)
 // ============================================================
 
 function getAzureInstanceType(vcpuCount, memorySize, diskSize, videoRAM) {
@@ -309,50 +311,60 @@ function getAzureInstanceType(vcpuCount, memorySize, diskSize, videoRAM) {
   var vcpu = toInt(vcpuCount);
   var vram = toInt(videoRAM);
 
-  // VM instance type based on cores and memory
+  // General-purpose Ds_v5 family (replaces legacy F-series defaults)
+  // Windows 11 single-session typically starts at 2 vCPUs.
   switch (vcpu) {
     case 1:
-      if (memory <= 2.1) result = "F1";
-      else if (memory <= 4.1) result = "F2";
-      else if (memory <= 8.1) result = "F4";
-      else if (memory <= 16.1) result = "F8";
-      else result = "F16";
+      // Legacy 1-vCPU profiles: recommend minimum modern 2-vCPU SKU
+      if (memory <= 8.1) result = "D2s_v5";
+      else if (memory <= 16.1) result = "D4s_v5";
+      else if (memory <= 32.1) result = "D8s_v5";
+      else result = "D16s_v5";
       break;
     case 2:
-      if (memory <= 4.1) result = "F2";
-      else if (memory <= 8.1) result = "F4";
-      else if (memory <= 16.1) result = "F8";
-      else result = "F16";
+      if (memory <= 8.1) result = "D2s_v5";
+      else if (memory <= 16.1) result = "D4s_v5";
+      else if (memory <= 32.1) result = "D8s_v5";
+      else result = "D16s_v5";
       break;
     case 4:
-      if (memory <= 8.1) result = "F4";
-      else if (memory <= 16.1) result = "F8";
-      else result = "F16";
+      if (memory <= 16.1) result = "D4s_v5";
+      else if (memory <= 32.1) result = "D8s_v5";
+      else if (memory <= 64.1) result = "D16s_v5";
+      else result = "D32s_v5";
       break;
     case 8:
-      if (memory <= 16) result = "F8";
-      else result = "F16";
+      if (memory <= 32.1) result = "D8s_v5";
+      else if (memory <= 64.1) result = "D16s_v5";
+      else result = "D32s_v5";
+      break;
+    default:
+      result = "D4s_v5";
       break;
   }
 
-  // GPU instance types override
+  // GPU-accelerated NVads A10 v5 (AVD graphics / power workloads)
   if (vram === 1) {
     switch (vcpu) {
       case 1:
       case 2:
       case 4:
-        if (memory <= 14.1) result = "NV4as";
-        else if (memory <= 28.1) result = "NV8as";
+        if (memory <= 55.1) result = "NV6ads_A10_v5";
+        else if (memory <= 110.1) result = "NV12ads_A10_v5";
+        else result = "NV18ads_A10_v5";
         break;
       case 8:
-        if (memory <= 28.1) result = "NV8as";
-        else if (memory <= 56.1) result = "NV16as";
-        else result = "NV32as";
+        if (memory <= 110.1) result = "NV12ads_A10_v5";
+        else if (memory <= 220.1) result = "NV18ads_A10_v5";
+        else result = "NV36ads_A10_v5";
+        break;
+      default:
+        result = "NV6ads_A10_v5";
         break;
     }
   }
 
-  // Disk instance type
+  // Premium SSD managed disk tier
   var c = toInt(diskSize);
   if (c <= 32) result += " P4";
   else if (c <= 64) result += " P6";
@@ -378,9 +390,9 @@ function validateResults(data) {
     return errors;
   }
 
-  // Host CPU clock limit: 4.2 GHz (Intel max)
-  if (toFloat(data.hostClockUsed) > 4.2) {
-    errors.push("Warning: Host CPU (GHz) above limit. (max=4.2)");
+  // Host CPU clock limit: ~5.5 GHz modern turbo ceiling (soft warning)
+  if (toFloat(data.hostClockUsed) > 5.5) {
+    errors.push("Warning: Host CPU (GHz) above typical turbo limit. (max≈5.5)");
     return errors;
   }
 
@@ -494,29 +506,31 @@ function calculate() {
 // VM Profiles (port of config/config.yml profiles)
 // ============================================================
 
+// Windows 11 single-session baselines (Microsoft AVD + Omnissa/Dell Horizon guidance).
+// Density (~vCPU per core) aligned with modern Xeon/EPYC dual-socket hosts.
 var profiles = {
-  "1": { // Task Worker
-    vcpucount: "1", vcpumhz: "500", vmpercorecount: "5", memorysize: "1536",
-    displaycount: "1", displayresolution: "2", videoram: "0", disksize: "100",
-    iopscount: "6", iopsreadratio: "20", iopsbootcount: "600",
+  "1": { // Task Worker — light / data entry
+    vcpucount: "2", vcpumhz: "350", vmpercorecount: "4", memorysize: "4096",
+    displaycount: "1", displayresolution: "2", videoram: "0", disksize: "128",
+    iopscount: "8", iopsreadratio: "20", iopsbootcount: "50",
     iopsbootreadratio: "20", clonesizerefreshrate: "0"
   },
-  "2": { // Office Worker
-    vcpucount: "1", vcpumhz: "500", vmpercorecount: "5", memorysize: "2048",
-    displaycount: "1", displayresolution: "2", videoram: "64", disksize: "100",
-    iopscount: "8", iopsreadratio: "20", iopsbootcount: "600",
+  "2": { // Office Worker — Outlook / Office / browser / light Teams
+    vcpucount: "2", vcpumhz: "400", vmpercorecount: "3", memorysize: "8192",
+    displaycount: "1", displayresolution: "2", videoram: "64", disksize: "128",
+    iopscount: "12", iopsreadratio: "20", iopsbootcount: "60",
     iopsbootreadratio: "20", clonesizerefreshrate: "0"
   },
-  "3": { // Knowledge Worker
-    vcpucount: "2", vcpumhz: "315", vmpercorecount: "4", memorysize: "2048",
-    displaycount: "1", displayresolution: "2", videoram: "64", disksize: "100",
-    iopscount: "9", iopsreadratio: "20", iopsbootcount: "600",
+  "3": { // Knowledge Worker — heavier Office + web / light creative
+    vcpucount: "4", vcpumhz: "400", vmpercorecount: "2", memorysize: "16384",
+    displaycount: "1", displayresolution: "2", videoram: "128", disksize: "128",
+    iopscount: "15", iopsreadratio: "20", iopsbootcount: "80",
     iopsbootreadratio: "20", clonesizerefreshrate: "0"
   },
-  "4": { // Power User
-    vcpucount: "2", vcpumhz: "625", vmpercorecount: "2", memorysize: "4096",
-    displaycount: "2", displayresolution: "3", videoram: "128", disksize: "100",
-    iopscount: "11", iopsreadratio: "20", iopsbootcount: "600",
+  "4": { // Power User — CAD / media / GPU path
+    vcpucount: "8", vcpumhz: "500", vmpercorecount: "1", memorysize: "32768",
+    displaycount: "2", displayresolution: "3", videoram: "1", disksize: "256",
+    iopscount: "25", iopsreadratio: "20", iopsbootcount: "100",
     iopsbootreadratio: "20", clonesizerefreshrate: "0"
   }
 };

@@ -8,13 +8,15 @@ This version runs entirely in the browser as a static site hosted on GitHub Page
 
 ## Features
 
-- VM sizing with multiple worker profiles (Task, Office, Knowledge, Power)
-- Host CPU, memory, and capacity calculations
+- VM sizing with multiple worker profiles (Task, Office, Knowledge, Power) sized for **Windows 11 single-session** VDI
+- Host CPU, memory, and capacity calculations for modern dual-socket Xeon/EPYC hosts
 - Storage capacity, datastore, and IOps calculations
 - Virtualization cluster and management server sizing
-- Azure instance type recommendations
+- Azure instance recommendations on **Ds_v5** / **NVads_A10_v5** families
 - Input validation with warning messages
 - Print-friendly output
+
+Profiles and Azure SKUs follow current Microsoft AVD session-host guidance and published Omnissa/Dell Horizon Windows 11 density studies. Always validate with a pilot.
 
 ## Usage
 
