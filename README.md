@@ -1,36 +1,38 @@
 # VDI Calculator
 
-## Synopsis
+Free browser-based tool for sizing Virtual Desktop Infrastructure deployments. It estimates host, storage, virtualization, and Azure instance requirements from your desktop and host inputs.
 
-The myvirtualcloud.net VDI Calculator is a free tool for sizing Virtual Desktop Infrastructure deployments. It calculates host, storage, virtualization, and Azure instance requirements based on your VM specifications.
-
-This version runs entirely in the browser as a static site hosted on GitHub Pages — no server or database required.
+The current app is a static site in `docs/` (GitHub Pages). Calculations run in the browser — no server or database required. A legacy Go server remains in the repo for reference.
 
 ## Features
 
-- VM sizing with multiple worker profiles (Task, Office, Knowledge, Power) sized for **Windows 11 single-session** VDI
-- Host CPU, memory, and capacity calculations for modern dual-socket Xeon/EPYC hosts
-- Storage capacity, datastore, and IOps calculations
-- Virtualization cluster and management server sizing
-- Azure instance recommendations on **Ds_v5** / **NVads_A10_v5** families
+- Worker profiles for Windows 11 single-session VDI: Task, Office, Knowledge, and Power
+- Host CPU, memory, and capacity sizing for modern dual-socket Xeon/EPYC hosts
+- Storage capacity, datastore count, and frontend/backend IOps (including RAID write amplification)
+- Cluster and management-server counts
+- Azure recommendations on the Ds_v5 and NVads_A10_v5 families
 - Input validation with warning messages
-- Print-friendly output
+- Live results as you edit, plus print-friendly output
 
-Profiles and Azure SKUs follow current Microsoft AVD session-host guidance and published Omnissa/Dell Horizon Windows 11 density studies. Always validate with a pilot.
+Profile and Azure defaults follow Microsoft AVD session-host guidance and published Omnissa/Dell Horizon Windows 11 density studies. Treat the output as a starting estimate and validate with a pilot.
 
 ## Usage
 
-Visit the GitHub Pages deployment or open `docs/index.html` in your browser. Configure your VDI parameters and click **Calculate** to see the results.
+Open the GitHub Pages site, or open `docs/index.html` locally. Pick a profile or edit the inputs. Results update automatically.
 
-## Project Structure
+```bash
+node docs/js/vdicalc.test.js
+```
 
-- `docs/` — Static GitHub Pages site (client-side JavaScript)
-  - `index.html` — Main calculator interface
-  - `js/vdicalc.js` — Calculation engine (ported from Go)
-  - `css/vdicalc.css` — Styling
-- `main.go` — Original Go HTTP server (legacy)
-- `config/` — Server-side configuration (legacy)
-- `templates/` — Server-side Go HTML templates (legacy)
+## Project structure
+
+- `docs/` — GitHub Pages site
+  - `index.html` — Calculator UI
+  - `js/vdicalc.js` — Calculation engine
+  - `js/vdicalc.test.js` — Node regression tests
+  - `css/vdicalc.css` — Styles
+- `calculations/`, `host/`, `storage/`, `vm/`, `azure/`, `validation/` — Original Go packages (legacy)
+- `main.go`, `config/`, `templates/` — Original HTTP server (legacy)
 
 ## Author
 
@@ -38,17 +40,4 @@ André Leibovici
 
 ## License
 
-Licensed to the Apache Software Foundation (ASF) under one or more
-contributor license agreements. See the NOTICE file distributed with
-this work for additional information regarding copyright ownership.
-The ASF licenses this file to You under the Apache License, Version 2.0
-(the "License"); you may not use this file except in compliance with
-the License. You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+This project is licensed under the [MIT License](LICENSE).
