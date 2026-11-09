@@ -85,7 +85,27 @@ const iopsNeg = getStorageDatastoreIops(6, -10, 600, -10, 100, 2, 6, 2000, 100);
 eq(iopsNeg.dsBackend, 10800, 'B4: ratio -10% clamped to 0 → all-write backend');
 
 const vClock = validateResults({ vmMemorySize: '4096', hostClockUsed: '6.0', hostVMCount: '120', datastoreCount: '20' });
-eq(vClock[0], 'Warning: Host CPU (GHz) above typical turbo limit. (max≈5.5)', 'clock warning uses 5.5 GHz ceiling');
+eq(vClock.status, 'warn', 'validation status warn on clock');
+eq(vClock.issues[0], 'Warning: Host CPU (GHz) above typical turbo limit. (max≈5.5)', 'clock warning uses 5.5 GHz ceiling');
+
+const vMulti = validateResults({ vmMemorySize: '7000000', hostClockUsed: '6.0', hostVMCount: '250', datastoreCount: '600' });
+eq(vMulti.status, 'warn', 'multi-issue validation status');
+eq(vMulti.issues.length, 4, 'collects all soft-limit issues (no early return)');
+
+const vOk = validateResults({ vmMemorySize: '4096', hostClockUsed: '2.8', hostVMCount: '128', datastoreCount: '20' });
+eq(vOk.status, 'ok', 'validation ok when within limits');
+eq(vOk.issues.length, 0, 'no issues when ok');
+
+console.log('\n=== Explicit domain modes ===');
+eq(parseGraphicsMode('0').mode, 'none', 'graphics none');
+eq(parseGraphicsMode('1').mode, 'gpu', 'graphics gpu');
+eq(parseGraphicsMode('128').mode, 'software', 'graphics software');
+eq(parseGraphicsMode('128').softwareVramMb, 128, 'software VRAM MB');
+eq(HA_HOST_FACTOR, 1.125, 'HA factor constant');
+eq(RAID_WRITE_AMPLIFICATION['6'], 6, 'RAID6 write amp');
+eq(getVMDisplayOverhead(1, 2, 0).memory, 8, 'display overhead none path');
+eq(getVMDisplayOverhead(1, 2, 1).memory, 96, 'display overhead gpu path');
+eq(getVMDisplayOverhead(1, 2, 64).storage, 1076, 'display overhead software path');
 
 console.log('\nResult:', fails ? fails + ' failure(s)' : 'all passed');
 process.exit(fails ? 1 : 0);
