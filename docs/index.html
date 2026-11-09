@@ -27,10 +27,11 @@
       </div>
 
       <div class="topbar__profiles d-print-none" id="profileTabs" role="tablist" aria-label="Workload profile">
-        <button type="button" class="chip active" data-profile="1" role="tab" aria-selected="true">Task</button>
-        <button type="button" class="chip" data-profile="2" role="tab" aria-selected="false">Office</button>
-        <button type="button" class="chip" data-profile="3" role="tab" aria-selected="false">Knowledge</button>
-        <button type="button" class="chip" data-profile="4" role="tab" aria-selected="false">Power</button>
+        <button type="button" class="chip active" data-profile="1" role="tab" aria-selected="true" tabindex="0">Task</button>
+        <button type="button" class="chip" data-profile="2" role="tab" aria-selected="false" tabindex="-1">Office</button>
+        <button type="button" class="chip" data-profile="3" role="tab" aria-selected="false" tabindex="-1">Knowledge</button>
+        <button type="button" class="chip" data-profile="4" role="tab" aria-selected="false" tabindex="-1">Power</button>
+        <span class="chip chip--custom" id="profileCustomBadge" hidden aria-hidden="true">Custom</span>
       </div>
 
       <div class="topbar__actions d-print-none">
@@ -54,12 +55,12 @@
       <form id="vdiform" class="config-pane" onsubmit="return false;" autocomplete="off">
 
         <section class="panel" id="sectionVM">
-          <button type="button" class="panel__head" onclick="toggleSection('sectionVM')">
+          <button type="button" class="panel__head" onclick="toggleSection('sectionVM')" aria-expanded="true" aria-controls="sectionVM-body">
             <span class="panel__accent panel__accent--vm"></span>
             <span class="panel__title">Virtual Machine</span>
             <svg class="panel__chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
-          <div class="panel__body">
+          <div class="panel__body" id="sectionVM-body">
             <div class="form-grid">
               <div class="form-field">
                 <label class="form-field__label" for="vmcount">Desktops</label>
@@ -104,14 +105,14 @@
                 </select>
               </div>
               <div class="form-field">
-                <label class="form-field__label" for="vmvideoram" title="GPU = hardware GPU">3D graphics</label>
+                <label class="form-field__label" for="vmvideoram" title="Off = none · GPU = hardware GPU (Azure NVads) · 64–512 = software VRAM MB">3D graphics</label>
                 <select id="vmvideoram">
                   <option value="0" selected>Off</option>
                   <option value="1">GPU</option>
-                  <option value="64">64</option>
-                  <option value="128">128</option>
-                  <option value="256">256</option>
-                  <option value="512">512</option>
+                  <option value="64">64 MB</option>
+                  <option value="128">128 MB</option>
+                  <option value="256">256 MB</option>
+                  <option value="512">512 MB</option>
                 </select>
               </div>
               <div class="form-field">
@@ -174,12 +175,12 @@
         </section>
 
         <section class="panel" id="sectionHost">
-          <button type="button" class="panel__head" onclick="toggleSection('sectionHost')">
+          <button type="button" class="panel__head" onclick="toggleSection('sectionHost')" aria-expanded="true" aria-controls="sectionHost-body">
             <span class="panel__accent panel__accent--host"></span>
             <span class="panel__title">Host</span>
             <svg class="panel__chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
-          <div class="panel__body">
+          <div class="panel__body" id="sectionHost-body">
             <div class="form-grid form-grid--4">
               <div class="form-field">
                 <label class="form-field__label" for="hostsocketcount">Sockets</label>
@@ -233,12 +234,12 @@
         </section>
 
         <section class="panel" id="sectionStorage">
-          <button type="button" class="panel__head" onclick="toggleSection('sectionStorage')">
+          <button type="button" class="panel__head" onclick="toggleSection('sectionStorage')" aria-expanded="true" aria-controls="sectionStorage-body">
             <span class="panel__accent panel__accent--storage"></span>
             <span class="panel__title">Storage</span>
             <svg class="panel__chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
-          <div class="panel__body">
+          <div class="panel__body" id="sectionStorage-body">
             <div class="form-grid">
               <div class="form-field">
                 <label class="form-field__label" for="storagecapacityoverhead">Capacity OH %</label>
@@ -297,12 +298,12 @@
         </section>
 
         <section class="panel" id="sectionVirt">
-          <button type="button" class="panel__head" onclick="toggleSection('sectionVirt')">
+          <button type="button" class="panel__head" onclick="toggleSection('sectionVirt')" aria-expanded="true" aria-controls="sectionVirt-body">
             <span class="panel__accent panel__accent--virt"></span>
             <span class="panel__title">Virtualization</span>
             <svg class="panel__chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
-          <div class="panel__body">
+          <div class="panel__body" id="sectionVirt-body">
             <div class="form-grid form-grid--3">
               <div class="form-field">
                 <label class="form-field__label" for="virtualizationclusterhostsize" title="Hosts per cluster">Cluster size</label>
@@ -422,11 +423,11 @@
     </footer>
   </div>
 
-  <div class="modal-overlay" id="aboutModal">
-    <div class="modal-content" role="dialog" aria-labelledby="aboutTitle">
+  <div class="modal-overlay" id="aboutModal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
       <div class="modal-content__header">
         <h3 id="aboutTitle">About VDI Calculator</h3>
-        <button class="modal-content__close" onclick="hideAbout()" aria-label="Close">
+        <button type="button" class="modal-content__close" onclick="hideAbout()" aria-label="Close">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>

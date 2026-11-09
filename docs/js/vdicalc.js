@@ -40,60 +40,70 @@ function setResult(id, value) {
 }
 
 // ============================================================
+// Explicit domain modes (form still stores legacy string sentinels)
+// ============================================================
+
+// Graphics regimes encoded historically as #vmvideoram values:
+//   "0" = none, "1" = hardware GPU, "64"|"128"|"256"|"512" = software VRAM MB
+function parseGraphicsMode(videoRAM) {
+  var raw = String(videoRAM);
+  if (raw === "0") return { mode: "none", softwareVramMb: 0, raw: raw };
+  if (raw === "1") return { mode: "gpu", softwareVramMb: 0, raw: raw };
+  return { mode: "software", softwareVramMb: toInt(raw), raw: raw };
+}
+
+// Host HA inflate factor (N+1-ish capacity for cluster HA = Yes)
+var HA_HOST_FACTOR = 1.125;
+
+// RAID write amplification multipliers (backend write IOps)
+var RAID_WRITE_AMPLIFICATION = {
+  "5": 4,
+  "6": 6,
+  "10": 2
+};
+
+// Display overhead when graphics mode is none: [displayCount][resolutionCode] → MB
+// Resolution codes: "1"=1280×800, "2"=1920×1200, "3"=2560×1600
+var DISPLAY_OVERHEAD_NONE = {
+  1: { "1": { memory: 4, storage: 107 }, "2": { memory: 8, storage: 111 }, "3": { memory: 16, storage: 203 } },
+  2: { "1": { memory: 13, storage: 163 }, "2": { memory: 26, storage: 190 }, "3": { memory: 60, storage: 203 } },
+  3: { "1": { memory: 19, storage: 207 }, "2": { memory: 38, storage: 248 }, "3": { memory: 85, storage: 461 } },
+  4: { "1": { memory: 25, storage: 252 }, "2": { memory: 51, storage: 306 }, "3": { memory: 110, storage: 589 } }
+};
+
+var SOFTWARE_VRAM_STORAGE_OVERHEAD = {
+  "64": 1076,
+  "128": 1468,
+  "256": 1468,
+  "512": 1916
+};
+
+// ============================================================
 // VM Overhead Calculations (port of vm/vm.go)
 // ============================================================
 
 // GetVMDisplayOverhead - calculates display/resolution overhead for memory and storage vswap
 // Returns { memory: int, storage: int } in MB
 function getVMDisplayOverhead(displayCount, displayResolution, videoRAM) {
-  var m = 0, s = 0;
-  displayCount = toInt(displayCount);
-  displayResolution = String(displayResolution);
-  videoRAM = String(videoRAM);
+  var graphics = parseGraphicsMode(videoRAM);
+  var count = toInt(displayCount);
+  var resolution = String(displayResolution);
 
-  if (videoRAM === "0") {
-    // No 3D graphics - overhead based on display count and resolution
-    if (displayCount === 1) {
-      switch (displayResolution) {
-        case "1": m = 4; s = 107; break;
-        case "2": m = 8; s = 111; break;
-        case "3": m = 16; s = 203; break;
-      }
-    } else if (displayCount === 2) {
-      switch (displayResolution) {
-        case "1": m = 13; s = 163; break;
-        case "2": m = 26; s = 190; break;
-        case "3": m = 60; s = 203; break;
-      }
-    } else if (displayCount === 3) {
-      switch (displayResolution) {
-        case "1": m = 19; s = 207; break;
-        case "2": m = 38; s = 248; break;
-        case "3": m = 85; s = 461; break;
-      }
-    } else if (displayCount === 4) {
-      switch (displayResolution) {
-        case "1": m = 25; s = 252; break;
-        case "2": m = 51; s = 306; break;
-        case "3": m = 110; s = 589; break;
-      }
+  if (graphics.mode === "none") {
+    var byRes = DISPLAY_OVERHEAD_NONE[count];
+    if (byRes && byRes[resolution]) {
+      return { memory: byRes[resolution].memory, storage: byRes[resolution].storage };
     }
-  } else if (videoRAM === "1") {
-    // GPU use case
-    m = 96;
-    s = 0;
-  } else {
-    // Software 3D graphics with specific video RAM
-    switch (videoRAM) {
-      case "64": s = 1076; break;
-      case "128": s = 1468; break;
-      case "256": s = 1468; break;
-      case "512": s = 1916; break;
-    }
-    m = toInt(videoRAM);
+    return { memory: 0, storage: 0 };
   }
 
-  return { memory: m, storage: s };
+  if (graphics.mode === "gpu") {
+    return { memory: 96, storage: 0 };
+  }
+
+  // software 3D graphics with specific video RAM
+  var storage = SOFTWARE_VRAM_STORAGE_OVERHEAD[graphics.raw] || 0;
+  return { memory: graphics.softwareVramMb, storage: storage };
 }
 
 // GetVMVcpuMemoryOverhead - calculates vm vcpu memory overhead in MB
@@ -157,7 +167,7 @@ function getHostCount(vmCount, socketCount, coresPerSocket, vmsPerCore, coresOve
   if (hostVMCount <= 0) return 0;
   var r = toNonNegFloat(vmCount) / toFloat(hostVMCount);
   if (String(clusterHA) === "1") {
-    r *= 1.125;
+    r *= HA_HOST_FACTOR;
   }
   // Go uses FormatFloat with precision 0, which rounds to nearest
   return Number(r.toFixed(0));
@@ -248,22 +258,11 @@ function getStorageDatastoreIops(iopsCount, iopsReadRatio, iopsBootCount, iopsBo
   var dsBackendReadIops = Math.floor(((readRatio / 100) * steadyIops) * dsVMs);
   var dsBackendWriteIops = Math.floor(((1 - (readRatio / 100)) * steadyIops) * dsVMs);
 
-  // RAID write amplification
-  switch (String(raidType)) {
-    case "5":
-      dsBackendBootWriteIops *= 4;
-      dsBackendWriteIops *= 4;
-      break;
-    case "6":
-      dsBackendBootWriteIops *= 6;
-      dsBackendWriteIops *= 6;
-      break;
-    case "10":
-      dsBackendBootWriteIops *= 2;
-      dsBackendWriteIops *= 2;
-      break;
-    default:
-      break;
+  // RAID write amplification (explicit map; unknown RAID → no multiplier)
+  var raidAmp = RAID_WRITE_AMPLIFICATION[String(raidType)];
+  if (raidAmp) {
+    dsBackendBootWriteIops *= raidAmp;
+    dsBackendWriteIops *= raidAmp;
   }
 
   var dsBackendBootIops = dsBackendBootReadIops + dsBackendBootWriteIops;
@@ -309,7 +308,6 @@ function getAzureInstanceType(vcpuCount, memorySize, diskSize, videoRAM) {
   var result = "";
   var memory = toFloat(memorySize) / 1024; // MB to GiB
   var vcpu = toInt(vcpuCount);
-  var vram = toInt(videoRAM);
 
   // General-purpose Ds_v5 family (replaces legacy F-series defaults)
   // Windows 11 single-session typically starts at 2 vCPUs.
@@ -343,8 +341,10 @@ function getAzureInstanceType(vcpuCount, memorySize, diskSize, videoRAM) {
       break;
   }
 
-  // GPU-accelerated NVads A10 v5 (AVD graphics / power workloads)
-  if (vram === 1) {
+  // GPU-accelerated NVads A10 v5 only when graphics mode is hardware GPU
+  // (software VRAM MB values intentionally stay on Ds_v5 — same as legacy sentinel "1")
+  var graphics = parseGraphicsMode(videoRAM);
+  if (graphics.mode === "gpu") {
     switch (vcpu) {
       case 1:
       case 2:
@@ -381,34 +381,53 @@ function getAzureInstanceType(vcpuCount, memorySize, diskSize, videoRAM) {
 // Validation (port of validation/validation.go)
 // ============================================================
 
+// Ordered soft-limit rules. Returns explicit ValidationState:
+//   { status: 'ok'|'warn', issues: string[] }
+// Collects every matching issue (legacy early-return hid later limits).
 function validateResults(data) {
-  var errors = [];
+  var issues = [];
 
   // VM memory size limit: 6,128,000 MB (vSphere max)
   if (toFloat(data.vmMemorySize) > 6128000) {
-    errors.push("Warning: VM memory size above limit.");
-    return errors;
+    issues.push("Warning: VM memory size above limit.");
   }
 
   // Host CPU clock limit: ~5.5 GHz modern turbo ceiling (soft warning)
   if (toFloat(data.hostClockUsed) > 5.5) {
-    errors.push("Warning: Host CPU (GHz) above typical turbo limit. (max≈5.5)");
-    return errors;
+    issues.push("Warning: Host CPU (GHz) above typical turbo limit. (max≈5.5)");
   }
 
   // VMs per host limit: 200 (Horizon 8)
   if (toFloat(data.hostVMCount) > 200) {
-    errors.push("Warning: Number of VMs per host above limit. (max=200)");
-    return errors;
+    issues.push("Warning: Number of VMs per host above limit. (max=200)");
   }
 
   // Datastore count limit: 500 (VMFS)
   if (toFloat(data.datastoreCount) > 500) {
-    errors.push("Warning: Number of datastores above limit (max=500).");
-    return errors;
+    issues.push("Warning: Number of datastores above limit (max=500).");
   }
 
-  return errors;
+  return {
+    status: issues.length ? "warn" : "ok",
+    issues: issues
+  };
+}
+
+function applyValidationBanner(validation) {
+  var errorBanner = document.getElementById("errorBanner");
+  var errorText = document.getElementById("errorText");
+  if (!errorBanner || !errorText) return;
+
+  if (!validation || validation.status === "ok" || !validation.issues.length) {
+    errorBanner.classList.remove("visible");
+    errorBanner.setAttribute("role", "status");
+    errorText.textContent = "";
+    return;
+  }
+
+  errorText.textContent = validation.issues.join(" · ");
+  errorBanner.classList.add("visible");
+  errorBanner.setAttribute("role", "alert");
 }
 
 // ============================================================
@@ -416,12 +435,6 @@ function validateResults(data) {
 // ============================================================
 
 function calculate() {
-  // Clear previous errors
-  var errorBanner = document.getElementById("errorBanner");
-  var errorText = document.getElementById("errorText");
-  if (errorBanner) errorBanner.classList.remove("visible");
-  if (errorText) errorText.textContent = "";
-
   // Read all form values
   var vmCount = val("vmcount");
   var vcpuCount = val("vmvcpucount");
@@ -469,21 +482,17 @@ function calculate() {
   var clusterCount = getClusterSize(vmCount, socketCount, coresPerSocket, vmsPerCore, coresOverhead, clusterHostSize, clusterHA);
   var mgmtServerCount = getManagementServerCount(vmCount, mgmtServerVMMax);
 
-  // Azure recommendation
+  // Azure recommendation (always-on parallel path — not an Azure-vs-on-prem UI mode)
   var azureInstance = getAzureInstanceType(vcpuCount, memorySize, diskSize, videoRAM);
 
-  // Validation
-  var errors = validateResults({
+  // Validation (explicit status; does not alter sizing numbers)
+  var validation = validateResults({
     vmMemorySize: memorySize,
     hostClockUsed: hostClockUsed,
     hostVMCount: hostVMCount,
     datastoreCount: datastoreCount
   });
-
-  if (errors.length > 0 && errorBanner && errorText) {
-    errorText.textContent = errors[0];
-    errorBanner.classList.add("visible");
-  }
+  applyValidationBanner(validation);
 
   // Display results
   setResult("hostresultscount", hostCount);
@@ -535,48 +544,150 @@ var profiles = {
   }
 };
 
+// Profile field keys → form control IDs (VM section only; host/storage/virt stay shared)
+var PROFILE_FIELD_MAP = {
+  vcpucount: "vmvcpucount",
+  vcpumhz: "vmvcpumhz",
+  vmpercorecount: "vmpercorecount",
+  memorysize: "vmmemorysize",
+  displaycount: "vmdisplaycount",
+  displayresolution: "vmdisplayresolution",
+  videoram: "vmvideoram",
+  disksize: "vmdisksize",
+  iopscount: "vmiopscount",
+  iopsreadratio: "vmiopsreadratio",
+  iopsbootcount: "vmiopsbootcount",
+  iopsbootreadratio: "vmiopsbootreadratio",
+  clonesizerefreshrate: "vmclonesizerefreshrate"
+};
+
+function profileMatchesForm(profileId) {
+  var p = profiles[profileId];
+  if (!p) return false;
+  var key;
+  for (key in PROFILE_FIELD_MAP) {
+    if (!Object.prototype.hasOwnProperty.call(PROFILE_FIELD_MAP, key)) continue;
+    var el = document.getElementById(PROFILE_FIELD_MAP[key]);
+    if (!el || String(el.value) !== String(p[key])) return false;
+  }
+  return true;
+}
+
 function loadProfileById(profileId) {
   var p = profiles[profileId];
   if (!p) return;
 
-  document.getElementById("vmvcpucount").value = p.vcpucount;
-  document.getElementById("vmvcpumhz").value = p.vcpumhz;
-  document.getElementById("vmpercorecount").value = p.vmpercorecount;
-  document.getElementById("vmmemorysize").value = p.memorysize;
-  document.getElementById("vmdisplaycount").value = p.displaycount;
-  document.getElementById("vmdisplayresolution").value = p.displayresolution;
-  document.getElementById("vmvideoram").value = p.videoram;
-  document.getElementById("vmdisksize").value = p.disksize;
-  document.getElementById("vmiopscount").value = p.iopscount;
-  document.getElementById("vmiopsreadratio").value = p.iopsreadratio;
-  document.getElementById("vmiopsbootcount").value = p.iopsbootcount;
-  document.getElementById("vmiopsbootreadratio").value = p.iopsbootreadratio;
-  document.getElementById("vmclonesizerefreshrate").value = p.clonesizerefreshrate;
+  var key;
+  for (key in PROFILE_FIELD_MAP) {
+    if (!Object.prototype.hasOwnProperty.call(PROFILE_FIELD_MAP, key)) continue;
+    document.getElementById(PROFILE_FIELD_MAP[key]).value = p[key];
+  }
 
+  setProfileSelection(profileId);
   calculate();
+}
+
+// ============================================================
+// Explicit UI state machine (profile + about modal)
+// ============================================================
+
+// profileId: '1'|'2'|'3'|'4' for presets, null for custom (form drifted from preset)
+// aboutOpen: boolean driving modal visibility / body scroll / focus
+var uiState = {
+  profileId: "1",
+  aboutOpen: false
+};
+
+var aboutLastFocus = null;
+
+function setProfileSelection(profileId) {
+  uiState.profileId = profileId || null;
+
+  var tabs = document.querySelectorAll(".chip[data-profile], .profile-tab[data-profile]");
+  tabs.forEach(function (tab) {
+    var id = tab.getAttribute("data-profile");
+    var selected = uiState.profileId !== null && id === uiState.profileId;
+    tab.classList.toggle("active", selected);
+    tab.setAttribute("aria-selected", selected ? "true" : "false");
+    tab.tabIndex = selected ? 0 : -1;
+  });
+
+  var customBadge = document.getElementById("profileCustomBadge");
+  if (customBadge) {
+    var isCustom = uiState.profileId === null;
+    customBadge.hidden = !isCustom;
+    customBadge.setAttribute("aria-hidden", isCustom ? "false" : "true");
+  }
+
+  var tablist = document.getElementById("profileTabs");
+  if (tablist) {
+    tablist.setAttribute(
+      "aria-label",
+      uiState.profileId === null ? "Workload profile (custom values)" : "Workload profile"
+    );
+  }
+}
+
+function syncProfileSelectionFromForm() {
+  if (uiState.profileId !== null && profileMatchesForm(uiState.profileId)) {
+    return;
+  }
+  // Prefer rematching another preset if the user landed exactly on one
+  var id;
+  for (id in profiles) {
+    if (!Object.prototype.hasOwnProperty.call(profiles, id)) continue;
+    if (profileMatchesForm(id)) {
+      setProfileSelection(id);
+      return;
+    }
+  }
+  setProfileSelection(null);
 }
 
 // ============================================================
 // UI Interactions (vanilla JS - no jQuery)
 // ============================================================
 
-// Section collapse/expand
+// Section collapse/expand — keep aria-expanded in sync with .collapsed
 function toggleSection(sectionId) {
   var section = document.getElementById(sectionId);
-  if (section) {
-    section.classList.toggle("collapsed");
-  }
+  if (!section) return;
+  var collapsed = section.classList.toggle("collapsed");
+  var head = section.querySelector(".panel__head");
+  if (head) head.setAttribute("aria-expanded", collapsed ? "false" : "true");
 }
 
-// About modal
+// About modal — explicit open/closed state
 function showAbout() {
-  document.getElementById("aboutModal").classList.add("visible");
+  if (uiState.aboutOpen) return;
+  uiState.aboutOpen = true;
+  aboutLastFocus = document.activeElement;
+
+  var modal = document.getElementById("aboutModal");
+  if (!modal) return;
+  modal.classList.add("visible");
+  modal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
+
+  var closeBtn = modal.querySelector(".modal-content__close");
+  if (closeBtn && typeof closeBtn.focus === "function") closeBtn.focus();
 }
 
 function hideAbout() {
-  document.getElementById("aboutModal").classList.remove("visible");
+  if (!uiState.aboutOpen) return;
+  uiState.aboutOpen = false;
+
+  var modal = document.getElementById("aboutModal");
+  if (modal) {
+    modal.classList.remove("visible");
+    modal.setAttribute("aria-hidden", "true");
+  }
   document.body.style.overflow = "";
+
+  if (aboutLastFocus && typeof aboutLastFocus.focus === "function") {
+    aboutLastFocus.focus();
+  }
+  aboutLastFocus = null;
 }
 
 // ============================================================
@@ -584,34 +695,63 @@ function hideAbout() {
 // ============================================================
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Align JS profile state with the chip marked active in HTML (Task by default)
+  var initialActive = document.querySelector(".chip.active[data-profile], .profile-tab.active[data-profile]");
+  setProfileSelection(initialActive ? initialActive.getAttribute("data-profile") : "1");
+
+  // Ensure panel heads expose expand state
+  document.querySelectorAll(".panel").forEach(function (panel) {
+    var head = panel.querySelector(".panel__head");
+    if (head && !head.hasAttribute("aria-expanded")) {
+      head.setAttribute("aria-expanded", panel.classList.contains("collapsed") ? "false" : "true");
+    }
+  });
+
   // Profile tab click handlers
   var tabs = document.querySelectorAll(".chip[data-profile], .profile-tab[data-profile]");
   tabs.forEach(function (tab) {
     tab.addEventListener("click", function () {
-      tabs.forEach(function (t) {
-        t.classList.remove("active");
-        t.setAttribute("aria-selected", "false");
-      });
-      tab.classList.add("active");
-      tab.setAttribute("aria-selected", "true");
       loadProfileById(tab.getAttribute("data-profile"));
     });
   });
 
-  // Auto-calculate on any form input change
+  // Arrow-key roving tabindex within the profile tablist
+  var tablist = document.getElementById("profileTabs");
+  if (tablist) {
+    tablist.addEventListener("keydown", function (e) {
+      var keys = ["ArrowLeft", "ArrowRight", "Home", "End"];
+      if (keys.indexOf(e.key) === -1) return;
+      var items = Array.prototype.slice.call(tabs);
+      if (!items.length) return;
+      var currentIndex = items.indexOf(document.activeElement);
+      if (currentIndex < 0) currentIndex = items.findIndex(function (t) { return t.classList.contains("active"); });
+      if (currentIndex < 0) currentIndex = 0;
+      var next = currentIndex;
+      if (e.key === "ArrowRight") next = (currentIndex + 1) % items.length;
+      else if (e.key === "ArrowLeft") next = (currentIndex - 1 + items.length) % items.length;
+      else if (e.key === "Home") next = 0;
+      else if (e.key === "End") next = items.length - 1;
+      e.preventDefault();
+      items[next].focus();
+      items[next].click();
+    });
+  }
+
+  // Auto-calculate on any form input change; detect profile drift → custom
   var form = document.getElementById("vdiform");
   if (form) {
-    form.addEventListener("input", function () {
+    var onFormEdit = function () {
+      syncProfileSelectionFromForm();
       calculate();
-    });
-    form.addEventListener("change", function () {
-      calculate();
-    });
+    };
+    form.addEventListener("input", onFormEdit);
+    form.addEventListener("change", onFormEdit);
   }
 
   // Close modal on overlay click
   var modalOverlay = document.getElementById("aboutModal");
   if (modalOverlay) {
+    modalOverlay.setAttribute("aria-hidden", "true");
     modalOverlay.addEventListener("click", function (e) {
       if (e.target === modalOverlay) {
         hideAbout();
@@ -619,9 +759,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Close modal on Escape key
+  // Close modal on Escape key only when open
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
+    if (e.key === "Escape" && uiState.aboutOpen) {
       hideAbout();
     }
   });
